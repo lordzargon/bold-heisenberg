@@ -1,0 +1,6389 @@
+{
+  "london": {
+    "name": "London",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "london, uk": {
+    "name": "London",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "london, united kingdom": {
+    "name": "London",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cambridge": {
+    "name": "Cambridge",
+    "lat": 52.2053,
+    "lon": 0.1218,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cambridge, uk": {
+    "name": "Cambridge",
+    "lat": 52.2053,
+    "lon": 0.1218,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ely": {
+    "name": "Ely",
+    "lat": 52.399,
+    "lon": 0.262,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ely, cambridgeshire": {
+    "name": "Ely, Cambridgeshire",
+    "lat": 52.399,
+    "lon": 0.262,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ely, uk": {
+    "name": "Ely",
+    "lat": 52.399,
+    "lon": 0.262,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "peterborough": {
+    "name": "Peterborough",
+    "lat": 52.5726,
+    "lon": -0.2427,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "newmarket": {
+    "name": "Newmarket",
+    "lat": 52.2454,
+    "lon": 0.4074,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "huntingdon": {
+    "name": "Huntingdon",
+    "lat": 52.3312,
+    "lon": -0.1834,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bury st edmunds": {
+    "name": "Bury St Edmunds",
+    "lat": 52.2474,
+    "lon": 0.7183,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "norwich": {
+    "name": "Norwich",
+    "lat": 52.6309,
+    "lon": 1.2974,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ipswich": {
+    "name": "Ipswich",
+    "lat": 52.0567,
+    "lon": 1.1482,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "guildford": {
+    "name": "Guildford",
+    "lat": 51.2362,
+    "lon": -0.5704,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "guildford, uk": {
+    "name": "Guildford",
+    "lat": 51.2362,
+    "lon": -0.5704,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "brighton": {
+    "name": "Brighton",
+    "lat": 50.8225,
+    "lon": -0.1372,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bristol": {
+    "name": "Bristol",
+    "lat": 51.4545,
+    "lon": -2.5879,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "leamington spa": {
+    "name": "Leamington Spa",
+    "lat": 52.2852,
+    "lon": -1.52,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "royal leamington spa": {
+    "name": "Royal Leamington Spa",
+    "lat": 52.2852,
+    "lon": -1.52,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "oxford": {
+    "name": "Oxford",
+    "lat": 51.752,
+    "lon": -1.2577,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "edinburgh": {
+    "name": "Edinburgh",
+    "lat": 55.9533,
+    "lon": -3.1883,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "manchester": {
+    "name": "Manchester",
+    "lat": 53.4808,
+    "lon": -2.2426,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "sheffield": {
+    "name": "Sheffield",
+    "lat": 53.3811,
+    "lon": -1.4701,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "leeds": {
+    "name": "Leeds",
+    "lat": 53.8008,
+    "lon": -1.5491,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "newcastle": {
+    "name": "Newcastle upon Tyne",
+    "lat": 54.9783,
+    "lon": -1.6178,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "birmingham": {
+    "name": "Birmingham",
+    "lat": 52.4862,
+    "lon": -1.8904,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "liverpool": {
+    "name": "Liverpool",
+    "lat": 53.4084,
+    "lon": -2.9916,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cardiff": {
+    "name": "Cardiff",
+    "lat": 51.4816,
+    "lon": -3.1791,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "belfast": {
+    "name": "Belfast",
+    "lat": 54.5973,
+    "lon": -5.9301,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "dublin": {
+    "name": "Dublin",
+    "lat": 53.3498,
+    "lon": -6.2603,
+    "country": "Ireland",
+    "country_code": "IE"
+  },
+  "paris": {
+    "name": "Paris",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "berlin": {
+    "name": "Berlin",
+    "lat": 52.52,
+    "lon": 13.405,
+    "country": "Germany",
+    "country_code": "DE"
+  },
+  "munich": {
+    "name": "Munich",
+    "lat": 48.1351,
+    "lon": 11.582,
+    "country": "Germany",
+    "country_code": "DE"
+  },
+  "stockholm": {
+    "name": "Stockholm",
+    "lat": 59.3293,
+    "lon": 18.0686,
+    "country": "Sweden",
+    "country_code": "SE"
+  },
+  "helsinki": {
+    "name": "Helsinki",
+    "lat": 60.1699,
+    "lon": 24.9384,
+    "country": "Finland",
+    "country_code": "FI"
+  },
+  "copenhagen": {
+    "name": "Copenhagen",
+    "lat": 55.6761,
+    "lon": 12.5683,
+    "country": "Denmark",
+    "country_code": "DK"
+  },
+  "amsterdam": {
+    "name": "Amsterdam",
+    "lat": 52.3676,
+    "lon": 4.9041,
+    "country": "Netherlands",
+    "country_code": "NL"
+  },
+  "barcelona": {
+    "name": "Barcelona",
+    "lat": 41.3879,
+    "lon": 2.1699,
+    "country": "Spain",
+    "country_code": "ES"
+  },
+  "madrid": {
+    "name": "Madrid",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "country": "Spain",
+    "country_code": "ES"
+  },
+  "warsaw": {
+    "name": "Warsaw",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "country": "Poland",
+    "country_code": "PL"
+  },
+  "krakow": {
+    "name": "Krakow",
+    "lat": 50.0647,
+    "lon": 19.945,
+    "country": "Poland",
+    "country_code": "PL"
+  },
+  "oslo": {
+    "name": "Oslo",
+    "lat": 59.9139,
+    "lon": 10.7522,
+    "country": "Norway",
+    "country_code": "NO"
+  },
+  "vienna": {
+    "name": "Vienna",
+    "lat": 48.2082,
+    "lon": 16.3738,
+    "country": "Austria",
+    "country_code": "AT"
+  },
+  "zurich": {
+    "name": "Zurich",
+    "lat": 47.3769,
+    "lon": 8.5417,
+    "country": "Switzerland",
+    "country_code": "CH"
+  },
+  "tokyo": {
+    "name": "Tokyo",
+    "lat": 35.6895,
+    "lon": 139.69171,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": "Tokyo"
+  },
+  "japan": {
+    "name": "Japan",
+    "lat": 35.68536,
+    "lon": 139.7531,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": ""
+  },
+  "montreal canada": {
+    "name": "Montreal",
+    "lat": 45.50884,
+    "lon": -73.58781,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Quebec"
+  },
+  "montreal": {
+    "name": "Montreal",
+    "lat": 45.50884,
+    "lon": -73.58781,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Quebec"
+  },
+  "shanghai china": {
+    "name": "Shanghai",
+    "lat": 31.22222,
+    "lon": 121.45806,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Shanghai Municipality"
+  },
+  "shanghai": {
+    "name": "Shanghai",
+    "lat": 31.22222,
+    "lon": 121.45806,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Shanghai Municipality"
+  },
+  "santa monica united states": {
+    "name": "Santa Monica",
+    "lat": 34.01949,
+    "lon": -118.49138,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "santa monica": {
+    "name": "Santa Monica",
+    "lat": 34.01949,
+    "lon": -118.49138,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "singapore singapore": {
+    "name": "Singapore",
+    "lat": 1.28967,
+    "lon": 103.85007,
+    "country": "Singapore",
+    "country_code": "SG",
+    "admin1": ""
+  },
+  "singapore": {
+    "name": "Singapore",
+    "lat": 1.28967,
+    "lon": 103.85007,
+    "country": "Singapore",
+    "country_code": "SG",
+    "admin1": ""
+  },
+  "guangzhou china": {
+    "name": "Guangzhou",
+    "lat": 23.11667,
+    "lon": 113.25,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Guangdong"
+  },
+  "guangzhou": {
+    "name": "Guangzhou",
+    "lat": 23.11667,
+    "lon": 113.25,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Guangdong"
+  },
+  "ho chi minh city vietnam": {
+    "name": "Ho Chi Minh City",
+    "lat": 10.82302,
+    "lon": 106.62965,
+    "country": "Vietnam",
+    "country_code": "VN",
+    "admin1": "Ho Chi Minh City (HCMC)"
+  },
+  "ho chi minh city": {
+    "name": "Ho Chi Minh City",
+    "lat": 10.82302,
+    "lon": 106.62965,
+    "country": "Vietnam",
+    "country_code": "VN",
+    "admin1": "Ho Chi Minh City (HCMC)"
+  },
+  "shenzhen china": {
+    "name": "Shenzhen",
+    "lat": 22.54554,
+    "lon": 114.0683,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Guangdong"
+  },
+  "shenzhen": {
+    "name": "Shenzhen",
+    "lat": 22.54554,
+    "lon": 114.0683,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Guangdong"
+  },
+  "fort lauderdale united states": {
+    "name": "Fort Lauderdale",
+    "lat": 26.12231,
+    "lon": -80.14338,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "fort lauderdale": {
+    "name": "Fort Lauderdale",
+    "lat": 26.12231,
+    "lon": -80.14338,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "toronto canada": {
+    "name": "Toronto",
+    "lat": 43.70643,
+    "lon": -79.39864,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "toronto": {
+    "name": "Toronto",
+    "lat": 43.70643,
+    "lon": -79.39864,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "cupertino united states": {
+    "name": "Cupertino",
+    "lat": 37.323,
+    "lon": -122.03218,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "cupertino": {
+    "name": "Cupertino",
+    "lat": 37.323,
+    "lon": -122.03218,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "seattle united states": {
+    "name": "Seattle",
+    "lat": 47.60621,
+    "lon": -122.33207,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "seattle": {
+    "name": "Seattle",
+    "lat": 47.60621,
+    "lon": -122.33207,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "cergy france": {
+    "name": "Cergy",
+    "lat": 49.03645,
+    "lon": 2.07613,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Île-de-France Region"
+  },
+  "cergy": {
+    "name": "Cergy",
+    "lat": 49.03645,
+    "lon": 2.07613,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Île-de-France Region"
+  },
+  "bengaluru india": {
+    "name": "Bengaluru",
+    "lat": 12.97194,
+    "lon": 77.59369,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Karnataka"
+  },
+  "bengaluru": {
+    "name": "Bengaluru",
+    "lat": 12.97194,
+    "lon": 77.59369,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Karnataka"
+  },
+  "novato united states": {
+    "name": "Novato",
+    "lat": 38.10742,
+    "lon": -122.5697,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "novato": {
+    "name": "Novato",
+    "lat": 38.10742,
+    "lon": -122.5697,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "edmonton canada": {
+    "name": "Edmonton",
+    "lat": 53.55014,
+    "lon": -113.46871,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Alberta"
+  },
+  "edmonton": {
+    "name": "Edmonton",
+    "lat": 53.55014,
+    "lon": -113.46871,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Alberta"
+  },
+  "noida india": {
+    "name": "Noida",
+    "lat": 28.58,
+    "lon": 77.33,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Uttar Pradesh"
+  },
+  "noida": {
+    "name": "Noida",
+    "lat": 28.58,
+    "lon": 77.33,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Uttar Pradesh"
+  },
+  "gurugram india": {
+    "name": "Gurugram",
+    "lat": 28.4601,
+    "lon": 77.02635,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Haryana"
+  },
+  "gurugram": {
+    "name": "Gurugram",
+    "lat": 28.4601,
+    "lon": 77.02635,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Haryana"
+  },
+  "vancouver canada": {
+    "name": "Vancouver",
+    "lat": 49.24966,
+    "lon": -123.11934,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "vancouver": {
+    "name": "Vancouver",
+    "lat": 49.24966,
+    "lon": -123.11934,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "santa clara united states": {
+    "name": "Santa Clara",
+    "lat": 37.35411,
+    "lon": -121.95524,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "santa clara": {
+    "name": "Santa Clara",
+    "lat": 37.35411,
+    "lon": -121.95524,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "california united states": {
+    "name": "California",
+    "lat": 38.62753,
+    "lon": -92.56658,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Missouri"
+  },
+  "california": {
+    "name": "California",
+    "lat": 38.62753,
+    "lon": -92.56658,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Missouri"
+  },
+  "eindhoven netherlands": {
+    "name": "Eindhoven",
+    "lat": 51.4485569,
+    "lon": 5.4501225,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "eindhoven": {
+    "name": "Eindhoven",
+    "lat": 51.44083,
+    "lon": 5.47778,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "North Brabant"
+  },
+  "eugene united states": {
+    "name": "Eugene",
+    "lat": 44.05207,
+    "lon": -123.08675,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "eugene": {
+    "name": "Eugene",
+    "lat": 44.05207,
+    "lon": -123.08675,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "san francisco united states": {
+    "name": "San Francisco",
+    "lat": 37.77493,
+    "lon": -122.41942,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san francisco": {
+    "name": "San Francisco",
+    "lat": 37.77493,
+    "lon": -122.41942,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "stoke-on-trent united kingdom": {
+    "name": "Stoke-on-Trent",
+    "lat": 53.00415,
+    "lon": -2.18538,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "stoke-on-trent": {
+    "name": "Stoke-on-Trent",
+    "lat": 53.00415,
+    "lon": -2.18538,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "champaign united states": {
+    "name": "Champaign",
+    "lat": 40.11642,
+    "lon": -88.24338,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Illinois"
+  },
+  "champaign": {
+    "name": "Champaign",
+    "lat": 40.11642,
+    "lon": -88.24338,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Illinois"
+  },
+  "updates 2021": {
+    "name": "Updates",
+    "lat": 10.8255324,
+    "lon": 75.9503557,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "hangzhou china": {
+    "name": "Hangzhou",
+    "lat": 30.29365,
+    "lon": 120.16142,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Zhejiang"
+  },
+  "hangzhou": {
+    "name": "Hangzhou",
+    "lat": 30.29365,
+    "lon": 120.16142,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Zhejiang"
+  },
+  "austin united states": {
+    "name": "Austin",
+    "lat": 30.26715,
+    "lon": -97.74306,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "austin": {
+    "name": "Austin",
+    "lat": 30.26715,
+    "lon": -97.74306,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "kodaira japan": {
+    "name": "Kodaira",
+    "lat": 35.72603,
+    "lon": 139.48508,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": "Tokyo"
+  },
+  "kodaira": {
+    "name": "Kodaira",
+    "lat": 35.72603,
+    "lon": 139.48508,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": "Tokyo"
+  },
+  "beijing china": {
+    "name": "Beijing",
+    "lat": 39.9075,
+    "lon": 116.39723,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Beijing Municipality"
+  },
+  "beijing": {
+    "name": "Beijing",
+    "lat": 39.9075,
+    "lon": 116.39723,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Beijing Municipality"
+  },
+  "osaka japan": {
+    "name": "Osaka",
+    "lat": 34.69379,
+    "lon": 135.50107,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": "Osaka"
+  },
+  "osaka": {
+    "name": "Osaka",
+    "lat": 34.69379,
+    "lon": 135.50107,
+    "country": "Japan",
+    "country_code": "JP",
+    "admin1": "Osaka"
+  },
+  "chengdu china": {
+    "name": "Chengdu",
+    "lat": 30.66667,
+    "lon": 104.06667,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Sichuan"
+  },
+  "chengdu": {
+    "name": "Chengdu",
+    "lat": 30.66667,
+    "lon": 104.06667,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Sichuan"
+  },
+  "beverly hills canada": {
+    "name": "Beverly Hills",
+    "lat": 53.5593481,
+    "lon": -113.0314111,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "beverly hills": {
+    "name": "Beverly Hills",
+    "lat": 28.91692,
+    "lon": -82.45815,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "beverly united states": {
+    "name": "Beverly",
+    "lat": 42.55843,
+    "lon": -70.88005,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Massachusetts"
+  },
+  "beverly": {
+    "name": "Beverly",
+    "lat": 42.55843,
+    "lon": -70.88005,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Massachusetts"
+  },
+  "adelaide city centre australia": {
+    "name": "Adelaide CBD",
+    "lat": -34.92873,
+    "lon": 138.60333,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "South Australia"
+  },
+  "adelaide city centre": {
+    "name": "Adelaide CBD",
+    "lat": -34.92873,
+    "lon": 138.60333,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "South Australia"
+  },
+  "rockville united states": {
+    "name": "Rockville",
+    "lat": 39.084,
+    "lon": -77.15276,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Maryland"
+  },
+  "rockville": {
+    "name": "Rockville",
+    "lat": 39.084,
+    "lon": -77.15276,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Maryland"
+  },
+  "frisco united states": {
+    "name": "Frisco",
+    "lat": 33.15067,
+    "lon": -96.82361,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "frisco": {
+    "name": "Frisco",
+    "lat": 33.15067,
+    "lon": -96.82361,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "irvine united states": {
+    "name": "Irvine",
+    "lat": 33.66946,
+    "lon": -117.82311,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "irvine": {
+    "name": "Irvine",
+    "lat": 33.66946,
+    "lon": -117.82311,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "los angeles united states": {
+    "name": "Los Angeles",
+    "lat": 34.05223,
+    "lon": -118.24368,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "los angeles": {
+    "name": "Los Angeles",
+    "lat": 34.05223,
+    "lon": -118.24368,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "guadalajara mexico": {
+    "name": "Guadalajara",
+    "lat": 20.67738,
+    "lon": -103.34749,
+    "country": "Mexico",
+    "country_code": "MX",
+    "admin1": "Jalisco"
+  },
+  "guadalajara": {
+    "name": "Guadalajara",
+    "lat": 20.67738,
+    "lon": -103.34749,
+    "country": "Mexico",
+    "country_code": "MX",
+    "admin1": "Jalisco"
+  },
+  "mexico city mexico": {
+    "name": "Mexico City",
+    "lat": 19.42847,
+    "lon": -99.12766,
+    "country": "Mexico",
+    "country_code": "MX",
+    "admin1": "Mexico City"
+  },
+  "mexico city": {
+    "name": "Mexico City",
+    "lat": 19.42847,
+    "lon": -99.12766,
+    "country": "Mexico",
+    "country_code": "MX",
+    "admin1": "Mexico City"
+  },
+  "bogota colombia": {
+    "name": "Bogotá",
+    "lat": 4.60971,
+    "lon": -74.08175,
+    "country": "Colombia",
+    "country_code": "CO",
+    "admin1": "Bogota D.C."
+  },
+  "bogota": {
+    "name": "Bogotá",
+    "lat": 4.60971,
+    "lon": -74.08175,
+    "country": "Colombia",
+    "country_code": "CO",
+    "admin1": "Bogota D.C."
+  },
+  "sao paulo brazil": {
+    "name": "São Paulo",
+    "lat": -23.5475,
+    "lon": -46.63611,
+    "country": "Brazil",
+    "country_code": "BR",
+    "admin1": "São Paulo"
+  },
+  "sao paulo": {
+    "name": "São Paulo",
+    "lat": -23.5475,
+    "lon": -46.63611,
+    "country": "Brazil",
+    "country_code": "BR",
+    "admin1": "São Paulo"
+  },
+  "buenos aires argentina": {
+    "name": "Buenos Aires",
+    "lat": -34.61315,
+    "lon": -58.37723,
+    "country": "Argentina",
+    "country_code": "AR",
+    "admin1": "Buenos Aires F.D."
+  },
+  "buenos aires": {
+    "name": "Buenos Aires",
+    "lat": -34.61315,
+    "lon": -58.37723,
+    "country": "Argentina",
+    "country_code": "AR",
+    "admin1": "Buenos Aires F.D."
+  },
+  "bucharest romania": {
+    "name": "Bucharest",
+    "lat": 44.43225,
+    "lon": 26.10626,
+    "country": "Romania",
+    "country_code": "RO",
+    "admin1": "Bucharest"
+  },
+  "bucharest": {
+    "name": "Bucharest",
+    "lat": 44.43225,
+    "lon": 26.10626,
+    "country": "Romania",
+    "country_code": "RO",
+    "admin1": "Bucharest"
+  },
+  "seoul south korea": {
+    "name": "Seoul",
+    "lat": 37.566,
+    "lon": 126.9784,
+    "country": "South Korea",
+    "country_code": "KR",
+    "admin1": "Seoul"
+  },
+  "seoul": {
+    "name": "Seoul",
+    "lat": 37.566,
+    "lon": 126.9784,
+    "country": "South Korea",
+    "country_code": "KR",
+    "admin1": "Seoul"
+  },
+  "taipei taiwan": {
+    "name": "Taipei",
+    "lat": 25.05306,
+    "lon": 121.52639,
+    "country": "Taiwan",
+    "country_code": "TW",
+    "admin1": "Taiwan"
+  },
+  "taipei": {
+    "name": "Taipei",
+    "lat": 25.05306,
+    "lon": 121.52639,
+    "country": "Taiwan",
+    "country_code": "TW",
+    "admin1": "Taiwan"
+  },
+  "manila philippines": {
+    "name": "Manila",
+    "lat": 14.6042,
+    "lon": 120.9822,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "National Capital Region"
+  },
+  "manila": {
+    "name": "Manila",
+    "lat": 14.6042,
+    "lon": 120.9822,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "National Capital Region"
+  },
+  "kuala lumpur malaysia": {
+    "name": "Kuala Lumpur",
+    "lat": 3.1412,
+    "lon": 101.68653,
+    "country": "Malaysia",
+    "country_code": "MY",
+    "admin1": "Kuala Lumpur"
+  },
+  "kuala lumpur": {
+    "name": "Kuala Lumpur",
+    "lat": 3.1412,
+    "lon": 101.68653,
+    "country": "Malaysia",
+    "country_code": "MY",
+    "admin1": "Kuala Lumpur"
+  },
+  "auckland new zealand": {
+    "name": "Auckland",
+    "lat": -36.84853,
+    "lon": 174.76349,
+    "country": "New Zealand",
+    "country_code": "NZ",
+    "admin1": "Auckland"
+  },
+  "auckland": {
+    "name": "Auckland",
+    "lat": -36.84853,
+    "lon": 174.76349,
+    "country": "New Zealand",
+    "country_code": "NZ",
+    "admin1": "Auckland"
+  },
+  "tel aviv israel": {
+    "name": "Tel Aviv",
+    "lat": 32.08088,
+    "lon": 34.78057,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Tel Aviv"
+  },
+  "tel aviv": {
+    "name": "Tel Aviv",
+    "lat": 32.08088,
+    "lon": 34.78057,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Tel Aviv"
+  },
+  "johannesburg south africa": {
+    "name": "Johannesburg",
+    "lat": -26.20227,
+    "lon": 28.04363,
+    "country": "South Africa",
+    "country_code": "ZA",
+    "admin1": "Gauteng"
+  },
+  "johannesburg": {
+    "name": "Johannesburg",
+    "lat": -26.20227,
+    "lon": 28.04363,
+    "country": "South Africa",
+    "country_code": "ZA",
+    "admin1": "Gauteng"
+  },
+  "riyadh saudi arabia": {
+    "name": "Riyadh",
+    "lat": 24.68773,
+    "lon": 46.72185,
+    "country": "Saudi Arabia",
+    "country_code": "SA",
+    "admin1": "Riyadh Region"
+  },
+  "riyadh": {
+    "name": "Riyadh",
+    "lat": 24.68773,
+    "lon": 46.72185,
+    "country": "Saudi Arabia",
+    "country_code": "SA",
+    "admin1": "Riyadh Region"
+  },
+  "dubai united arab emirates": {
+    "name": "Dubai",
+    "lat": 25.07725,
+    "lon": 55.30927,
+    "country": "United Arab Emirates",
+    "country_code": "AE",
+    "admin1": "Dubai"
+  },
+  "dubai": {
+    "name": "Dubai",
+    "lat": 25.07725,
+    "lon": 55.30927,
+    "country": "United Arab Emirates",
+    "country_code": "AE",
+    "admin1": "Dubai"
+  },
+  "new orleans united states": {
+    "name": "New Orleans",
+    "lat": 29.95465,
+    "lon": -90.07507,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Louisiana"
+  },
+  "new orleans": {
+    "name": "New Orleans",
+    "lat": 29.95465,
+    "lon": -90.07507,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Louisiana"
+  },
+  "bellevue united states": {
+    "name": "Bellevue",
+    "lat": 47.61038,
+    "lon": -122.20068,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "bellevue": {
+    "name": "Bellevue",
+    "lat": 47.61038,
+    "lon": -122.20068,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "remote in": {
+    "name": "National Remote Sensing Centre",
+    "lat": 17.4668554,
+    "lon": 78.4499355,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "remote": {
+    "name": "Remote",
+    "lat": 43.00595,
+    "lon": -123.89259,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "orlando united states": {
+    "name": "Orlando",
+    "lat": 28.53834,
+    "lon": -81.37924,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "orlando": {
+    "name": "Orlando",
+    "lat": 28.53834,
+    "lon": -81.37924,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "minneapolis united states": {
+    "name": "Minneapolis",
+    "lat": 44.97997,
+    "lon": -93.26384,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Minnesota"
+  },
+  "minneapolis": {
+    "name": "Minneapolis",
+    "lat": 44.97997,
+    "lon": -93.26384,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Minnesota"
+  },
+  "gateshead united kingdom": {
+    "name": "Gateshead",
+    "lat": 54.96209,
+    "lon": -1.60168,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "gateshead": {
+    "name": "Gateshead",
+    "lat": 54.96209,
+    "lon": -1.60168,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "daresbury united kingdom": {
+    "name": "Daresbury",
+    "lat": 53.34184,
+    "lon": -2.635,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "daresbury": {
+    "name": "Daresbury",
+    "lat": 53.34184,
+    "lon": -2.635,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "raleigh united states": {
+    "name": "Raleigh",
+    "lat": 35.7721,
+    "lon": -78.63861,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "North Carolina"
+  },
+  "raleigh": {
+    "name": "Raleigh",
+    "lat": 35.7721,
+    "lon": -78.63861,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "North Carolina"
+  },
+  "santa cruz de tenerife spain": {
+    "name": "Santa Cruz de Tenerife",
+    "lat": 28.46824,
+    "lon": -16.25462,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Canary Islands"
+  },
+  "santa cruz de tenerife": {
+    "name": "Santa Cruz de Tenerife",
+    "lat": 28.46824,
+    "lon": -16.25462,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Canary Islands"
+  },
+  "atlanta united states": {
+    "name": "Atlanta",
+    "lat": 33.749,
+    "lon": -84.38798,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Georgia"
+  },
+  "atlanta": {
+    "name": "Atlanta",
+    "lat": 33.749,
+    "lon": -84.38798,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Georgia"
+  },
+  "el segundo united states": {
+    "name": "El Segundo",
+    "lat": 33.91918,
+    "lon": -118.41647,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "el segundo": {
+    "name": "El Segundo",
+    "lat": 33.91918,
+    "lon": -118.41647,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san mateo united states": {
+    "name": "San Mateo",
+    "lat": 37.56299,
+    "lon": -122.32553,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san mateo": {
+    "name": "San Mateo",
+    "lat": 37.56299,
+    "lon": -122.32553,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "stratford-upon-avon united kingdom": {
+    "name": "Stratford-upon-Avon",
+    "lat": 52.19166,
+    "lon": -1.70734,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "stratford-upon-avon": {
+    "name": "Stratford-upon-Avon",
+    "lat": 52.19166,
+    "lon": -1.70734,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "manhattan beach united states": {
+    "name": "Manhattan Beach",
+    "lat": 33.88474,
+    "lon": -118.41091,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "manhattan beach": {
+    "name": "Manhattan Beach",
+    "lat": 33.88474,
+    "lon": -118.41091,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "cary united states": {
+    "name": "Cary",
+    "lat": 35.79154,
+    "lon": -78.78112,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "North Carolina"
+  },
+  "cary": {
+    "name": "Cary",
+    "lat": 35.79154,
+    "lon": -78.78112,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "North Carolina"
+  },
+  "veldhoven netherlands": {
+    "name": "Veldhoven",
+    "lat": 51.4190691,
+    "lon": 5.4045572,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "veldhoven": {
+    "name": "Veldhoven",
+    "lat": 51.41833,
+    "lon": 5.40278,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "North Brabant"
+  },
+  "nederland netherlands": {
+    "name": "Nederland",
+    "lat": 52.2434979,
+    "lon": 5.6343227,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "nederland": {
+    "name": "Nederland",
+    "lat": 29.97438,
+    "lon": -93.9924,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "issaquah united states": {
+    "name": "Issaquah",
+    "lat": 47.5301,
+    "lon": -122.03262,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "issaquah": {
+    "name": "Issaquah",
+    "lat": 47.5301,
+    "lon": -122.03262,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "city netherlands": {
+    "name": "Binnenstad",
+    "lat": 50.8492705,
+    "lon": 5.6887558,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "city": {
+    "name": "City",
+    "lat": 18.24408,
+    "lon": -77.4972,
+    "country": "Jamaica",
+    "country_code": "JM",
+    "admin1": "Trelawny Parish"
+  },
+  "new york united states": {
+    "name": "New York",
+    "lat": 40.71427,
+    "lon": -74.00597,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New York"
+  },
+  "new york": {
+    "name": "New York",
+    "lat": 40.71427,
+    "lon": -74.00597,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New York"
+  },
+  "apeldoorn netherlands": {
+    "name": "Apeldoorn",
+    "lat": 52.1795738,
+    "lon": 5.9300775,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "apeldoorn": {
+    "name": "Apeldoorn",
+    "lat": 52.21,
+    "lon": 5.96944,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "Gelderland"
+  },
+  "hyderabad india": {
+    "name": "Hyderabad",
+    "lat": 17.38405,
+    "lon": 78.45636,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Telangana"
+  },
+  "hyderabad": {
+    "name": "Hyderabad",
+    "lat": 17.38405,
+    "lon": 78.45636,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Telangana"
+  },
+  "larrakeyah australia": {
+    "name": "Larrakeyah",
+    "lat": -12.45527,
+    "lon": 130.83173,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Northern Territory"
+  },
+  "larrakeyah": {
+    "name": "Larrakeyah",
+    "lat": -12.45527,
+    "lon": 130.83173,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Northern Territory"
+  },
+  "gosforth united kingdom": {
+    "name": "Gosforth",
+    "lat": 55.0,
+    "lon": -1.61667,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "gosforth": {
+    "name": "Gosforth",
+    "lat": 55.0,
+    "lon": -1.61667,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "dallas united states": {
+    "name": "Dallas",
+    "lat": 32.78306,
+    "lon": -96.80667,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "dallas": {
+    "name": "Dallas",
+    "lat": 32.78306,
+    "lon": -96.80667,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "brno czech republic": {
+    "name": "Brno",
+    "lat": 49.1922443,
+    "lon": 16.6113382,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "brno": {
+    "name": "Brno",
+    "lat": 49.19522,
+    "lon": 16.60796,
+    "country": "Czechia",
+    "country_code": "CZ",
+    "admin1": "South Moravian"
+  },
+  "quebec canada": {
+    "name": "Québec",
+    "lat": 46.81228,
+    "lon": -71.21454,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Quebec"
+  },
+  "quebec": {
+    "name": "Québec",
+    "lat": 46.81228,
+    "lon": -71.21454,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Quebec"
+  },
+  "gdansk poland": {
+    "name": "Gdansk",
+    "lat": 54.35227,
+    "lon": 18.64912,
+    "country": "Poland",
+    "country_code": "PL",
+    "admin1": "Pomerania"
+  },
+  "gdansk": {
+    "name": "Gdansk",
+    "lat": 54.35227,
+    "lon": 18.64912,
+    "country": "Poland",
+    "country_code": "PL",
+    "admin1": "Pomerania"
+  },
+  "hartlepool united kingdom": {
+    "name": "Hartlepool",
+    "lat": 54.68554,
+    "lon": -1.21028,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "hartlepool": {
+    "name": "Hartlepool",
+    "lat": 54.68554,
+    "lon": -1.21028,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "southampton united kingdom": {
+    "name": "Southampton",
+    "lat": 50.90395,
+    "lon": -1.40428,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "southampton": {
+    "name": "Southampton",
+    "lat": 50.90395,
+    "lon": -1.40428,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "san carlos united states": {
+    "name": "San Carlos",
+    "lat": 37.50716,
+    "lon": -122.26052,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san carlos": {
+    "name": "San Carlos",
+    "lat": 37.50716,
+    "lon": -122.26052,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "cincinnati united states": {
+    "name": "Cincinnati",
+    "lat": 39.12711,
+    "lon": -84.51439,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Ohio"
+  },
+  "cincinnati": {
+    "name": "Cincinnati",
+    "lat": 39.12711,
+    "lon": -84.51439,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Ohio"
+  },
+  "perth city centre australia": {
+    "name": "Perth city centre",
+    "lat": -31.95289,
+    "lon": 115.85152,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "perth city centre": {
+    "name": "Perth city centre",
+    "lat": -31.95289,
+    "lon": 115.85152,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "belgrade serbia": {
+    "name": "Belgrade",
+    "lat": 44.80401,
+    "lon": 20.46513,
+    "country": "Serbia",
+    "country_code": "RS",
+    "admin1": "Central Serbia"
+  },
+  "belgrade": {
+    "name": "Belgrade",
+    "lat": 44.80401,
+    "lon": 20.46513,
+    "country": "Serbia",
+    "country_code": "RS",
+    "admin1": "Central Serbia"
+  },
+  "budapest hungary": {
+    "name": "Budapest",
+    "lat": 47.49835,
+    "lon": 19.04045,
+    "country": "Hungary",
+    "country_code": "HU",
+    "admin1": "Budapest"
+  },
+  "budapest": {
+    "name": "Budapest",
+    "lat": 47.49835,
+    "lon": 19.04045,
+    "country": "Hungary",
+    "country_code": "HU",
+    "admin1": "Budapest"
+  },
+  "bayfield united kingdom": {
+    "name": "Bayfield",
+    "lat": 52.9252608,
+    "lon": 1.0607716,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bayfield": {
+    "name": "Bayfield",
+    "lat": 37.22556,
+    "lon": -107.59811,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Colorado"
+  },
+  "bourg-les-valence france": {
+    "name": "Bourg-lès-Valence",
+    "lat": 44.94703,
+    "lon": 4.89463,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "bourg-les-valence": {
+    "name": "Bourg-lès-Valence",
+    "lat": 44.94703,
+    "lon": 4.89463,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "vilnius lithuania": {
+    "name": "Vilnius",
+    "lat": 54.68916,
+    "lon": 25.2798,
+    "country": "Lithuania",
+    "country_code": "LT",
+    "admin1": "Vilnius"
+  },
+  "vilnius": {
+    "name": "Vilnius",
+    "lat": 54.68916,
+    "lon": 25.2798,
+    "country": "Lithuania",
+    "country_code": "LT",
+    "admin1": "Vilnius"
+  },
+  "port kembla australia": {
+    "name": "Port Kembla",
+    "lat": -34.4818,
+    "lon": 150.9012,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "New South Wales"
+  },
+  "port kembla": {
+    "name": "Port Kembla",
+    "lat": -34.4818,
+    "lon": 150.9012,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "New South Wales"
+  },
+  "prague czech republic": {
+    "name": "Praha",
+    "lat": 50.0874654,
+    "lon": 14.4212535,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "prague": {
+    "name": "Prague",
+    "lat": 50.08804,
+    "lon": 14.42076,
+    "country": "Czechia",
+    "country_code": "CZ",
+    "admin1": "Prague"
+  },
+  "nashville united states": {
+    "name": "Nashville",
+    "lat": 36.16589,
+    "lon": -86.78444,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Tennessee"
+  },
+  "nashville": {
+    "name": "Nashville",
+    "lat": 36.16589,
+    "lon": -86.78444,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Tennessee"
+  },
+  "larnaca cyprus": {
+    "name": "Larnaca",
+    "lat": 34.9221,
+    "lon": 33.62794,
+    "country": "Cyprus",
+    "country_code": "CY",
+    "admin1": "Larnaka"
+  },
+  "larnaca": {
+    "name": "Larnaca",
+    "lat": 34.9221,
+    "lon": 33.62794,
+    "country": "Cyprus",
+    "country_code": "CY",
+    "admin1": "Larnaka"
+  },
+  "cebu city philippines": {
+    "name": "Cebu City",
+    "lat": 10.31672,
+    "lon": 123.89071,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "Central Visayas"
+  },
+  "cebu city": {
+    "name": "Cebu City",
+    "lat": 10.31672,
+    "lon": 123.89071,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "Central Visayas"
+  },
+  "kyiv ukraine": {
+    "name": "Kyiv",
+    "lat": 50.45466,
+    "lon": 30.5238,
+    "country": "Ukraine",
+    "country_code": "UA",
+    "admin1": "Kyiv City"
+  },
+  "kyiv": {
+    "name": "Kyiv",
+    "lat": 50.45466,
+    "lon": 30.5238,
+    "country": "Ukraine",
+    "country_code": "UA",
+    "admin1": "Kyiv City"
+  },
+  "sliema malta": {
+    "name": "Sliema",
+    "lat": 35.91247,
+    "lon": 14.50175,
+    "country": "Malta",
+    "country_code": "MT",
+    "admin1": "Tas-Sliema"
+  },
+  "sliema": {
+    "name": "Sliema",
+    "lat": 35.91247,
+    "lon": 14.50175,
+    "country": "Malta",
+    "country_code": "MT",
+    "admin1": "Tas-Sliema"
+  },
+  "lucknow india": {
+    "name": "Lucknow",
+    "lat": 26.83928,
+    "lon": 80.92313,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Uttar Pradesh"
+  },
+  "lucknow": {
+    "name": "Lucknow",
+    "lat": 26.83928,
+    "lon": 80.92313,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Uttar Pradesh"
+  },
+  "middlesbrough united kingdom": {
+    "name": "Middlesbrough",
+    "lat": 54.57623,
+    "lon": -1.23483,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "middlesbrough": {
+    "name": "Middlesbrough",
+    "lat": 54.57623,
+    "lon": -1.23483,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "darmstadt germany": {
+    "name": "Darmstadt",
+    "lat": 49.87167,
+    "lon": 8.65027,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "darmstadt": {
+    "name": "Darmstadt",
+    "lat": 49.87167,
+    "lon": 8.65027,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "mumbai india": {
+    "name": "Mumbai",
+    "lat": 19.07283,
+    "lon": 72.88261,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Maharashtra"
+  },
+  "mumbai": {
+    "name": "Mumbai",
+    "lat": 19.07283,
+    "lon": 72.88261,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Maharashtra"
+  },
+  "haifa israel": {
+    "name": "Haifa",
+    "lat": 32.81303,
+    "lon": 34.99928,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Haifa District"
+  },
+  "haifa": {
+    "name": "Haifa",
+    "lat": 32.81303,
+    "lon": 34.99928,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Haifa District"
+  },
+  "dordrecht netherlands": {
+    "name": "Dordrecht",
+    "lat": 51.7689546,
+    "lon": 4.6867891,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "dordrecht": {
+    "name": "Dordrecht",
+    "lat": 51.81,
+    "lon": 4.67361,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "South Holland"
+  },
+  "folsom united states": {
+    "name": "Folsom",
+    "lat": 38.67796,
+    "lon": -121.17606,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "folsom": {
+    "name": "Folsom",
+    "lat": 38.67796,
+    "lon": -121.17606,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "hillsboro united states": {
+    "name": "Hillsboro",
+    "lat": 45.52289,
+    "lon": -122.98983,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "hillsboro": {
+    "name": "Hillsboro",
+    "lat": 45.52289,
+    "lon": -122.98983,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "yoqneam israel": {
+    "name": "Yoqneam",
+    "lat": 32.65497,
+    "lon": 35.11381,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Northern District"
+  },
+  "yoqneam": {
+    "name": "Yoqneam",
+    "lat": 32.65497,
+    "lon": 35.11381,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Northern District"
+  },
+  "burnaby canada": {
+    "name": "Burnaby",
+    "lat": 49.26636,
+    "lon": -122.95263,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "burnaby": {
+    "name": "Burnaby",
+    "lat": 49.26636,
+    "lon": -122.95263,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "soma united states": {
+    "name": "Soma",
+    "lat": 39.58579,
+    "lon": -112.16189,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Utah"
+  },
+  "soma": {
+    "name": "Soma",
+    "lat": 39.58579,
+    "lon": -112.16189,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Utah"
+  },
+  "sant cugat del valles spain": {
+    "name": "Sant Cugat del Vallès",
+    "lat": 41.47063,
+    "lon": 2.08611,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Catalonia"
+  },
+  "sant cugat del valles": {
+    "name": "Sant Cugat del Vallès",
+    "lat": 41.47063,
+    "lon": 2.08611,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Catalonia"
+  },
+  "frankfurt am main germany": {
+    "name": "Frankfurt am Main",
+    "lat": 50.11552,
+    "lon": 8.68417,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "frankfurt am main": {
+    "name": "Frankfurt am Main",
+    "lat": 50.11552,
+    "lon": 8.68417,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "hong kong hong kong": {
+    "name": "Hong Kong",
+    "lat": 22.27832,
+    "lon": 114.17469,
+    "country": "",
+    "country_code": "HK",
+    "admin1": ""
+  },
+  "hong kong": {
+    "name": "Hong Kong",
+    "lat": 22.27832,
+    "lon": 114.17469,
+    "country": "",
+    "country_code": "HK",
+    "admin1": ""
+  },
+  "redmond united states": {
+    "name": "Redmond",
+    "lat": 47.67399,
+    "lon": -122.12151,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "redmond": {
+    "name": "Redmond",
+    "lat": 47.67399,
+    "lon": -122.12151,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "glasgow united kingdom": {
+    "name": "Glasgow",
+    "lat": 55.86515,
+    "lon": -4.25763,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "Scotland"
+  },
+  "glasgow": {
+    "name": "Glasgow",
+    "lat": 55.86515,
+    "lon": -4.25763,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "Scotland"
+  },
+  "warrington united kingdom": {
+    "name": "Warrington",
+    "lat": 53.39254,
+    "lon": -2.58024,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "warrington": {
+    "name": "Warrington",
+    "lat": 53.39254,
+    "lon": -2.58024,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "betton france": {
+    "name": "Betton",
+    "lat": 48.1827,
+    "lon": -1.6448,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Brittany Region"
+  },
+  "betton": {
+    "name": "Betton",
+    "lat": 48.1827,
+    "lon": -1.6448,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Brittany Region"
+  },
+  "talence france": {
+    "name": "Talence",
+    "lat": 44.80849,
+    "lon": -0.58915,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "New Aquitaine"
+  },
+  "talence": {
+    "name": "Talence",
+    "lat": 44.80849,
+    "lon": -0.58915,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "New Aquitaine"
+  },
+  "sydney australia": {
+    "name": "Sydney",
+    "lat": -33.86785,
+    "lon": 151.20732,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "New South Wales"
+  },
+  "sydney": {
+    "name": "Sydney",
+    "lat": -33.86785,
+    "lon": 151.20732,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "New South Wales"
+  },
+  "bordeaux france": {
+    "name": "Bordeaux",
+    "lat": 44.84124,
+    "lon": -0.58046,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "New Aquitaine"
+  },
+  "bordeaux": {
+    "name": "Bordeaux",
+    "lat": 44.84124,
+    "lon": -0.58046,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "New Aquitaine"
+  },
+  "istanbul turkey": {
+    "name": "İstanbul",
+    "lat": 41.006381,
+    "lon": 28.9758715,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "istanbul": {
+    "name": "Istanbul",
+    "lat": 41.01384,
+    "lon": 28.94966,
+    "country": "Republic of Türkiye",
+    "country_code": "TR",
+    "admin1": "Istanbul"
+  },
+  "lyon france": {
+    "name": "Lyon",
+    "lat": 45.74906,
+    "lon": 4.84789,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "lyon": {
+    "name": "Lyon",
+    "lat": 45.74906,
+    "lon": 4.84789,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "central united states": {
+    "name": "Radford",
+    "lat": 37.13179,
+    "lon": -80.57645,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Virginia"
+  },
+  "central": {
+    "name": "Radford",
+    "lat": 37.13179,
+    "lon": -80.57645,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Virginia"
+  },
+  "columbia canada": {
+    "name": "Columbia",
+    "lat": 43.48468,
+    "lon": -80.53349,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "columbia": {
+    "name": "Columbia",
+    "lat": 43.48468,
+    "lon": -80.53349,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "annecy france": {
+    "name": "Annecy",
+    "lat": 45.90878,
+    "lon": 6.12565,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "annecy": {
+    "name": "Annecy",
+    "lat": 45.90878,
+    "lon": 6.12565,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Rhône-Alpes"
+  },
+  "queensland australia": {
+    "name": "Queensland Islands",
+    "lat": -21.48333,
+    "lon": 149.9333,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": ""
+  },
+  "queensland": {
+    "name": "Queensland Islands",
+    "lat": -21.48333,
+    "lon": 149.9333,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": ""
+  },
+  "pune india": {
+    "name": "Pune",
+    "lat": 18.51957,
+    "lon": 73.85535,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Maharashtra"
+  },
+  "pune": {
+    "name": "Pune",
+    "lat": 18.51957,
+    "lon": 73.85535,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Maharashtra"
+  },
+  "rotterdam netherlands": {
+    "name": "Rotterdam",
+    "lat": 51.9244424,
+    "lon": 4.47775,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "rotterdam": {
+    "name": "Rotterdam",
+    "lat": 51.9225,
+    "lon": 4.47917,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "South Holland"
+  },
+  "angeles united states": {
+    "name": "Angeles",
+    "lat": 31.90151,
+    "lon": -103.96242,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "angeles": {
+    "name": "Angeles",
+    "lat": 31.90151,
+    "lon": -103.96242,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "southam united kingdom": {
+    "name": "Southam",
+    "lat": 52.25266,
+    "lon": -1.3884,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "southam": {
+    "name": "Southam",
+    "lat": 52.25266,
+    "lon": -1.3884,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "madison united states": {
+    "name": "Madison",
+    "lat": 43.07305,
+    "lon": -89.40123,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Wisconsin"
+  },
+  "madison": {
+    "name": "Madison",
+    "lat": 43.07305,
+    "lon": -89.40123,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Wisconsin"
+  },
+  "hanoi vietnam": {
+    "name": "Hanoi",
+    "lat": 21.0245,
+    "lon": 105.84117,
+    "country": "Vietnam",
+    "country_code": "VN",
+    "admin1": "Hanoi"
+  },
+  "hanoi": {
+    "name": "Hanoi",
+    "lat": 21.0245,
+    "lon": 105.84117,
+    "country": "Vietnam",
+    "country_code": "VN",
+    "admin1": "Hanoi"
+  },
+  "chicago israel": {
+    "name": "KAM Isaiah Israel Temple",
+    "lat": 41.8026808,
+    "lon": -87.5986408,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "chicago": {
+    "name": "Chicago",
+    "lat": 41.85003,
+    "lon": -87.65005,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Illinois"
+  },
+  "valencia spain": {
+    "name": "Valencia",
+    "lat": 39.47391,
+    "lon": -0.37966,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Valencia"
+  },
+  "valencia": {
+    "name": "Valencia",
+    "lat": 39.47391,
+    "lon": -0.37966,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Valencia"
+  },
+  "leamington united kingdom": {
+    "name": "Royal Leamington Spa",
+    "lat": 52.2852,
+    "lon": -1.52,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "leamington": {
+    "name": "Royal Leamington Spa",
+    "lat": 52.2852,
+    "lon": -1.52,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "kirkland united states": {
+    "name": "Kirkland",
+    "lat": 47.68149,
+    "lon": -122.20874,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "kirkland": {
+    "name": "Kirkland",
+    "lat": 47.68149,
+    "lon": -122.20874,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Washington"
+  },
+  "wilton united kingdom": {
+    "name": "Wilton",
+    "lat": 51.07926,
+    "lon": -1.8621,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "wilton": {
+    "name": "Wilton",
+    "lat": 51.07926,
+    "lon": -1.8621,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "wakefield united kingdom": {
+    "name": "Wakefield",
+    "lat": 53.68331,
+    "lon": -1.49768,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "wakefield": {
+    "name": "Wakefield",
+    "lat": 53.68331,
+    "lon": -1.49768,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "wiesbaden germany": {
+    "name": "Wiesbaden",
+    "lat": 50.08601,
+    "lon": 8.24435,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "wiesbaden": {
+    "name": "Wiesbaden",
+    "lat": 50.08601,
+    "lon": 8.24435,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Hesse"
+  },
+  "san jose united states": {
+    "name": "San Jose",
+    "lat": 37.33939,
+    "lon": -121.89496,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san jose": {
+    "name": "San Jose",
+    "lat": 37.33939,
+    "lon": -121.89496,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "poznan poland": {
+    "name": "Poznan",
+    "lat": 52.40692,
+    "lon": 16.92993,
+    "country": "Poland",
+    "country_code": "PL",
+    "admin1": "Greater Poland"
+  },
+  "poznan": {
+    "name": "Poznan",
+    "lat": 52.40692,
+    "lon": 16.92993,
+    "country": "Poland",
+    "country_code": "PL",
+    "admin1": "Greater Poland"
+  },
+  "panama city panama": {
+    "name": "Panama City",
+    "lat": 8.9936,
+    "lon": -79.51973,
+    "country": "Panama",
+    "country_code": "PA",
+    "admin1": "Provincia de Panamá"
+  },
+  "panama city": {
+    "name": "Panama City",
+    "lat": 8.9936,
+    "lon": -79.51973,
+    "country": "Panama",
+    "country_code": "PA",
+    "admin1": "Provincia de Panamá"
+  },
+  "sonnenberg germany": {
+    "name": "Sonnenberg",
+    "lat": 53.01917,
+    "lon": 13.08841,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Brandenburg"
+  },
+  "sonnenberg": {
+    "name": "Sonnenberg",
+    "lat": 53.01917,
+    "lon": 13.08841,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Brandenburg"
+  },
+  "stuttgart germany": {
+    "name": "Stuttgart",
+    "lat": 48.78232,
+    "lon": 9.17702,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Baden-Wurttemberg"
+  },
+  "stuttgart": {
+    "name": "Stuttgart",
+    "lat": 48.78232,
+    "lon": 9.17702,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Baden-Wurttemberg"
+  },
+  "amancio united states": {
+    "name": "Amancio Street",
+    "lat": 41.3961903,
+    "lon": -71.5277236,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "amancio": {
+    "name": "Amancio",
+    "lat": 20.81914,
+    "lon": -77.57958,
+    "country": "Cuba",
+    "country_code": "CU",
+    "admin1": "Las Tunas Province"
+  },
+  "seongnam-si south korea": {
+    "name": "Seongnam-si",
+    "lat": 37.43861,
+    "lon": 127.13778,
+    "country": "South Korea",
+    "country_code": "KR",
+    "admin1": "Gyeonggi-do"
+  },
+  "seongnam-si": {
+    "name": "Seongnam-si",
+    "lat": 37.43861,
+    "lon": 127.13778,
+    "country": "South Korea",
+    "country_code": "KR",
+    "admin1": "Gyeonggi-do"
+  },
+  "worms germany": {
+    "name": "Worms",
+    "lat": 49.63278,
+    "lon": 8.35916,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Rhineland-Palatinate"
+  },
+  "worms": {
+    "name": "Worms",
+    "lat": 49.63278,
+    "lon": 8.35916,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Rhineland-Palatinate"
+  },
+  "plymouth united states": {
+    "name": "Plymouth",
+    "lat": 41.34366,
+    "lon": -86.30973,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Indiana"
+  },
+  "plymouth": {
+    "name": "Plymouth",
+    "lat": 41.34366,
+    "lon": -86.30973,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Indiana"
+  },
+  "newington united kingdom": {
+    "name": "Newington",
+    "lat": 51.35217,
+    "lon": 0.66768,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "newington": {
+    "name": "Newington",
+    "lat": 51.35217,
+    "lon": 0.66768,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "hillsborough united states": {
+    "name": "Hillsboro",
+    "lat": 39.20229,
+    "lon": -83.61159,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Ohio"
+  },
+  "hillsborough": {
+    "name": "Hillsboro",
+    "lat": 39.20229,
+    "lon": -83.61159,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Ohio"
+  },
+  "chennai india": {
+    "name": "Chennai",
+    "lat": 13.08784,
+    "lon": 80.27847,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Tamil Nadu"
+  },
+  "chennai": {
+    "name": "Chennai",
+    "lat": 13.08784,
+    "lon": 80.27847,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "Tamil Nadu"
+  },
+  "newcastle upon tyne united kingdom": {
+    "name": "Newcastle upon Tyne",
+    "lat": 54.97328,
+    "lon": -1.61396,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "newcastle upon tyne": {
+    "name": "Newcastle upon Tyne",
+    "lat": 54.97328,
+    "lon": -1.61396,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "England"
+  },
+  "ghent belgium": {
+    "name": "Ghent",
+    "lat": 51.05,
+    "lon": 3.71667,
+    "country": "Belgium",
+    "country_code": "BE",
+    "admin1": "Flanders"
+  },
+  "ghent": {
+    "name": "Ghent",
+    "lat": 51.05,
+    "lon": 3.71667,
+    "country": "Belgium",
+    "country_code": "BE",
+    "admin1": "Flanders"
+  },
+  "pacific australia": {
+    "name": "Pacific Pines",
+    "lat": -27.93994,
+    "lon": 153.31436,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "pacific": {
+    "name": "Pacific Pines",
+    "lat": -27.93994,
+    "lon": 153.31436,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "craiova romania": {
+    "name": "Craiova",
+    "lat": 44.31667,
+    "lon": 23.8,
+    "country": "Romania",
+    "country_code": "RO",
+    "admin1": "Dolj"
+  },
+  "craiova": {
+    "name": "Craiova",
+    "lat": 44.31667,
+    "lon": 23.8,
+    "country": "Romania",
+    "country_code": "RO",
+    "admin1": "Dolj"
+  },
+  "adelaide australia": {
+    "name": "Adelaide",
+    "lat": -34.92866,
+    "lon": 138.59863,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "South Australia"
+  },
+  "adelaide": {
+    "name": "Adelaide",
+    "lat": -34.92866,
+    "lon": 138.59863,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "South Australia"
+  },
+  "herzliya israel": {
+    "name": "Herzliya",
+    "lat": 32.16627,
+    "lon": 34.82536,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Tel Aviv"
+  },
+  "herzliya": {
+    "name": "Herzliya",
+    "lat": 32.16627,
+    "lon": 34.82536,
+    "country": "Israel",
+    "country_code": "IL",
+    "admin1": "Tel Aviv"
+  },
+  "box hill australia": {
+    "name": "Box Hill",
+    "lat": -37.81887,
+    "lon": 145.12544,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Victoria"
+  },
+  "box hill": {
+    "name": "Box Hill",
+    "lat": -37.81887,
+    "lon": 145.12544,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Victoria"
+  },
+  "malmoe sweden": {
+    "name": "Malmö",
+    "lat": 55.6052931,
+    "lon": 13.0001566,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "malmoe": {
+    "name": "Malmoe",
+    "lat": -25.47744,
+    "lon": 151.20193,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "carlsbad united states": {
+    "name": "Carlsbad",
+    "lat": 33.15809,
+    "lon": -117.35059,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "carlsbad": {
+    "name": "Carlsbad",
+    "lat": 33.15809,
+    "lon": -117.35059,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "oakville canada": {
+    "name": "Oakville",
+    "lat": 43.45011,
+    "lon": -79.68292,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "oakville": {
+    "name": "Oakville",
+    "lat": 43.45011,
+    "lon": -79.68292,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Ontario"
+  },
+  "kingaroy australia": {
+    "name": "Kingaroy",
+    "lat": -26.53994,
+    "lon": 151.8373,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "kingaroy": {
+    "name": "Kingaroy",
+    "lat": -26.53994,
+    "lon": 151.8373,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "paradise united states": {
+    "name": "Paradise",
+    "lat": 36.09719,
+    "lon": -115.14666,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Nevada"
+  },
+  "paradise": {
+    "name": "Paradise",
+    "lat": 36.09719,
+    "lon": -115.14666,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Nevada"
+  },
+  "las vegas united states": {
+    "name": "Las Vegas",
+    "lat": 36.17497,
+    "lon": -115.13722,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Nevada"
+  },
+  "las vegas": {
+    "name": "Las Vegas",
+    "lat": 36.17497,
+    "lon": -115.13722,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Nevada"
+  },
+  "yaletown canada": {
+    "name": "Yaletown",
+    "lat": 49.27608,
+    "lon": -123.11772,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "yaletown": {
+    "name": "Yaletown",
+    "lat": 49.27608,
+    "lon": -123.11772,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "British Columbia"
+  },
+  "dundee united kingdom": {
+    "name": "Dundee",
+    "lat": 56.46913,
+    "lon": -2.97489,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "Scotland"
+  },
+  "dundee": {
+    "name": "Dundee",
+    "lat": 56.46913,
+    "lon": -2.97489,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": "Scotland"
+  },
+  "mountain view united states": {
+    "name": "Mountain View",
+    "lat": 35.86841,
+    "lon": -92.11765,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Arkansas"
+  },
+  "mountain view": {
+    "name": "Mountain View",
+    "lat": 35.86841,
+    "lon": -92.11765,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Arkansas"
+  },
+  "san diego united states": {
+    "name": "San Diego",
+    "lat": 32.71571,
+    "lon": -117.16472,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "san diego": {
+    "name": "San Diego",
+    "lat": 32.71571,
+    "lon": -117.16472,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "xi'an china": {
+    "name": "Xi'an",
+    "lat": 34.25833,
+    "lon": 108.92861,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Shaanxi"
+  },
+  "xi'an": {
+    "name": "Xi'an",
+    "lat": 34.25833,
+    "lon": 108.92861,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Shaanxi"
+  },
+  "reykjavik iceland": {
+    "name": "Reykjavik",
+    "lat": 64.13548,
+    "lon": -21.89541,
+    "country": "Iceland",
+    "country_code": "IS",
+    "admin1": "Capital Region"
+  },
+  "reykjavik": {
+    "name": "Reykjavik",
+    "lat": 64.13548,
+    "lon": -21.89541,
+    "country": "Iceland",
+    "country_code": "IS",
+    "admin1": "Capital Region"
+  },
+  "culver city united states": {
+    "name": "Culver City",
+    "lat": 34.02112,
+    "lon": -118.39647,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "culver city": {
+    "name": "Culver City",
+    "lat": 34.02112,
+    "lon": -118.39647,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "karratha australia": {
+    "name": "Karratha",
+    "lat": -20.73765,
+    "lon": 116.84629,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "karratha": {
+    "name": "Karratha",
+    "lat": -20.73765,
+    "lon": 116.84629,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "saint-mande france": {
+    "name": "Saint-Mandé",
+    "lat": 48.83864,
+    "lon": 2.41579,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Île-de-France Region"
+  },
+  "saint-mande": {
+    "name": "Saint-Mandé",
+    "lat": 48.83864,
+    "lon": 2.41579,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Île-de-France Region"
+  },
+  "fairbanks united states": {
+    "name": "Fairbanks",
+    "lat": 64.83778,
+    "lon": -147.71638,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Alaska"
+  },
+  "fairbanks": {
+    "name": "Fairbanks",
+    "lat": 64.83778,
+    "lon": -147.71638,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Alaska"
+  },
+  "tampere finland": {
+    "name": "Tampere",
+    "lat": 61.49911,
+    "lon": 23.78712,
+    "country": "Finland",
+    "country_code": "FI",
+    "admin1": "Pirkanmaa"
+  },
+  "tampere": {
+    "name": "Tampere",
+    "lat": 61.49911,
+    "lon": 23.78712,
+    "country": "Finland",
+    "country_code": "FI",
+    "admin1": "Pirkanmaa"
+  },
+  "cb7": {
+    "name": "CB7 (East Cambridgeshire)",
+    "lat": 52.359989955764156,
+    "lon": 0.32707603753351144,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cb7 4dl": {
+    "name": "CB7 4DL (East Cambridgeshire)",
+    "lat": 52.397918,
+    "lon": 0.263945,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cb2 1tn": {
+    "name": "CB2 1TN (Cambridge)",
+    "lat": 52.205118,
+    "lon": 0.116208,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "sw1a 1aa": {
+    "name": "SW1A 1AA (Westminster)",
+    "lat": 51.50101,
+    "lon": -0.141563,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "gu1": {
+    "name": "GU1 (Guildford)",
+    "lat": 51.24309701628367,
+    "lon": -0.5647696082375487,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "cb7 5sa": {
+    "name": "CB7 5SA (East Cambridgeshire)",
+    "lat": 52.341837,
+    "lon": 0.415057,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "united states ()": {
+    "name": "United States",
+    "lat": 39.7837304,
+    "lon": -100.445882,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "scotia": {
+    "name": "Scotia, New York",
+    "lat": 42.8264652,
+    "lon": -73.9642915,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "canada ()": {
+    "name": "Canada",
+    "lat": 61.0666922,
+    "lon": -107.991707,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "china ()": {
+    "name": "中国",
+    "lat": 34.5412252,
+    "lon": 108.9237067,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "england": {
+    "name": "England",
+    "lat": 52.5310214,
+    "lon": -1.2649062,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "united kingdom ()": {
+    "name": "United Kingdom",
+    "lat": 54.7023545,
+    "lon": -3.2765753,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "lunenburg": {
+    "name": "Lunenburg, Virginia",
+    "lat": 36.9445279,
+    "lon": -78.2562001,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "nova scotia": {
+    "name": "Nova Scotia, England",
+    "lat": 51.4472319,
+    "lon": -2.6185902,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "illinois": {
+    "name": "Illinois",
+    "lat": 40.0796606,
+    "lon": -89.4337288,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "medellin": {
+    "name": "Medellin, Cebu",
+    "lat": 11.1283811,
+    "lon": 123.9615625,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "antioquia": {
+    "name": "Antioquia",
+    "lat": 7.0000085,
+    "lon": -75.5000086,
+    "country": "Colombia",
+    "country_code": "CO"
+  },
+  "colombia ()": {
+    "name": "Colombia",
+    "lat": 4.099917,
+    "lon": -72.9088133,
+    "country": "Colombia",
+    "country_code": "CO"
+  },
+  "japan ()": {
+    "name": "日本",
+    "lat": 36.5748441,
+    "lon": 139.2394179,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "palo alto": {
+    "name": "Palo Alto, California",
+    "lat": 37.4443293,
+    "lon": -122.1598465,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "charleston": {
+    "name": "Charleston, South Carolina",
+    "lat": 32.7884363,
+    "lon": -79.9399309,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "south carolina": {
+    "name": "South Carolina",
+    "lat": 33.6874388,
+    "lon": -80.4363743,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "vanves": {
+    "name": "Vanves, Île-de-France",
+    "lat": 48.8212037,
+    "lon": 2.289259,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "ile-de-france": {
+    "name": "Île-de-France",
+    "lat": 48.6443057,
+    "lon": 2.7537863,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "parissalary ()": {
+    "name": "Bâtiment Ouest de l'École Normale Supérieure Paris-Saclay, Île-de-France",
+    "lat": 48.7126972,
+    "lon": 2.1635301,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "shinjuku": {
+    "name": "新宿区",
+    "lat": 35.6937632,
+    "lon": 139.7036319,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "guangdong": {
+    "name": "广东省",
+    "lat": 23.1357694,
+    "lon": 113.1982688,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "karnataka": {
+    "name": "Karnataka",
+    "lat": 14.9562045,
+    "lon": 75.7896741,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "india ()": {
+    "name": "Consulate General of India in Birmingham, England",
+    "lat": 52.4769889,
+    "lon": -1.9277738,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "germany ()": {
+    "name": "Deutschland",
+    "lat": 51.1638175,
+    "lon": 10.4478313,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "zhejiang": {
+    "name": "浙江省",
+    "lat": 29.0000001,
+    "lon": 119.9999999,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "south korea ()": {
+    "name": "대한민국",
+    "lat": 36.638392,
+    "lon": 127.6961188,
+    "country": "대한민국",
+    "country_code": "KR"
+  },
+  "catalonia": {
+    "name": "Catalunya",
+    "lat": 41.8523094,
+    "lon": 1.5745043,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "spain ()": {
+    "name": "España",
+    "lat": 39.3260685,
+    "lon": -4.8379791,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "ottawa": {
+    "name": "Ottawa, Ontario",
+    "lat": 45.4208777,
+    "lon": -75.6901106,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "ontario": {
+    "name": "Ontario",
+    "lat": 50.000678,
+    "lon": -86.000977,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "san rafael": {
+    "name": "San Rafael, California",
+    "lat": 37.9747795,
+    "lon": -122.5316686,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "washington": {
+    "name": "Washington",
+    "lat": 47.2868352,
+    "lon": -120.212613,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "yotsuya": {
+    "name": "四谷",
+    "lat": 35.6861404,
+    "lon": 139.7286558,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "bilbao": {
+    "name": "Bilbao, Euskadi",
+    "lat": 43.2630018,
+    "lon": -2.9350039,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "basque country": {
+    "name": "Euskadi",
+    "lat": 42.9911816,
+    "lon": -2.5543023,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "manhattan": {
+    "name": "Manhattan, New York",
+    "lat": 40.7579554,
+    "lon": -73.9855319,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "telangana": {
+    "name": "Telangana",
+    "lat": 17.8495919,
+    "lon": 79.1151663,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "braga": {
+    "name": "Braga",
+    "lat": 41.5510583,
+    "lon": -8.4280045,
+    "country": "Portugal",
+    "country_code": "PT"
+  },
+  "portugal ()": {
+    "name": "Portugal",
+    "lat": 39.6621648,
+    "lon": -8.1353519,
+    "country": "Portugal",
+    "country_code": "PT"
+  },
+  "stansted mountfitchet": {
+    "name": "Stansted Mountfitchet, England",
+    "lat": 51.9027838,
+    "lon": 0.1998025,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "singapore ()": {
+    "name": "Singapore",
+    "lat": 1.357107,
+    "lon": 103.8194992,
+    "country": "Singapore",
+    "country_code": "SG"
+  },
+  "melbourne": {
+    "name": "Melbourne, England",
+    "lat": 52.8228825,
+    "lon": -1.4283027,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "victoria": {
+    "name": "Victoria",
+    "lat": -36.5986096,
+    "lon": 144.6780052,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "australia ()": {
+    "name": "Australia",
+    "lat": -24.7761086,
+    "lon": 134.755,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "silverwater": {
+    "name": "Silverwater, New South Wales",
+    "lat": -33.1029115,
+    "lon": 151.5600857,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "new south wales": {
+    "name": "New South Wales",
+    "lat": -32.1629594,
+    "lon": 147.0320469,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "sichuan": {
+    "name": "四川省",
+    "lat": 30.5000001,
+    "lon": 102.4999999,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "british columbia": {
+    "name": "British Columbia",
+    "lat": 55.001251,
+    "lon": -125.002441,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "ho chi minh": {
+    "name": "Thành phố Hồ Chí Minh",
+    "lat": 10.7737261,
+    "lon": 106.7166008,
+    "country": "Việt Nam",
+    "country_code": "VN"
+  },
+  "vietnam ()": {
+    "name": "Việt Nam",
+    "lat": 15.9266657,
+    "lon": 107.9650855,
+    "country": "Việt Nam",
+    "country_code": "VN"
+  },
+  "migdal ha'emeq": {
+    "name": "מגדל העמק, מחוז הצפון",
+    "lat": 32.6765744,
+    "lon": 35.2413237,
+    "country": "ישראל",
+    "country_code": "IL"
+  },
+  "northern district": {
+    "name": "Hammond Federal Courthouse, IN",
+    "lat": 41.6153932,
+    "lon": -87.5212764,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "israel ()": {
+    "name": "ישראל",
+    "lat": 30.8124247,
+    "lon": 34.8594762,
+    "country": "ישראל",
+    "country_code": "IL"
+  },
+  "national capital region": {
+    "name": "National Capital Region",
+    "lat": 28.3486575,
+    "lon": 77.1056889,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "philippines ()": {
+    "name": "Philippines",
+    "lat": 12.7503486,
+    "lon": 122.7312101,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "bangalore": {
+    "name": "Bengaluru, Karnataka",
+    "lat": 12.9767936,
+    "lon": 77.590082,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "taiwan ()": {
+    "name": "臺灣",
+    "lat": 23.9739374,
+    "lon": 120.9820179,
+    "country": "臺灣",
+    "country_code": "TW"
+  },
+  "monterrey": {
+    "name": "Monterrey, Nuevo León",
+    "lat": 25.6802019,
+    "lon": -100.315258,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "méxico": {
+    "name": "México",
+    "lat": 23.6585116,
+    "lon": -102.0077097,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "mexico ()": {
+    "name": "México",
+    "lat": 23.6585116,
+    "lon": -102.0077097,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "texas": {
+    "name": "Texas",
+    "lat": 31.2638905,
+    "lon": -98.5456116,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "florida": {
+    "name": "Florida",
+    "lat": 27.7567667,
+    "lon": -81.4639835,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "romania ()": {
+    "name": "România",
+    "lat": 45.9852129,
+    "lon": 24.6859225,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "sweden ()": {
+    "name": "Sverige",
+    "lat": 59.6749712,
+    "lon": 14.5208584,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "mercer island": {
+    "name": "Mercer Island, Washington",
+    "lat": 47.5766324,
+    "lon": -122.2276378,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "leinster": {
+    "name": "Leinster",
+    "lat": 53.118465,
+    "lon": -6.9918183,
+    "country": "Éire / Ireland",
+    "country_code": "IE"
+  },
+  "ireland ()": {
+    "name": "Northern Ireland",
+    "lat": 54.5859836,
+    "lon": -6.9591554,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "mazovia": {
+    "name": "Mazovia, województwo mazowieckie",
+    "lat": 52.1426141,
+    "lon": 21.0530092,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "poland ()": {
+    "name": "Polska",
+    "lat": 52.215933,
+    "lon": 19.134422,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "katowice": {
+    "name": "Katowice, województwo śląskie",
+    "lat": 50.2598987,
+    "lon": 19.0215852,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "silesia": {
+    "name": "Silesia, Montana",
+    "lat": 45.5564801,
+    "lon": -108.8413108,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "portsmouth": {
+    "name": "Portsmouth, England",
+    "lat": 50.800031,
+    "lon": -1.0906023,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "virginia": {
+    "name": "Virginia",
+    "lat": 37.1232245,
+    "lon": -78.4927721,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "oregon": {
+    "name": "Oregon",
+    "lat": 43.9792797,
+    "lon": -120.737257,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "grapevine": {
+    "name": "Grapevine, Texas",
+    "lat": 32.9337381,
+    "lon": -97.0788754,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ukraine ()": {
+    "name": "Україна",
+    "lat": 49.4871968,
+    "lon": 31.2718321,
+    "country": "Україна",
+    "country_code": "UA"
+  },
+  "parkville": {
+    "name": "Parkville, Maryland",
+    "lat": 39.3773292,
+    "lon": -76.5396875,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "wollongong": {
+    "name": "Wollongong, New South Wales",
+    "lat": -34.4243941,
+    "lon": 150.89385,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "casablanca": {
+    "name": "Casablanca ⵜⴰⴷⴷⴰⵔⵜ ⵜⵓⵎⵍⵉⵍⵜ الدار البيضاء, Casablanca-Settat ⴰⵏⴼⴰ - ⵙⵟⵟⴰⵜ الدار البيضاء سطات",
+    "lat": 33.5945144,
+    "lon": -7.6200284,
+    "country": "Maroc ⵍⵎⵖⵔⵉⴱ المغرب",
+    "country_code": "MA"
+  },
+  "casablanca-settat": {
+    "name": "Casablanca-Settat ⴰⵏⴼⴰ - ⵙⵟⵟⴰⵜ الدار البيضاء سطات",
+    "lat": 33.2627128,
+    "lon": -7.9639028,
+    "country": "Maroc ⵍⵎⵖⵔⵉⴱ المغرب",
+    "country_code": "MA"
+  },
+  "morocco ()": {
+    "name": "Maroc ⵍⵎⴰⵖⵔⵉⴱ المغرب",
+    "lat": 31.1728205,
+    "lon": -7.3362482,
+    "country": "Maroc ⵍⵎⵖⵔⵉⴱ المغرب",
+    "country_code": "MA"
+  },
+  "seychelles ()": {
+    "name": "Seychelles",
+    "lat": -4.6574977,
+    "lon": 55.4540146,
+    "country": "Sesel",
+    "country_code": "SC"
+  },
+  "santo domingo": {
+    "name": "Santo Domingo, Distrito Nacional",
+    "lat": 18.4713858,
+    "lon": -69.8918436,
+    "country": "República Dominicana",
+    "country_code": "DO"
+  },
+  "nacional": {
+    "name": "Nacionalna i sveučilišna knjižnica u Zagrebu",
+    "lat": 45.7966164,
+    "lon": 15.9775136,
+    "country": "Hrvatska",
+    "country_code": "HR"
+  },
+  "dominican republic ()": {
+    "name": "República Dominicana",
+    "lat": 19.0974031,
+    "lon": -70.3028026,
+    "country": "República Dominicana",
+    "country_code": "DO"
+  },
+  "myrtle beach": {
+    "name": "Myrtle Beach, South Carolina",
+    "lat": 33.6956461,
+    "lon": -78.8900409,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "nevada": {
+    "name": "Nevada",
+    "lat": 39.5158825,
+    "lon": -116.853722,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "philadelphia": {
+    "name": "Philadelphia, Pennsylvania",
+    "lat": 39.9527237,
+    "lon": -75.1635262,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "pennsylvania": {
+    "name": "Pennsylvania, England",
+    "lat": 51.4586203,
+    "lon": -2.3689861,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "salt lake city": {
+    "name": "Salt Lake City, Utah",
+    "lat": 40.7596198,
+    "lon": -111.886797,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "utah": {
+    "name": "Utah",
+    "lat": 39.4225192,
+    "lon": -111.714358,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "denver": {
+    "name": "Denver, Colorado",
+    "lat": 39.7392364,
+    "lon": -104.984862,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "colorado": {
+    "name": "Colorado",
+    "lat": 38.7251776,
+    "lon": -105.607716,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "lisbon": {
+    "name": "Lisbon, Iowa",
+    "lat": 41.9211165,
+    "lon": -91.3854913,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "cape town": {
+    "name": "Cape Town, Western Cape",
+    "lat": -33.9288301,
+    "lon": 18.4172197,
+    "country": "South Africa",
+    "country_code": "ZA"
+  },
+  "western cape": {
+    "name": "Western Cape",
+    "lat": -33.546977,
+    "lon": 20.72753,
+    "country": "South Africa",
+    "country_code": "ZA"
+  },
+  "south africa ()": {
+    "name": "South Africa",
+    "lat": -28.8166236,
+    "lon": 24.991639,
+    "country": "South Africa",
+    "country_code": "ZA"
+  },
+  "miami": {
+    "name": "Miami, Florida",
+    "lat": 25.7741566,
+    "lon": -80.1935973,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "cairo": {
+    "name": "Cairo, Illinois",
+    "lat": 37.0057958,
+    "lon": -89.1772449,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "egypt ()": {
+    "name": "مصر",
+    "lat": 26.2540493,
+    "lon": 29.2675469,
+    "country": "مصر",
+    "country_code": "EG"
+  },
+  "york": {
+    "name": "York, England",
+    "lat": 53.9656579,
+    "lon": -1.0743052,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "georgia": {
+    "name": "Georgia",
+    "lat": 32.3293809,
+    "lon": -83.1137366,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "newton": {
+    "name": "Newton, Texas",
+    "lat": 30.8118989,
+    "lon": -93.740504,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "massachusetts": {
+    "name": "Massachusetts",
+    "lat": 42.3788774,
+    "lon": -72.032366,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "minnesota": {
+    "name": "Minnesota",
+    "lat": 45.9896587,
+    "lon": -94.6113288,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "mongolia ()": {
+    "name": "Монгол Улс",
+    "lat": 46.8250388,
+    "lon": 103.8499736,
+    "country": "Монгол улс ᠮᠤᠩᠭᠤᠯ ᠤᠯᠤᠰ",
+    "country_code": "MN"
+  },
+  "portland": {
+    "name": "Portland, Oregon",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "renton": {
+    "name": "Renton, Alba / Scotland",
+    "lat": 55.9703118,
+    "lon": -4.5863543,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ankara": {
+    "name": "Ankara",
+    "lat": 39.9207759,
+    "lon": 32.8540497,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "turkey ()": {
+    "name": "Türkiye",
+    "lat": 39.294076,
+    "lon": 35.2316631,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "district of columbia": {
+    "name": "District of Columbia",
+    "lat": 38.8938474,
+    "lon": -76.9880428,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "olathe": {
+    "name": "Olathe, Kansas",
+    "lat": 38.8838856,
+    "lon": -94.81887,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "kansas": {
+    "name": "Kansas",
+    "lat": 38.27312,
+    "lon": -98.5821872,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "broadway": {
+    "name": "Broadway, New York",
+    "lat": 41.0139243,
+    "lon": -73.8736602,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "salisbury": {
+    "name": "Salisbury, England",
+    "lat": 51.0690613,
+    "lon": -1.7954134,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "north carolina": {
+    "name": "North Carolina",
+    "lat": 35.6729639,
+    "lon": -79.0392919,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "pittsburgh": {
+    "name": "Pittsburgh, Pennsylvania",
+    "lat": 40.4406968,
+    "lon": -80.0025666,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "maynard": {
+    "name": "Maynard, Massachusetts",
+    "lat": 42.4321064,
+    "lon": -71.4539683,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "maharashtra": {
+    "name": "Maharashtra",
+    "lat": 19.5670323,
+    "lon": 76.4164557,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "boston": {
+    "name": "Boston, England",
+    "lat": 52.9776561,
+    "lon": -0.0237985,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "makati city": {
+    "name": "Makati City Subway, Metro Manila",
+    "lat": 14.5697614,
+    "lon": 121.0267512,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "hartford": {
+    "name": "Hartford, Connecticut",
+    "lat": 41.764582,
+    "lon": -72.6908547,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "connecticut": {
+    "name": "Connecticut",
+    "lat": 41.6500201,
+    "lon": -72.7342163,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "serbia ()": {
+    "name": "Србија",
+    "lat": 44.1534121,
+    "lon": 20.55144,
+    "country": "Србија",
+    "country_code": "RS"
+  },
+  "burbank": {
+    "name": "Burbank, California",
+    "lat": 34.1812089,
+    "lon": -118.307201,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "corvallis": {
+    "name": "Corvallis, Oregon",
+    "lat": 44.5645659,
+    "lon": -123.2620435,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "blue bell": {
+    "name": "Blue Bell, Pennsylvania",
+    "lat": 40.1522506,
+    "lon": -75.2661813,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "hollywood": {
+    "name": "Hollywood, California",
+    "lat": 34.0980031,
+    "lon": -118.329523,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "la defensa": {
+    "name": "La Defensa, Veracruz",
+    "lat": 20.103889,
+    "lon": -96.96,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "argentina ()": {
+    "name": "Argentina",
+    "lat": -34.9964963,
+    "lon": -64.9672817,
+    "country": "Argentina",
+    "country_code": "AR"
+  },
+  "buffalo": {
+    "name": "Buffalo, New York",
+    "lat": 42.8864163,
+    "lon": -78.8781493,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "celebration": {
+    "name": "Celebration, Florida",
+    "lat": 28.319057,
+    "lon": -81.5408702,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "carville": {
+    "name": "Carville, Normandie",
+    "lat": 48.933023,
+    "lon": -0.8719096,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "hong kong ()": {
+    "name": "香港 Hong Kong",
+    "lat": 22.2818333,
+    "lon": 114.1582831,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "morrisville": {
+    "name": "Morrisville, North Carolina",
+    "lat": 35.824341,
+    "lon": -78.8300321,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "taguig": {
+    "name": "Taguig, Metro Manila",
+    "lat": 14.5270538,
+    "lon": 121.0744942,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "liberty": {
+    "name": "Liberty, Texas",
+    "lat": 30.0856736,
+    "lon": -94.7856262,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "rabat": {
+    "name": "Rabat ⵔⴱⴰⵟ الرباط, Rabat-Salé-Kénitra ⴻⵕⵕⴱⴰⵟ-ⵙⵍⴰ-ⵈⵏⵉⵟⵔⴰ الرباط سلا",
+    "lat": 34.0218454,
+    "lon": -6.8408929,
+    "country": "Maroc ⵍⵎⵖⵔⵉⴱ المغرب",
+    "country_code": "MA"
+  },
+  "rabat-salé-kénitra": {
+    "name": "Rabat-Salé-Kénitra ⴻⵕⵕⴱⴰⵟ-ⵙⵍⴰ-ⵈⵏⵉⵟⵔⴰ الرباط سلا",
+    "lat": 33.9204332,
+    "lon": -6.3676093,
+    "country": "Maroc ⵍⵎⵖⵔⵉⴱ المغرب",
+    "country_code": "MA"
+  },
+  "alabama": {
+    "name": "Alabama",
+    "lat": 33.2588817,
+    "lon": -86.8295337,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "richardson": {
+    "name": "Richardson, Texas",
+    "lat": 32.9481789,
+    "lon": -96.7297206,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "wisconsin": {
+    "name": "Wisconsin",
+    "lat": 44.4308975,
+    "lon": -89.6884637,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "sevilla": {
+    "name": "Sevilla, Andalucía",
+    "lat": 37.3886303,
+    "lon": -5.9953403,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "andalusia": {
+    "name": "Andalucía",
+    "lat": 37.3399964,
+    "lon": -4.5811614,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "milton keynes": {
+    "name": "Milton Keynes, England",
+    "lat": 52.0406502,
+    "lon": -0.7594092,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bogota d.c.": {
+    "name": "Bogotá, Bogotá, Distrito Capital",
+    "lat": 4.6533817,
+    "lon": -74.0836331,
+    "country": "Colombia",
+    "country_code": "CO"
+  },
+  "houston": {
+    "name": "Houston, Texas",
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "queretaro": {
+    "name": "Querétaro",
+    "lat": 20.8052225,
+    "lon": -99.8837376,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "troy": {
+    "name": "Troy, New York",
+    "lat": 42.7284117,
+    "lon": -73.6917878,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "michigan": {
+    "name": "Michigan",
+    "lat": 43.6211955,
+    "lon": -84.6824346,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "france ()": {
+    "name": "France",
+    "lat": 46.603354,
+    "lon": 1.8883335,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "new jersey": {
+    "name": "New Jersey",
+    "lat": 40.0757384,
+    "lon": -74.4041622,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "nicasio": {
+    "name": "Nicasio, California",
+    "lat": 38.0601015,
+    "lon": -122.6984323,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "switzerland ()": {
+    "name": "Little Switzerland, England",
+    "lat": 53.2015062,
+    "lon": -2.700589,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "glendale": {
+    "name": "Glendale, Alba / Scotland",
+    "lat": 57.4482863,
+    "lon": -6.7093848,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "tamil nadu": {
+    "name": "Tamil Nadu",
+    "lat": 11.3323723,
+    "lon": 78.6098639,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "plano": {
+    "name": "Plano, Texas",
+    "lat": 33.0136764,
+    "lon": -96.6925096,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "panamá": {
+    "name": "Panamá, Provincia de Panamá",
+    "lat": 8.9714493,
+    "lon": -79.5341802,
+    "country": "Panamá",
+    "country_code": "PA"
+  },
+  "panama ()": {
+    "name": "Panama",
+    "lat": 8.559559,
+    "lon": -81.1308434,
+    "country": "Panamá",
+    "country_code": "PA"
+  },
+  "cleveland": {
+    "name": "Cleveland, Ohio",
+    "lat": 41.4996574,
+    "lon": -81.6936772,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ohio": {
+    "name": "Ohio",
+    "lat": 40.2253569,
+    "lon": -82.6881395,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "salzburg": {
+    "name": "Salzburg",
+    "lat": 47.7981346,
+    "lon": 13.0464806,
+    "country": "Österreich",
+    "country_code": "AT"
+  },
+  "state of salzburg": {
+    "name": "Salzburger Landestheater",
+    "lat": 47.8029805,
+    "lon": 13.0428825,
+    "country": "Österreich",
+    "country_code": "AT"
+  },
+  "austria ()": {
+    "name": "Österreich",
+    "lat": 47.59397,
+    "lon": 14.12456,
+    "country": "Österreich",
+    "country_code": "AT"
+  },
+  "redhill": {
+    "name": "Redhill, England",
+    "lat": 51.2404691,
+    "lon": -0.1682816,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "castro valley": {
+    "name": "Castro Valley, California",
+    "lat": 37.713606,
+    "lon": -122.0715658,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "woodland hills": {
+    "name": "Woodland Hills, California",
+    "lat": 34.1684364,
+    "lon": -118.6058382,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "tennessee": {
+    "name": "Tennessee",
+    "lat": 35.7730076,
+    "lon": -86.2820081,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "saint louis": {
+    "name": "Saint Louis, Missouri",
+    "lat": 38.6254063,
+    "lon": -90.190009,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "missouri": {
+    "name": "Missouri",
+    "lat": 38.7604815,
+    "lon": -92.5617875,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "veszprem": {
+    "name": "Veszprém",
+    "lat": 47.09327,
+    "lon": 17.91149,
+    "country": "Hungary",
+    "country_code": "HU",
+    "admin1": "Veszprém megye"
+  },
+  "veszprém ()": {
+    "name": "Veszprém, Dunántúl",
+    "lat": 47.0933824,
+    "lon": 17.9080406,
+    "country": "Magyarország",
+    "country_code": "HU"
+  },
+  "podborany ()": {
+    "name": "Podbořany, Ústecký kraj",
+    "lat": 50.2292216,
+    "lon": 13.411359,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "galway": {
+    "name": "Galway, County Galway",
+    "lat": 53.2744122,
+    "lon": -9.0490601,
+    "country": "Éire / Ireland",
+    "country_code": "IE"
+  },
+  "connacht": {
+    "name": "Connacht, Alba / Scotland",
+    "lat": 55.8400805,
+    "lon": -2.2404376,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "quarry bay": {
+    "name": "Quarry Bay, British Columbia",
+    "lat": 49.6618862,
+    "lon": -124.1274005,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "eastern district": {
+    "name": "Eastern District, American Samoa",
+    "lat": -14.2782402,
+    "lon": -170.6243227,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "kragujevac": {
+    "name": "Kragujevac, Република Српска / Republika Srpska",
+    "lat": 43.8976696,
+    "lon": 19.2782513,
+    "country": "Bosna i Hercegovina / Босна и Херцеговина",
+    "country_code": "BA"
+  },
+  "central serbia": {
+    "name": "Централна Србија",
+    "lat": 43.8683091,
+    "lon": 21.0493132,
+    "country": "Србија",
+    "country_code": "RS"
+  },
+  "calgary": {
+    "name": "Calgary, Alba / Scotland",
+    "lat": 56.5789085,
+    "lon": -6.2767608,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "alberta": {
+    "name": "Alberta",
+    "lat": 55.001251,
+    "lon": -115.002136,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "paul": {
+    "name": "Paul, England",
+    "lat": 50.0896383,
+    "lon": -5.5464449,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "davenport": {
+    "name": "Davenport, Iowa",
+    "lat": 41.5235808,
+    "lon": -90.5770967,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "iowa": {
+    "name": "Ness City",
+    "lat": 38.45279,
+    "lon": -99.90651,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Kansas"
+  },
+  "la mesa": {
+    "name": "La Mesa, California",
+    "lat": 32.7678288,
+    "lon": -117.0230839,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "czechowice-dziedzice": {
+    "name": "Czechowice-Dziedzice, województwo śląskie",
+    "lat": 49.9112146,
+    "lon": 19.007564,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "greensburg": {
+    "name": "Greensburg",
+    "lat": 40.30146,
+    "lon": -79.53893,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Pennsylvania"
+  },
+  "indiana": {
+    "name": "Indiana",
+    "lat": 40.3270127,
+    "lon": -86.1746933,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "arizona": {
+    "name": "Orizona",
+    "lat": -17.03139,
+    "lon": -48.29583,
+    "country": "Brazil",
+    "country_code": "BR",
+    "admin1": "Goiás"
+  },
+  "burton upon trent": {
+    "name": "Burton upon Trent, England",
+    "lat": 52.802742,
+    "lon": -1.629917,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "czech republic ()": {
+    "name": "Národní knihovna České republiky",
+    "lat": 50.0864234,
+    "lon": 14.4156772,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "shah alam": {
+    "name": "Shah Alam, Selangor",
+    "lat": 3.0739429,
+    "lon": 101.5185278,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "selangor": {
+    "name": "Selangor",
+    "lat": 3.2083304,
+    "lon": 101.304146,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "malaysia ()": {
+    "name": "Malaysia",
+    "lat": 4.5693754,
+    "lon": 102.2656823,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "holbeck": {
+    "name": "Holbeck, England",
+    "lat": 53.2348816,
+    "lon": -0.0304433,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "halle (saale)": {
+    "name": "Halle (Saale), Sachsen-Anhalt",
+    "lat": 51.4824354,
+    "lon": 11.9712985,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "kanata": {
+    "name": "Kanata, Ontario",
+    "lat": 45.3128048,
+    "lon": -75.8940505,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "secaucus": {
+    "name": "Secaucus, New Jersey",
+    "lat": 40.7899291,
+    "lon": -74.0566735,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "clayton": {
+    "name": "Clayton, Georgia",
+    "lat": 33.5204959,
+    "lon": -84.3591713,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "hamburg-altstadt": {
+    "name": "Altstadt",
+    "lat": 53.5504928,
+    "lon": 9.9977795,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "bremen": {
+    "name": "Bremen, Freie Hansestadt Bremen",
+    "lat": 53.0758196,
+    "lon": 8.8071646,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "free hanseatic city of bremen": {
+    "name": "Freie Hansestadt Bremen",
+    "lat": 53.144869,
+    "lon": 8.6932343,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "south australia": {
+    "name": "South Australia",
+    "lat": -30.5343665,
+    "lon": 135.6301212,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "sunnyvale": {
+    "name": "Sunnyvale, California",
+    "lat": 37.3688301,
+    "lon": -122.036349,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "farnborough": {
+    "name": "Farnborough, England",
+    "lat": 51.2918693,
+    "lon": -0.7539836,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "visalia": {
+    "name": "Visalia, California",
+    "lat": 36.3302284,
+    "lon": -119.292058,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "karachi": {
+    "name": "کراچی, سندھ",
+    "lat": 24.8546842,
+    "lon": 67.0207055,
+    "country": "پاکستان",
+    "country_code": "PK"
+  },
+  "sindh": {
+    "name": "Sindh",
+    "lat": 25.6371738,
+    "lon": 78.1138551,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "pakistan ()": {
+    "name": "پاکستان",
+    "lat": 30.3308401,
+    "lon": 71.247499,
+    "country": "پاکستان",
+    "country_code": "PK"
+  },
+  "finkenwerder": {
+    "name": "Finkenwerder",
+    "lat": 53.5308822,
+    "lon": 9.8585234,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "state of vienna": {
+    "name": "Prunksaal der Österreichischen Nationalbibliothek",
+    "lat": 48.2061679,
+    "lon": 16.3666909,
+    "country": "Österreich",
+    "country_code": "AT"
+  },
+  "vista": {
+    "name": "Vista, Washington",
+    "lat": 46.2105113,
+    "lon": -119.2252604,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "iver heath": {
+    "name": "Iver Heath, England",
+    "lat": 51.5343612,
+    "lon": -0.5302492,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bavaria": {
+    "name": "Bavaria, Bayern",
+    "lat": 48.1306751,
+    "lon": 11.5459354,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "cowley": {
+    "name": "Cowley, England",
+    "lat": 51.7326425,
+    "lon": -1.2166354,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "havant": {
+    "name": "Havant, England",
+    "lat": 50.8519351,
+    "lon": -0.9821263,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "north ward": {
+    "name": "North Ward, Queensland",
+    "lat": -19.2484915,
+    "lon": 146.8097532,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "jakarta": {
+    "name": "Jakarta, Jawa",
+    "lat": -6.1754049,
+    "lon": 106.827168,
+    "country": "Indonesia",
+    "country_code": "ID"
+  },
+  "indonesia ()": {
+    "name": "Indonesia",
+    "lat": -2.4833826,
+    "lon": 117.8902853,
+    "country": "Indonesia",
+    "country_code": "ID"
+  },
+  "phoenix": {
+    "name": "Phoenix, Arizona",
+    "lat": 33.4484367,
+    "lon": -112.074141,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "kulim": {
+    "name": "Kulim, Kedah",
+    "lat": 5.3707128,
+    "lon": 100.6172071,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "kedah": {
+    "name": "Kedah",
+    "lat": 5.8098265,
+    "lon": 100.6715035,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "george town": {
+    "name": "George Town, Pulau Pinang",
+    "lat": 5.4141619,
+    "lon": 100.3287352,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "penang": {
+    "name": "Penango, Piemonte",
+    "lat": 45.0332014,
+    "lon": 8.2502533,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "albuquerque": {
+    "name": "Albuquerque, New Mexico",
+    "lat": 35.0841034,
+    "lon": -106.650985,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "new mexico": {
+    "name": "New Mexico",
+    "lat": 34.5802074,
+    "lon": -105.996047,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ormeau": {
+    "name": "Ormeau, Queensland",
+    "lat": -27.774813,
+    "lon": 153.2520815,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "northern": {
+    "name": "Northern",
+    "lat": 37.50788,
+    "lon": -82.81544,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Kentucky"
+  },
+  "hampton east": {
+    "name": "East Hampton, New York",
+    "lat": 40.9633868,
+    "lon": -72.1847598,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "hsinchu": {
+    "name": "Hsinchu",
+    "lat": 24.80361,
+    "lon": 120.96861,
+    "country": "Taiwan",
+    "country_code": "TW",
+    "admin1": "Taiwan"
+  },
+  "indianapolis": {
+    "name": "Indianapolis",
+    "lat": 39.7683331,
+    "lon": -86.1583502,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "oxnard": {
+    "name": "Oxnard",
+    "lat": 34.1975,
+    "lon": -119.17705,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "beech grove": {
+    "name": "Beech Grove, Indiana",
+    "lat": 39.7221906,
+    "lon": -86.0894158,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "greenwood": {
+    "name": "Greenwood",
+    "lat": 34.1954,
+    "lon": -82.16179,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "South Carolina"
+  },
+  "ventura": {
+    "name": "Ventura, California",
+    "lat": 34.4458248,
+    "lon": -119.0779359,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "southport": {
+    "name": "Southport, England",
+    "lat": 53.6487421,
+    "lon": -3.0044972,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "plainfield": {
+    "name": "Plainfield",
+    "lat": 40.63371,
+    "lon": -74.40737,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New Jersey"
+  },
+  "quingey": {
+    "name": "Quingey, Bourgogne-Franche-Comté",
+    "lat": 47.1038613,
+    "lon": 5.8831349,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "bourgogne": {
+    "name": "Bourgogne",
+    "lat": 49.34962,
+    "lon": 4.07111,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "Grand Est"
+  },
+  "callao": {
+    "name": "Callao",
+    "lat": -12.0864633,
+    "lon": -77.2234463,
+    "country": "Perú",
+    "country_code": "PE"
+  },
+  "peru ()": {
+    "name": "Perú",
+    "lat": -6.8699697,
+    "lon": -75.0458515,
+    "country": "Perú",
+    "country_code": "PE"
+  },
+  "muntinlupa": {
+    "name": "Muntinlupa, Metro Manila",
+    "lat": 14.3892634,
+    "lon": 121.0449101,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "calabarzon": {
+    "name": "Calabarzon",
+    "lat": 14.1658314,
+    "lon": 121.3535577,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "palm desert": {
+    "name": "Palm Desert, California",
+    "lat": 33.7288179,
+    "lon": -116.382571,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "thailand ()": {
+    "name": "ประเทศไทย",
+    "lat": 14.8971921,
+    "lon": 100.83273,
+    "country": "ประเทศไทย",
+    "country_code": "TH"
+  },
+  "woodlands": {
+    "name": "Woodlands, Alba / Scotland",
+    "lat": 55.8707512,
+    "lon": -4.2733881,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "sofia": {
+    "name": "Sofia",
+    "lat": -15.2817944,
+    "lon": 48.2261624,
+    "country": "Madagasikara",
+    "country_code": "MG"
+  },
+  "bulgaria ()": {
+    "name": "Бългaрия",
+    "lat": 42.6073975,
+    "lon": 25.4856617,
+    "country": "Бългaрия",
+    "country_code": "BG"
+  },
+  "cabaret": {
+    "name": "Cabaret, Ouest",
+    "lat": 18.7343259,
+    "lon": -72.4181932,
+    "country": "Ayiti",
+    "country_code": "HT"
+  },
+  "ann arbor": {
+    "name": "Ann Arbor, Michigan",
+    "lat": 42.2813722,
+    "lon": -83.7484616,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "huntsville": {
+    "name": "Huntsville, Alabama",
+    "lat": 34.729847,
+    "lon": -86.5859011,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "finland ()": {
+    "name": "Suomi / Finland",
+    "lat": 63.2467777,
+    "lon": 25.9209164,
+    "country": "Suomi",
+    "country_code": "FI"
+  },
+  "gabon ()": {
+    "name": "Gabon",
+    "lat": -0.8999695,
+    "lon": 11.6899699,
+    "country": "Gabon",
+    "country_code": "GA"
+  },
+  "boulogne-billancourt": {
+    "name": "Boulogne-Billancourt, Île-de-France",
+    "lat": 48.8356649,
+    "lon": 2.240206,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "columbus": {
+    "name": "Columbus, Ohio",
+    "lat": 39.9622601,
+    "lon": -83.0007065,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "gothenburg": {
+    "name": "Gothenburg, Nebraska",
+    "lat": 40.9277324,
+    "lon": -100.1619896,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "denmark ()": {
+    "name": "Danmark",
+    "lat": 55.670249,
+    "lon": 10.3333283,
+    "country": "Danmark",
+    "country_code": "DK"
+  },
+  "netherlands ()": {
+    "name": "Nederland",
+    "lat": 52.2434979,
+    "lon": 5.6343227,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "greentree": {
+    "name": "Greentree, New Jersey",
+    "lat": 39.89808,
+    "lon": -74.9678004,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "azerbaijan ()": {
+    "name": "Azərbaycan",
+    "lat": 40.3936294,
+    "lon": 47.7872508,
+    "country": "Azərbaycan",
+    "country_code": "AZ"
+  },
+  "subang jaya": {
+    "name": "Subang Jaya, Selangor",
+    "lat": 3.051487,
+    "lon": 101.5823339,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "united arab emirates ()": {
+    "name": "Embassy of the United Arab Emirates, England",
+    "lat": 51.5005829,
+    "lon": -0.1538727,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bangkok": {
+    "name": "Bangkok, Jawa Tengah",
+    "lat": -7.33495,
+    "lon": 110.6589317,
+    "country": "Indonesia",
+    "country_code": "ID"
+  },
+  "richmond": {
+    "name": "Richmond, Virginia",
+    "lat": 37.5385087,
+    "lon": -77.43428,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "burlington": {
+    "name": "Burlington, Vermont",
+    "lat": 44.4761601,
+    "lon": -73.212906,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "hidalgo": {
+    "name": "Hidalgo",
+    "lat": 20.5,
+    "lon": -99.0,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "heredia": {
+    "name": "Heredia",
+    "lat": 10.3767813,
+    "lon": -84.0139721,
+    "country": "Costa Rica",
+    "country_code": "CR"
+  },
+  "heredia province": {
+    "name": "Heredia",
+    "lat": 10.3767813,
+    "lon": -84.0139721,
+    "country": "Costa Rica",
+    "country_code": "CR"
+  },
+  "costa rica ()": {
+    "name": "Costa Rica",
+    "lat": 10.2735633,
+    "lon": -84.0739102,
+    "country": "Costa Rica",
+    "country_code": "CR"
+  },
+  "riverside": {
+    "name": "Riverside, California",
+    "lat": 33.9824949,
+    "lon": -117.374238,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "alpharetta": {
+    "name": "Alpharetta, Georgia",
+    "lat": 34.0755962,
+    "lon": -84.2945964,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "braintree": {
+    "name": "Braintree, England",
+    "lat": 51.878032,
+    "lon": 0.5536542,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "chantilly": {
+    "name": "Chantilly, Hauts-de-France",
+    "lat": 49.1931736,
+    "lon": 2.4636686,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "walnut creek": {
+    "name": "Walnut Creek, California",
+    "lat": 37.9020731,
+    "lon": -122.0618702,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "missoula": {
+    "name": "Missoula, England",
+    "lat": 51.575868,
+    "lon": 0.1830551,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "montana": {
+    "name": "Montana",
+    "lat": 47.3752671,
+    "lon": -109.638757,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "independence": {
+    "name": "Independence, Missouri",
+    "lat": 39.0924792,
+    "lon": -94.4137923,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "cordova": {
+    "name": "Cordova, Alaska",
+    "lat": 60.5443385,
+    "lon": -145.7595063,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "melville": {
+    "name": "Melville, Saskatchewan",
+    "lat": 50.9307241,
+    "lon": -102.807296,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "diamond bar": {
+    "name": "Diamond Bar, California",
+    "lat": 34.0286226,
+    "lon": -117.8103367,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "centennial": {
+    "name": "Centennial, Colorado",
+    "lat": 39.579155,
+    "lon": -104.8769227,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "hamden": {
+    "name": "Hamden",
+    "lat": 41.39593,
+    "lon": -72.89677,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Connecticut"
+  },
+  "coral gables": {
+    "name": "Coral Gables, Florida",
+    "lat": 25.7331105,
+    "lon": -80.2585107,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "albany": {
+    "name": "Albany",
+    "lat": 42.65258,
+    "lon": -73.75623,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New York"
+  },
+  "harderwijk": {
+    "name": "Harderwijk, Gelderland",
+    "lat": 52.3490693,
+    "lon": 5.618933,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "taichung": {
+    "name": "Taichung",
+    "lat": 24.1469,
+    "lon": 120.6839,
+    "country": "Taiwan",
+    "country_code": "TW",
+    "admin1": "Taiwan"
+  },
+  "winter garden": {
+    "name": "Winter Garden, Florida",
+    "lat": 28.5656649,
+    "lon": -81.5856742,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "brooklyn": {
+    "name": "Brooklyn",
+    "lat": 40.6501,
+    "lon": -73.94958,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New York"
+  },
+  "furth": {
+    "name": "Fürth",
+    "lat": 49.47593,
+    "lon": 10.98856,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "Bavaria"
+  },
+  "san antonio": {
+    "name": "San Antonio",
+    "lat": 29.42412,
+    "lon": -98.49363,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "seminole": {
+    "name": "Seminole",
+    "lat": 32.71899,
+    "lon": -102.64491,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "santa rosa": {
+    "name": "Santa Rosa",
+    "lat": 14.31222,
+    "lon": 121.11139,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "Calabarzon"
+  },
+  "nashua": {
+    "name": "Nashua",
+    "lat": 42.76537,
+    "lon": -71.46757,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New Hampshire"
+  },
+  "new hampshire": {
+    "name": "Blacksville",
+    "lat": 39.72008,
+    "lon": -80.21202,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "West Virginia"
+  },
+  "fort collins": {
+    "name": "Fort Collins",
+    "lat": 40.58526,
+    "lon": -105.08442,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Colorado"
+  },
+  "williamsburg": {
+    "name": "Williamsburg",
+    "lat": 37.2707,
+    "lon": -76.70746,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Virginia"
+  },
+  "oklahoma city": {
+    "name": "Oklahoma City",
+    "lat": 35.46756,
+    "lon": -97.51643,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oklahoma"
+  },
+  "oklahoma": {
+    "name": "Oklahoma",
+    "lat": 40.58145,
+    "lon": -79.57393,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Pennsylvania"
+  },
+  "franklin": {
+    "name": "Franklin",
+    "lat": 35.92506,
+    "lon": -86.86889,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Tennessee"
+  },
+  "tuscaloosa": {
+    "name": "Tuscaloosa",
+    "lat": 33.20984,
+    "lon": -87.56917,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Alabama"
+  },
+  "verona": {
+    "name": "Verona",
+    "lat": 45.43854,
+    "lon": 10.9938,
+    "country": "Italy",
+    "country_code": "IT",
+    "admin1": "Veneto"
+  },
+  "haryana": {
+    "name": "Haryāna",
+    "lat": 34.13691,
+    "lon": 71.92421,
+    "country": "Pakistan",
+    "country_code": "PK",
+    "admin1": "Khyber Pakhtunkhwa"
+  },
+  "jacksonville beach": {
+    "name": "Jacksonville Beach",
+    "lat": 30.29469,
+    "lon": -81.39314,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "johnson creek": {
+    "name": "Johnson Creek",
+    "lat": 43.07611,
+    "lon": -88.77427,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Wisconsin"
+  },
+  "omaha": {
+    "name": "Omaha",
+    "lat": 41.25626,
+    "lon": -95.94043,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Nebraska"
+  },
+  "nebraska": {
+    "name": "Nebraska",
+    "lat": 39.06366,
+    "lon": -85.45941,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Indiana"
+  },
+  "newport news": {
+    "name": "Newport News",
+    "lat": 36.98038,
+    "lon": -76.42975,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Virginia"
+  },
+  "ardmore": {
+    "name": "Ardmore",
+    "lat": 34.17426,
+    "lon": -97.14363,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oklahoma"
+  },
+  "tallahassee": {
+    "name": "Tallahassee",
+    "lat": 30.43826,
+    "lon": -84.28073,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "algonquin": {
+    "name": "Algonquin",
+    "lat": 42.16558,
+    "lon": -88.29425,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Illinois"
+  },
+  "carolina": {
+    "name": "Carolina",
+    "lat": 18.38078,
+    "lon": -65.95739,
+    "country": "",
+    "country_code": "PR",
+    "admin1": "Carolina"
+  },
+  "oakland": {
+    "name": "Oakland",
+    "lat": 37.80437,
+    "lon": -122.2708,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "reston": {
+    "name": "Reston",
+    "lat": 38.96872,
+    "lon": -77.3411,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Virginia"
+  },
+  "enterprise": {
+    "name": "Enterprise",
+    "lat": 45.42626,
+    "lon": -117.27878,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Oregon"
+  },
+  "irving": {
+    "name": "Irving",
+    "lat": 32.81402,
+    "lon": -96.94889,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "perth": {
+    "name": "Perth",
+    "lat": -31.95224,
+    "lon": 115.8614,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "new delhi": {
+    "name": "New Delhi",
+    "lat": 28.62137,
+    "lon": 77.2148,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "National Capital Territory of Delhi"
+  },
+  "delhi": {
+    "name": "Delhi",
+    "lat": 28.65195,
+    "lon": 77.23149,
+    "country": "India",
+    "country_code": "IN",
+    "admin1": "National Capital Territory of Delhi"
+  },
+  "cork": {
+    "name": "Cork",
+    "lat": 51.89797,
+    "lon": -8.47061,
+    "country": "Ireland",
+    "country_code": "IE",
+    "admin1": "Munster"
+  },
+  "munster": {
+    "name": "Münster",
+    "lat": 51.96236,
+    "lon": 7.62571,
+    "country": "Germany",
+    "country_code": "DE",
+    "admin1": "North Rhine-Westphalia"
+  },
+  "waregem": {
+    "name": "Waregem",
+    "lat": 50.88898,
+    "lon": 3.42756,
+    "country": "Belgium",
+    "country_code": "BE",
+    "admin1": "Flanders"
+  },
+  "flanders": {
+    "name": "Flanders",
+    "lat": 40.84565,
+    "lon": -74.69488,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New Jersey"
+  },
+  "belgium ()": {
+    "name": "België / Belgique / Belgien",
+    "lat": 50.6402809,
+    "lon": 4.6667145,
+    "country": "België / Belgique / Belgien",
+    "country_code": "BE"
+  },
+  "state of sao paulo": {
+    "name": "Privada Sao Paulo",
+    "lat": 19.5873645,
+    "lon": -99.0121288,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "brazil ()": {
+    "name": "Brasil",
+    "lat": -10.3333333,
+    "lon": -53.2,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "diegem": {
+    "name": "Diegem",
+    "lat": 50.89727,
+    "lon": 4.43354,
+    "country": "Belgium",
+    "country_code": "BE",
+    "admin1": "Flanders"
+  },
+  "hungary ()": {
+    "name": "Magyarország",
+    "lat": 47.1817585,
+    "lon": 19.5060937,
+    "country": "Magyarország",
+    "country_code": "HU"
+  },
+  "canberra": {
+    "name": "Canberra",
+    "lat": -35.28346,
+    "lon": 149.12807,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Australian Capital Territory"
+  },
+  "long beach": {
+    "name": "Long Beach",
+    "lat": 33.76696,
+    "lon": -118.18923,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "mandaluyong city": {
+    "name": "Mandaluyong",
+    "lat": 14.5832,
+    "lon": 121.0409,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "National Capital Region"
+  },
+  "leusden": {
+    "name": "Leusden",
+    "lat": 52.1325,
+    "lon": 5.43194,
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "admin1": "Utrecht"
+  },
+  "barstow": {
+    "name": "Barstow",
+    "lat": 34.89859,
+    "lon": -117.02282,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "California"
+  },
+  "kings mountain": {
+    "name": "Kings Mountain",
+    "lat": 35.24513,
+    "lon": -81.34119,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "North Carolina"
+  },
+  "sioux falls": {
+    "name": "Sioux Falls",
+    "lat": 43.54369,
+    "lon": -96.72796,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "South Dakota"
+  },
+  "south dakota": {
+    "name": "South Dakota Park",
+    "lat": 45.41746,
+    "lon": -96.7009,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "South Dakota"
+  },
+  "edison": {
+    "name": "Edison",
+    "lat": 40.51872,
+    "lon": -74.4121,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "New Jersey"
+  },
+  "winnipeg": {
+    "name": "Winnipeg",
+    "lat": 49.8844,
+    "lon": -97.14704,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Manitoba"
+  },
+  "manitoba": {
+    "name": "Manitoba",
+    "lat": -30.57799,
+    "lon": 26.65261,
+    "country": "South Africa",
+    "country_code": "ZA",
+    "admin1": "Free State"
+  },
+  "east hartford": {
+    "name": "East Hartford",
+    "lat": 41.78232,
+    "lon": -72.61203,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Connecticut"
+  },
+  "halifax": {
+    "name": "Halifax",
+    "lat": 44.64269,
+    "lon": -63.57688,
+    "country": "Canada",
+    "country_code": "CA",
+    "admin1": "Nova Scotia"
+  },
+  "childress": {
+    "name": "Childress",
+    "lat": 34.42645,
+    "lon": -100.204,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "united kingdom": {
+    "name": "United Kingdom",
+    "lat": 54.75844,
+    "lon": -2.69531,
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "admin1": ""
+  },
+  "spain": {
+    "name": "Spain",
+    "lat": 40.0,
+    "lon": -4.0,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": ""
+  },
+  "brazil": {
+    "name": "Brazil",
+    "lat": -10.0,
+    "lon": -55.0,
+    "country": "Brazil",
+    "country_code": "BR",
+    "admin1": ""
+  },
+  "rensselaer": {
+    "name": "Rensselaer",
+    "lat": 40.9367,
+    "lon": -87.15086,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Indiana"
+  },
+  "wagga wagga": {
+    "name": "Wagga Wagga",
+    "lat": -28.33394,
+    "lon": 116.93523,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Western Australia"
+  },
+  "brisbane": {
+    "name": "Brisbane",
+    "lat": -27.46794,
+    "lon": 153.02809,
+    "country": "Australia",
+    "country_code": "AU",
+    "admin1": "Queensland"
+  },
+  "rhodes": {
+    "name": "Rhodes",
+    "lat": 36.43556,
+    "lon": 28.22199,
+    "country": "Greece",
+    "country_code": "GR",
+    "admin1": "South Aegean"
+  },
+  "center": {
+    "name": "Center",
+    "lat": 31.79545,
+    "lon": -94.17909,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Texas"
+  },
+  "quezon city": {
+    "name": "Quezon City",
+    "lat": 14.6488,
+    "lon": 121.0509,
+    "country": "Philippines",
+    "country_code": "PH",
+    "admin1": "National Capital Region"
+  },
+  "altamonte springs": {
+    "name": "Altamonte Springs",
+    "lat": 28.66111,
+    "lon": -81.36562,
+    "country": "United States",
+    "country_code": "US",
+    "admin1": "Florida"
+  },
+  "batam": {
+    "name": "Batam",
+    "lat": 1.14937,
+    "lon": 104.02491,
+    "country": "Indonesia",
+    "country_code": "ID",
+    "admin1": "Riau"
+  },
+  "riau": {
+    "name": "Riau",
+    "lat": -1.73506,
+    "lon": 105.86918,
+    "country": "Indonesia",
+    "country_code": "ID",
+    "admin1": "Bangka–Belitung Islands"
+  },
+  "getafe": {
+    "name": "Getafe",
+    "lat": 40.30571,
+    "lon": -3.73295,
+    "country": "Spain",
+    "country_code": "ES",
+    "admin1": "Madrid"
+  },
+  "chatellerault": {
+    "name": "Châtellerault",
+    "lat": 46.81705,
+    "lon": 0.54518,
+    "country": "France",
+    "country_code": "FR",
+    "admin1": "New Aquitaine"
+  },
+  "saint-denis": {
+    "name": "Saint-Denis",
+    "lat": -20.88231,
+    "lon": 55.4504,
+    "country": "",
+    "country_code": "RE",
+    "admin1": ""
+  },
+  "changshu": {
+    "name": "Changshu",
+    "lat": 31.64615,
+    "lon": 120.74221,
+    "country": "China",
+    "country_code": "CN",
+    "admin1": "Jiangsu"
+  },
+  "see details": {
+    "name": "Details zu den Seen, Schleswig-Holstein",
+    "lat": 53.5794611,
+    "lon": 10.7287596,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "capital region": {
+    "name": "Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest",
+    "lat": 50.8387951,
+    "lon": 4.3753041,
+    "country": "België / Belgique / Belgien",
+    "country_code": "BE"
+  },
+  "uttar pradesh": {
+    "name": "Uttar Pradesh",
+    "lat": 27.1303344,
+    "lon": 80.859666,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "papua new guinea ()": {
+    "name": "Papua New Guinea",
+    "lat": -5.6816069,
+    "lon": 144.2489081,
+    "country": "Papua Niugini",
+    "country_code": "PG"
+  },
+  "maryland": {
+    "name": "Maryland, England",
+    "lat": 51.5460606,
+    "lon": 0.0059594,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "jalisco": {
+    "name": "Jalisco",
+    "lat": 20.3333331,
+    "lon": -103.6666671,
+    "country": "México",
+    "country_code": "MX"
+  },
+  "buenos aires f.d.": {
+    "name": "Buenos Aires, Ciudad Autónoma de Buenos Aires",
+    "lat": -34.6095579,
+    "lon": -58.3887904,
+    "country": "Argentina",
+    "country_code": "AR"
+  },
+  "new zealand ()": {
+    "name": "New Zealand / Aotearoa",
+    "lat": -41.5000831,
+    "lon": 172.8344077,
+    "country": "New Zealand / Aotearoa",
+    "country_code": "NZ"
+  },
+  "state of berlin": {
+    "name": "Representation of the state of Berlin, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest",
+    "lat": 50.8442807,
+    "lon": 4.3863344,
+    "country": "België / Belgique / Belgien",
+    "country_code": "BE"
+  },
+  "gauteng": {
+    "name": "Gauteng",
+    "lat": -25.9363439,
+    "lon": 28.0813105,
+    "country": "South Africa",
+    "country_code": "ZA"
+  },
+  "riyadh region": {
+    "name": "منطقة الرياض",
+    "lat": 23.333333,
+    "lon": 45.333333,
+    "country": "السعودية",
+    "country_code": "SA"
+  },
+  "saudi arabia ()": {
+    "name": "Embassy of Saudi Arabia, England",
+    "lat": 51.5072885,
+    "lon": -0.1479214,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "louisiana": {
+    "name": "Louisiana",
+    "lat": 30.8703881,
+    "lon": -92.007126,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "lesser poland voivodeship": {
+    "name": "województwo małopolskie",
+    "lat": 49.790952,
+    "lon": 20.3793521,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "in ()": {
+    "name": "Zielona Góra, województwo lubuskie",
+    "lat": 51.9383777,
+    "lon": 15.5050408,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "canary islands": {
+    "name": "Canary Islands, Newfoundland and Labrador",
+    "lat": 47.4724503,
+    "lon": -54.3931102,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "delaware": {
+    "name": "Delaware",
+    "lat": 38.6920451,
+    "lon": -75.4013315,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "gelderland": {
+    "name": "Gelderland",
+    "lat": 52.1014041,
+    "lon": 5.9515701,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "northern territory": {
+    "name": "Northern Territory",
+    "lat": -19.8516101,
+    "lon": 133.2303375,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "pomerania": {
+    "name": "Pomerania, Región de la Araucanía",
+    "lat": -38.7360596,
+    "lon": -72.6497131,
+    "country": "Chile",
+    "country_code": "CL"
+  },
+  "western australia": {
+    "name": "Western Australia",
+    "lat": -25.2303005,
+    "lon": 121.0187246,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "wales": {
+    "name": "Wales, North Dakota",
+    "lat": 48.8958373,
+    "lon": -98.6026208,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "rhône-alpes": {
+    "name": "Rhône-Alpes, France métropolitaine",
+    "lat": 45.3175313,
+    "lon": 5.7212944,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "lithuania ()": {
+    "name": "Lietuva",
+    "lat": 55.3500003,
+    "lon": 23.7499997,
+    "country": "Lietuva",
+    "country_code": "LT"
+  },
+  "larnaka": {
+    "name": "Λάρνακα, Κύπρος",
+    "lat": 34.9236095,
+    "lon": 33.6236184,
+    "country": "Κύπρος - Kıbrıs",
+    "country_code": "CY"
+  },
+  "cyprus ()": {
+    "name": "Cyprus, England",
+    "lat": 51.5084776,
+    "lon": 0.0639692,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "central visayas": {
+    "name": "Central Visayas",
+    "lat": 10.4734504,
+    "lon": 123.8648083,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "kyiv city": {
+    "name": "Київська міська державна адміністрація",
+    "lat": 50.4462474,
+    "lon": 30.520873,
+    "country": "Україна",
+    "country_code": "UA"
+  },
+  "tas-sliema": {
+    "name": "Tas-Sliema",
+    "lat": 35.9127609,
+    "lon": 14.5020708,
+    "country": "Malta",
+    "country_code": "MT"
+  },
+  "malta ()": {
+    "name": "Malta",
+    "lat": 35.9311442,
+    "lon": 14.3951627,
+    "country": "Malta",
+    "country_code": "MT"
+  },
+  "hesse": {
+    "name": "Hessen",
+    "lat": 50.6080651,
+    "lon": 9.0284647,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "scotland": {
+    "name": "Alba / Scotland",
+    "lat": 56.7861112,
+    "lon": -4.1140518,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "brittany": {
+    "name": "Brittany, Louisiana",
+    "lat": 30.2121412,
+    "lon": -90.8814863,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "new aquitaine": {
+    "name": "Aquitaine Close, England",
+    "lat": 52.2523803,
+    "lon": -0.963772,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "auvergne-rhone-alpes": {
+    "name": "Auvergne-Rhône-Alpes",
+    "lat": 45.2968119,
+    "lon": 4.6604809,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "uusimaa": {
+    "name": "Uusimaa",
+    "lat": 60.2246684,
+    "lon": 25.1272631,
+    "country": "Suomi",
+    "country_code": "FI"
+  },
+  "greater poland": {
+    "name": "województwo wielkopolskie",
+    "lat": 52.1458506,
+    "lon": 17.397672,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "baden-wurttemberg": {
+    "name": "Baden-Württemberg",
+    "lat": 48.53775,
+    "lon": 9.041169,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "gyeonggi-do": {
+    "name": "경기도",
+    "lat": 37.2884675,
+    "lon": 127.0535231,
+    "country": "대한민국",
+    "country_code": "KR"
+  },
+  "rheinland-pfalz": {
+    "name": "Rheinland-Pfalz",
+    "lat": 49.9531599,
+    "lon": 7.310646,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "dolj": {
+    "name": "Dolj",
+    "lat": 44.2150123,
+    "lon": 23.669363,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "skåne": {
+    "name": "Skåne län",
+    "lat": 55.8472301,
+    "lon": 13.6339292,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "arkansas": {
+    "name": "Arkansas",
+    "lat": 35.2048883,
+    "lon": -92.4479108,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "shaanxi": {
+    "name": "陕西省",
+    "lat": 35.5895959,
+    "lon": 109.3013107,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "iceland ()": {
+    "name": "Ísland",
+    "lat": 64.9841821,
+    "lon": -18.1059013,
+    "country": "Ísland",
+    "country_code": "IS"
+  },
+  "alaska": {
+    "name": "Alaska",
+    "lat": 64.4459613,
+    "lon": -149.680909,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "pirkanmaa": {
+    "name": "Pirkanmaa",
+    "lat": 61.7174331,
+    "lon": 23.7157115,
+    "country": "Suomi",
+    "country_code": "FI"
+  },
+  "south moravian region": {
+    "name": "Jihomoravský kraj",
+    "lat": 49.1249179,
+    "lon": 16.6827716,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "anywhere": {
+    "name": "Anywhere",
+    "lat": 16.0392874,
+    "lon": 108.2220415,
+    "country": "Việt Nam",
+    "country_code": "VN"
+  },
+  "malta": {
+    "name": "Malta",
+    "lat": 35.9311442,
+    "lon": 14.3951627,
+    "country": "Malta",
+    "country_code": "MT"
+  },
+  "ukraine": {
+    "name": "Україна",
+    "lat": 49.4871968,
+    "lon": 31.2718321,
+    "country": "Україна",
+    "country_code": "UA"
+  },
+  "outremont": {
+    "name": "Outremont, Québec",
+    "lat": 45.5186167,
+    "lon": -73.6068856,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "île-de-france": {
+    "name": "Île-de-France",
+    "lat": 48.6443057,
+    "lon": 2.7537863,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "horsham": {
+    "name": "Horsham, England",
+    "lat": 51.0630273,
+    "lon": -0.3295028,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bucuresci": {
+    "name": "Bucureșci, Hunedoara",
+    "lat": 46.1281515,
+    "lon": 22.9031745,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "hunedoara county": {
+    "name": "Camping Countryside Retezat, Hunedoara",
+    "lat": 45.4821656,
+    "lon": 22.9204629,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "farragut": {
+    "name": "Farragut, Iowa",
+    "lat": 40.7192038,
+    "lon": -95.480941,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "são paulo": {
+    "name": "São Paulo",
+    "lat": -22.0702705,
+    "lon": -48.4333875,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "taiwan": {
+    "name": "臺灣",
+    "lat": 23.9739374,
+    "lon": 120.9820179,
+    "country": "臺灣",
+    "country_code": "TW"
+  },
+  "mazowieckie": {
+    "name": "województwo mazowieckie",
+    "lat": 52.5461934,
+    "lon": 21.2073404,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "multiple locations ()": null,
+  "zeeland": {
+    "name": "Zeeland",
+    "lat": 51.4162975,
+    "lon": 3.7028061,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "lesser poland": {
+    "name": "województwo małopolskie",
+    "lat": 49.790952,
+    "lon": 20.3793521,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "verdun": {
+    "name": "Verdun, Catalunya",
+    "lat": 41.4429839,
+    "lon": 2.175724,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "utrecht ()": {
+    "name": "Utrecht",
+    "lat": 52.0907006,
+    "lon": 5.1215634,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "new york city": {
+    "name": "New York City Ballet, NY",
+    "lat": 40.7719065,
+    "lon": -73.9837608,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "multiple locations": null,
+  "multiple locations united states ()": {
+    "name": "Locations, Hawaii",
+    "lat": 21.2785357,
+    "lon": -157.8141693,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "utrecht": {
+    "name": "Utrecht",
+    "lat": 52.0907006,
+    "lon": 5.1215634,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "roosendaal": {
+    "name": "Roosendaal, Noord-Brabant",
+    "lat": 51.5331484,
+    "lon": 4.4561276,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "minhang": {
+    "name": "闵行区, 上海市",
+    "lat": 31.1147666,
+    "lon": 121.3769429,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "moerdijk": {
+    "name": "Moerdijk, Noord-Brabant",
+    "lat": 51.6627723,
+    "lon": 4.5255922,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "greater lakeburn": {
+    "name": "Grand-Brûlis-du-Lac / Greater Lakeburn, New Brunswick;Nouveau-Brunswick",
+    "lat": 46.0798387,
+    "lon": -64.6609832,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "new brunswick": {
+    "name": "New Brunswick, New Jersey",
+    "lat": 40.4936119,
+    "lon": -74.4436416,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "multiple locations czech republic ()": null,
+  "multiple locations japan ()": {
+    "name": "アニメ聖地巡礼発祥の地, 長野県",
+    "lat": 35.69497,
+    "lon": 137.9326529,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "multiple locations canada ()": {
+    "name": "Locations, Québec",
+    "lat": 45.4193308,
+    "lon": -72.7242903,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "fischbach": {
+    "name": "Fischbach, Rheinland-Pfalz",
+    "lat": 49.7436099,
+    "lon": 7.3955794,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "poland": {
+    "name": "Poland, Ohio",
+    "lat": 41.024226,
+    "lon": -80.614795,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "auvergne-rhône-alpes": {
+    "name": "Auvergne-Rhône-Alpes",
+    "lat": 45.2968119,
+    "lon": 4.6604809,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "can-(bc-vancouver area)": {
+    "name": "Vancouver Quadra, British Columbia",
+    "lat": 49.2450833,
+    "lon": -123.2038821,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "porto alegre": {
+    "name": "Porto Alegre, Rio Grande do Sul",
+    "lat": -30.0324999,
+    "lon": -51.2303767,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "rio grande do sul": {
+    "name": "Rio Grande do Sul",
+    "lat": -29.8425284,
+    "lon": -53.7680577,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "golden": {
+    "name": "Golden, Colorado",
+    "lat": 39.7546349,
+    "lon": -105.22058,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "gent": {
+    "name": "Gent, Oost-Vlaanderen",
+    "lat": 51.0538286,
+    "lon": 3.7250121,
+    "country": "België / Belgique / Belgien",
+    "country_code": "BE"
+  },
+  "yerevan": {
+    "name": "Երևան",
+    "lat": 40.1777112,
+    "lon": 44.5126233,
+    "country": "Հայաստան",
+    "country_code": "AM"
+  },
+  "armenia ()": {
+    "name": "Հայաստան",
+    "lat": 40.7696272,
+    "lon": 44.6736646,
+    "country": "Հայաստան",
+    "country_code": "AM"
+  },
+  "markham": {
+    "name": "Markham, Cymru / Wales",
+    "lat": 51.7043711,
+    "lon": -3.2063208,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "south moravian": {
+    "name": "Jihomoravský kraj",
+    "lat": 49.1249179,
+    "lon": 16.6827716,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "any": {
+    "name": "Any-Martin-Rieux, Hauts-de-France",
+    "lat": 49.8807927,
+    "lon": 4.2210872,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "montréal": {
+    "name": "Montréal, Québec",
+    "lat": 45.5031824,
+    "lon": -73.5698065,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "qc": {
+    "name": "Québec",
+    "lat": 52.4760892,
+    "lon": -71.8258668,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "ca ()": {
+    "name": "Cà Mau",
+    "lat": 9.0180177,
+    "lon": 105.0869724,
+    "country": "Việt Nam",
+    "country_code": "VN"
+  },
+  "chaoyang": {
+    "name": "朝阳市, 辽宁省",
+    "lat": 41.5754767,
+    "lon": 120.4390738,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "liaoning": {
+    "name": "Liaoning, San Martín",
+    "lat": -5.992974,
+    "lon": -77.2736692,
+    "country": "Perú",
+    "country_code": "PE"
+  },
+  "lower hutt": {
+    "name": "Lower Hutt, Wellington",
+    "lat": -41.2125751,
+    "lon": 174.9057626,
+    "country": "New Zealand / Aotearoa",
+    "country_code": "NZ"
+  },
+  "wellington region": {
+    "name": "Wellington Regional Hospital",
+    "lat": -41.3088882,
+    "lon": 174.7802407,
+    "country": "New Zealand / Aotearoa",
+    "country_code": "NZ"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "search": {
+    "keywords": [
+      "technical artist",
+      "tech artist",
+      "technical art",
+      "character technical artist",
+      "character tech artist",
+      "technical animator",
+      "tech anim",
+      "pipeline technical director",
+      "pipeline td",
+      "art td",
+      "art technical director",
+      "technical art director",
+      "tools artist",
+      "tools engineer",
+      "tools programmer",
+      "tools developer",
+      "pipeline engineer",
+      "pipeline developer",
+      "vfx technical artist",
+      "vfx tech artist",
+      "shader artist",
+      "shader engineer",
+      "shader programmer",
+      "shader developer",
+      "rendering engineer",
+      "rendering programmer",
+      "graphics engineer",
+      "graphics programmer",
+      "graphics technical artist",
+      "graphics tech artist",
+      "performance engineer",
+      "optimization engineer",
+      "lighting technical artist",
+      "technical lighting artist",
+      "rigging artist",
+      "rigging technical artist",
+      "rigger",
+      "environment technical artist"
+    ],
+    "exclude_keywords": [
+      "unpaid",
+      "subsea",
+      "civil engineer",
+      "oil and gas",
+      "drilling"
+    ],
+    "location_rules": [
+      {
+        "id": "rule_remote_eu",
+        "enabled": true,
+        "mode": "remote",
+        "target": "Europe",
+        "max_distance_miles": null,
+        "description": "Remote in Europe"
+      },
+      {
+        "id": "rule_hybrid_london",
+        "enabled": true,
+        "mode": "hybrid",
+        "target": "London",
+        "max_distance_miles": 30,
+        "description": "Hybrid within 30 miles of London"
+      },
+      {
+        "id": "rule_onsite_cambridge",
+        "enabled": true,
+        "mode": "on_site",
+        "target": "Cambridge",
+        "max_distance_miles": 20,
+        "description": "On-site within 20 miles of Cambridge"
+      }
+    ],
+    "location_filter": [],
+    "remote_only": false,
+    "sources": {
+      "query_asgc": true,
+      "query_studios": true,
+      "query_aardvark": true,
+      "query_ingame": true,
+      "query_gibiz": true,
+      "query_workwithindies": true,
+      "query_datascope": true
+    }
+  },
+  "notifications": {
+    "windows_toast": true,
+    "discord_webhook_url": "",
+    "telegram": {
+      "enabled": false,
+      "bot_token": "",
+      "chat_id": ""
+    },
+    "slack_webhook_url": ""
+  },
+  "schedule": {
+    "enabled": true,
+    "times": [
+      "09:00",
+      "13:00",
+      "18:00"
+    ]
+  },
+  "database_file": "seen_jobs.json"
+}

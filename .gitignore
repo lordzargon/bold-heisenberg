@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# User configuration (users copy config.example.json -> config.json)
+config.json
+
+# Local runtime databases, scratch files & cache
+seen_jobs.json
+seen_career_jobs.json
+tech_artist_jobs.json
+tech_artist_roles_found.md
+active_uk_remote_roles.json
+gamesmap_progress.json
+scratch_*
+scratch/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
