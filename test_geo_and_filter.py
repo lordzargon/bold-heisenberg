@@ -110,6 +110,52 @@ def run_tests():
     asgc_job_d = {"title": "Tech Artist", "companyName": "USGames", "country": "United States", "locationType": "Remote"}
     assert job_monitor.matches_filters(asgc_job_d, config) == False
 
+    print("\n=== 6. Date Parsing & Normalization Test ===")
+    d_iso, ts_iso = web_app.parse_date_to_timestamp("2026-08-28T14:30:00Z")
+    d_epoch, ts_epoch = web_app.parse_date_to_timestamp(1788337723000)
+    d_str, ts_str = web_app.parse_date_to_timestamp("28 Aug 2026")
+    print(f"ISO parse: {d_iso}, ts: {ts_iso}")
+    print(f"Epoch ms parse: {d_epoch}, ts: {ts_epoch}")
+    print(f"Human date parse: {d_str}, ts: {ts_str}")
+    assert ts_iso > 0 and d_iso == "28 Aug 2026"
+    assert ts_epoch > 0
+    assert ts_str > 0 and d_str == "28 Aug 2026"
+
+    print("\n=== 7. Hybrid Workplace Recognition & Priority Test ===")
+    # Hybrid role in London with hybrid rule should display Hybrid badge and mode
+    job_h = {
+        "title": "Technical Artist (Hybrid)",
+        "company": "Rocksteady",
+        "location": "London, UK",
+        "hybrid": True,
+        "remote": False
+    }
+    match_h, _, loc_h = web_app.filter_job(job_h, config)
+    print("Job H (Hybrid London):", match_h, loc_h)
+    assert match_h == True
+    assert loc_h.get("mode") == "hybrid"
+    assert "Hybrid" in loc_h.get("display_badge")
+
+    # Role with 'UK / Hybrid / Remote' evaluated with hybrid target should match hybrid
+    job_hr = {
+        "title": "Lead Technical Artist",
+        "company": "Frontier",
+        "location": "Cambridge, UK / Hybrid / Remote",
+        "hybrid": True,
+        "remote": True
+    }
+    match_hr, _, loc_hr = web_app.filter_job(job_hr, config)
+    print("Job HR (Cambridge Hybrid/Remote):", match_hr, loc_hr)
+    assert match_hr == True
+    assert loc_hr.get("mode") == "hybrid"
+    assert "Hybrid" in loc_hr.get("display_badge")
+
+    # Fallback when no location rules configured:
+    _, fb_hybrid = geo_utils.evaluate_location_rules({"title": "Tech Artist (Hybrid)", "location": "London"})
+    print("Fallback Hybrid Badge:", fb_hybrid)
+    assert fb_hybrid.get("mode") == "hybrid"
+    assert "Hybrid" in fb_hybrid.get("display_badge")
+
     print("\n[ALL TESTS PASSED SUCCESSFULLY!]")
 
 if __name__ == "__main__":

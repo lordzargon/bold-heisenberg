@@ -6385,5 +6385,860 @@
     "lon": 174.7802407,
     "country": "New Zealand / Aotearoa",
     "country_code": "NZ"
+  },
+  "multiple locations united states": {
+    "name": "Locations, Hawaii",
+    "lat": 21.2785357,
+    "lon": -157.8141693,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "multiple locations czech republic": null,
+  "multiple locations japan": {
+    "name": "アニメ聖地巡礼発祥の地, 長野県",
+    "lat": 35.69497,
+    "lon": 137.9326529,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "multiple locations canada": {
+    "name": "Locations, Québec",
+    "lat": 45.4193308,
+    "lon": -72.7242903,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "can-remote(bc-vancouver area) canada": {
+    "name": "Integrated Remote Sensing Studio, BC",
+    "lat": 49.2606277,
+    "lon": -123.2485749,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "can-remote(bc-vancouver area)": {
+    "name": "Integrated Remote Sensing Studio, BC",
+    "lat": 49.2606277,
+    "lon": -123.2485749,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "las palmas de gran canaria spain": {
+    "name": "Las Palmas de Gran Canaria, Canarias",
+    "lat": 28.1288694,
+    "lon": -15.4349015,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "las palmas de gran canaria": {
+    "name": "Las Palmas de Gran Canaria, Canarias",
+    "lat": 28.1288694,
+    "lon": -15.4349015,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "letchworth garden city united kingdom": {
+    "name": "Letchworth Garden City, England",
+    "lat": 51.9803536,
+    "lon": -0.2289056,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "letchworth garden city": {
+    "name": "Letchworth Garden City, England",
+    "lat": 51.9803536,
+    "lon": -0.2289056,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "nicosia cyprus": {
+    "name": "Λευκωσία - Lefkoşa, Κύπρος",
+    "lat": 35.1746503,
+    "lon": 33.3638783,
+    "country": "Κύπρος - Kıbrıs",
+    "country_code": "CY"
+  },
+  "nicosia": {
+    "name": "Λευκωσία - Lefkoşa, Κύπρος",
+    "lat": 35.1746503,
+    "lon": 33.3638783,
+    "country": "Κύπρος - Kıbrıs",
+    "country_code": "CY"
+  },
+  "redwood city united states": {
+    "name": "Redwood City, California",
+    "lat": 37.4863239,
+    "lon": -122.232523,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "redwood city": {
+    "name": "Redwood City, California",
+    "lat": 37.4863239,
+    "lon": -122.232523,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "tilburg netherlands": {
+    "name": "Tilburg, Noord-Brabant",
+    "lat": 51.5856185,
+    "lon": 5.0660616,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "tilburg": {
+    "name": "Tilburg, Noord-Brabant",
+    "lat": 51.5856185,
+    "lon": 5.0660616,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "stirling united kingdom": {
+    "name": "Stirling, Alba / Scotland",
+    "lat": 56.1181242,
+    "lon": -3.9360012,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "stirling": {
+    "name": "Stirling, Alba / Scotland",
+    "lat": 56.1181242,
+    "lon": -3.9360012,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "multiple locations united kingdom": {
+    "name": "City Locations, England",
+    "lat": 51.4290866,
+    "lon": -0.1588518,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "blank multiple locations": {
+    "name": "Black Star Multiple Mix, Ontario",
+    "lat": 43.7038488,
+    "lon": -79.5038478,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "blank": {
+    "name": "Black Star Multiple Mix, Ontario",
+    "lat": 43.7038488,
+    "lon": -79.5038478,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "longueuil canada": {
+    "name": "Longueuil, Québec",
+    "lat": 45.521906,
+    "lon": -73.4644578,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "longueuil": {
+    "name": "Longueuil, Québec",
+    "lat": 45.521906,
+    "lon": -73.4644578,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "cockeysville united states": {
+    "name": "Cockeysville, Maryland",
+    "lat": 39.481861,
+    "lon": -76.6441816,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "cockeysville": {
+    "name": "Cockeysville, Maryland",
+    "lat": 39.481861,
+    "lon": -76.6441816,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "uppsala sweden": {
+    "name": "Uppsala, Uppsala län",
+    "lat": 59.8586126,
+    "lon": 17.6387436,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "uppsala": {
+    "name": "Uppsala, Uppsala län",
+    "lat": 59.8586126,
+    "lon": 17.6387436,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "wroclaw poland": {
+    "name": "Wrocław, województwo dolnośląskie",
+    "lat": 51.1089776,
+    "lon": 17.0326689,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "wroclaw": {
+    "name": "Wrocław, województwo dolnośląskie",
+    "lat": 51.1089776,
+    "lon": 17.0326689,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "petaluma united states": {
+    "name": "Petaluma, California",
+    "lat": 38.2325829,
+    "lon": -122.636465,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "petaluma": {
+    "name": "Petaluma, California",
+    "lat": 38.2325829,
+    "lon": -122.636465,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "foster city united states": {
+    "name": "Foster City, California",
+    "lat": 37.5600336,
+    "lon": -122.2688522,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "foster city": {
+    "name": "Foster City, California",
+    "lat": 37.5600336,
+    "lon": -122.2688522,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "winston-salem united states": {
+    "name": "Winston-Salem, North Carolina",
+    "lat": 36.0998131,
+    "lon": -80.2440518,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "winston-salem": {
+    "name": "Winston-Salem, North Carolina",
+    "lat": 36.0998131,
+    "lon": -80.2440518,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "emeryville united states": {
+    "name": "Emeryville, California",
+    "lat": 37.8314089,
+    "lon": -122.2865266,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "emeryville": {
+    "name": "Emeryville, California",
+    "lat": 37.8314089,
+    "lon": -122.2865266,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "konan japan": {
+    "name": "江南市, 愛知県",
+    "lat": 35.344508,
+    "lon": 136.866742,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "konan": {
+    "name": "江南市, 愛知県",
+    "lat": 35.344508,
+    "lon": 136.866742,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "auburn hills united states": {
+    "name": "Auburn Hills, Michigan",
+    "lat": 42.6875323,
+    "lon": -83.2341028,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "auburn hills": {
+    "name": "Auburn Hills, Michigan",
+    "lat": 42.6875323,
+    "lon": -83.2341028,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "costa mesa united states": {
+    "name": "Costa Mesa, California",
+    "lat": 33.6633386,
+    "lon": -117.903317,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "costa mesa": {
+    "name": "Costa Mesa, California",
+    "lat": 33.6633386,
+    "lon": -117.903317,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ashville united states": {
+    "name": "Ashville, Alabama",
+    "lat": 33.8369216,
+    "lon": -86.2549799,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ashville": {
+    "name": "Ashville, Alabama",
+    "lat": 33.8369216,
+    "lon": -86.2549799,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "longmont colombia": {
+    "name": "Columbia Drive, Colorado",
+    "lat": 40.1833198,
+    "lon": -105.1529955,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "longmont": {
+    "name": "Columbia Drive, Colorado",
+    "lat": 40.1833198,
+    "lon": -105.1529955,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "spring united states": {
+    "name": "Spring, Texas",
+    "lat": 30.0795707,
+    "lon": -95.4187924,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "spring": {
+    "name": "Spring, Texas",
+    "lat": 30.0795707,
+    "lon": -95.4187924,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "woking united kingdom": {
+    "name": "Woking, England",
+    "lat": 51.3201891,
+    "lon": -0.5564726,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "woking": {
+    "name": "Woking, England",
+    "lat": 51.3201891,
+    "lon": -0.5564726,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "silverstone united kingdom": {
+    "name": "Silverstone, England",
+    "lat": 52.0917705,
+    "lon": -1.0260194,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "silverstone": {
+    "name": "Silverstone, England",
+    "lat": 52.0917705,
+    "lon": -1.0260194,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "mclean united states": {
+    "name": "McLean, Illinois",
+    "lat": 40.4631789,
+    "lon": -88.8196613,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "mclean": {
+    "name": "McLean, Illinois",
+    "lat": 40.4631789,
+    "lon": -88.8196613,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "schiller park united states": {
+    "name": "Schiller Park, Illinois",
+    "lat": 41.9558637,
+    "lon": -87.8708965,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "schiller park": {
+    "name": "Schiller Park, Illinois",
+    "lat": 41.9558637,
+    "lon": -87.8708965,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "rennes france": {
+    "name": "Rennes, Bretagne",
+    "lat": 48.1113387,
+    "lon": -1.6800198,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "rennes": {
+    "name": "Rennes, Bretagne",
+    "lat": 48.1113387,
+    "lon": -1.6800198,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "hiroshima": {
+    "name": "広島市, 広島県",
+    "lat": 34.3917241,
+    "lon": 132.4517589,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "hinwil": {
+    "name": "Hinwil, Zürich",
+    "lat": 47.3015316,
+    "lon": 8.8419423,
+    "country": "Schweiz/Suisse/Svizzera/Svizra",
+    "country_code": "CH"
+  },
+  "aichi": {
+    "name": "Aichig, Bayern",
+    "lat": 50.1162637,
+    "lon": 11.4860934,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "toulouse": {
+    "name": "Toulouse, Occitanie",
+    "lat": 43.6044638,
+    "lon": 1.4442433,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "occitanie": {
+    "name": "Occitanie",
+    "lat": 43.6487851,
+    "lon": 2.3435684,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "stratford": {
+    "name": "Stratford, England",
+    "lat": 51.5406878,
+    "lon": 0.0016208,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "tunisia ()": {
+    "name": "Embassy of Tunisia, England",
+    "lat": 51.5013702,
+    "lon": -0.1740927,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "london ()": {
+    "name": "London, England",
+    "lat": 51.5074456,
+    "lon": -0.1277653,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "larkspur": {
+    "name": "Larkspur, California",
+    "lat": 37.9340915,
+    "lon": -122.5352539,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "sequeira": {
+    "name": "Sequeira, Braga",
+    "lat": 41.5269342,
+    "lon": -8.472196,
+    "country": "Portugal",
+    "country_code": "PT"
+  },
+  "fitzroy": {
+    "name": "Fitzroy, Victoria",
+    "lat": -37.8010382,
+    "lon": 144.9792611,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "australia (unknown)": {
+    "name": "Unknown Gully, Queensland",
+    "lat": -27.4078834,
+    "lon": 148.7184786,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "poland (unknown)": {
+    "name": "Grób Nieznanego Żołnierza, województwo mazowieckie",
+    "lat": 52.2409328,
+    "lon": 21.0113096,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "china (unknown)": {
+    "name": "China (Unknown), 江苏省",
+    "lat": 33.3568136,
+    "lon": 120.1260018,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "united states (unknown)": {
+    "name": "Tomb of the Unknown Soldier, VA",
+    "lat": 38.8763864,
+    "lon": -77.072252,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "united kingdom (unknown)": {
+    "name": "Unknown Ledge, England",
+    "lat": 50.5911666,
+    "lon": -1.9793573,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "france (unknown)": {
+    "name": "Tombe du Soldat inconnu, Île-de-France",
+    "lat": 48.8737505,
+    "lon": 2.295133,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "canada (unknown)": {
+    "name": "Tomb of the Unknown Soldier, Ontario",
+    "lat": 45.423945,
+    "lon": -75.6954344,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "pangyo": {
+    "name": "판교, 경기도",
+    "lat": 37.3947237,
+    "lon": 127.1115312,
+    "country": "대한민국",
+    "country_code": "KR"
+  },
+  "south korea (unknown)": {
+    "name": "대한독립군 무명용사위령탑",
+    "lat": 37.5004732,
+    "lon": 126.967844,
+    "country": "대한민국",
+    "country_code": "KR"
+  },
+  "cest ± 2 hours": {
+    "name": "Small Pool follow the track at the water 2 hours to the top, Perak",
+    "lat": 4.7098419,
+    "lon": 101.0689465,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "relocate": {
+    "name": "Relocated pathway, England",
+    "lat": 50.9673225,
+    "lon": -2.5932866,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "de": {
+    "name": "Deutschland",
+    "lat": 51.1638175,
+    "lon": 10.4478313,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "bloomfield united states": {
+    "name": "Bloomfield, Iowa",
+    "lat": 40.7511569,
+    "lon": -92.4145672,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "bloomfield": {
+    "name": "Bloomfield, Iowa",
+    "lat": 40.7511569,
+    "lon": -92.4145672,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "bloomington united states": {
+    "name": "Bloomington, Indiana",
+    "lat": 39.1670396,
+    "lon": -86.5342881,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "bloomington": {
+    "name": "Bloomington, Indiana",
+    "lat": 39.1670396,
+    "lon": -86.5342881,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "macquarie park australia": {
+    "name": "Macquarie Park, New South Wales",
+    "lat": -33.7814961,
+    "lon": 151.1256747,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "macquarie park": {
+    "name": "Macquarie Park, New South Wales",
+    "lat": -33.7814961,
+    "lon": 151.1256747,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "cremorne australia": {
+    "name": "Cremorne, New South Wales",
+    "lat": -33.8260081,
+    "lon": 151.2254326,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "cremorne": {
+    "name": "Cremorne, New South Wales",
+    "lat": -33.8260081,
+    "lon": 151.2254326,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "rockingham australia": {
+    "name": "Rockingham, Western Australia",
+    "lat": -32.2851899,
+    "lon": 115.7426524,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "rockingham": {
+    "name": "Rockingham, Western Australia",
+    "lat": -32.2851899,
+    "lon": 115.7426524,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "newman australia": {
+    "name": "Newman, Western Australia",
+    "lat": -23.357394,
+    "lon": 119.7331631,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "newman": {
+    "name": "Newman, Western Australia",
+    "lat": -23.357394,
+    "lon": 119.7331631,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "st albans united kingdom": {
+    "name": "St Albans, England",
+    "lat": 51.753051,
+    "lon": -0.3379675,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "st albans": {
+    "name": "St Albans, England",
+    "lat": 51.753051,
+    "lon": -0.3379675,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "banja luka bosnia and herzegovina": {
+    "name": "Banja Luka, Република Српска / Republika Srpska",
+    "lat": 44.7720845,
+    "lon": 17.1917651,
+    "country": "Bosna i Hercegovina / Босна и Херцеговина",
+    "country_code": "BA"
+  },
+  "banja luka": {
+    "name": "Banja Luka, Република Српска / Republika Srpska",
+    "lat": 44.7720845,
+    "lon": 17.1917651,
+    "country": "Bosna i Hercegovina / Босна и Херцеговина",
+    "country_code": "BA"
+  },
+  "aberdeen united states": {
+    "name": "Aberdeen, South Dakota",
+    "lat": 45.4649805,
+    "lon": -98.487813,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "aberdeen": {
+    "name": "Aberdeen, South Dakota",
+    "lat": 45.4649805,
+    "lon": -98.487813,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "multiple locations (unknown)": {
+    "name": "WW2 Auxiliary Unit Operational Base (precise location unknown), England",
+    "lat": 50.36915,
+    "lon": -4.4574392,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "denmark (unknown)": {
+    "name": "unknown, Western Australia",
+    "lat": -35.0173737,
+    "lon": 117.6745553,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "maine": {
+    "name": "Maine",
+    "lat": 45.709097,
+    "lon": -68.8590201,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "limassol": {
+    "name": "Limassol, England",
+    "lat": 51.6390703,
+    "lon": -0.047921,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ireland": {
+    "name": "Ireland, England",
+    "lat": 52.0600343,
+    "lon": -0.347478,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ireland (unknown)": {
+    "name": "Unknown Destination, Dublin 7",
+    "lat": 53.3666683,
+    "lon": -6.291775,
+    "country": "Éire / Ireland",
+    "country_code": "IE"
+  },
+  "united states": {
+    "name": "United States",
+    "lat": 39.7837304,
+    "lon": -100.445882,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "spain (unknown)": {
+    "name": "(unknown), Illes Balears",
+    "lat": 39.543762,
+    "lon": 2.7237202,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "hungary": {
+    "name": "Magyarország",
+    "lat": 47.1817585,
+    "lon": 19.5060937,
+    "country": "Magyarország",
+    "country_code": "HU"
+  },
+  "hungary (unknown)": {
+    "name": "Ismeretlen magyar katona sírja, Közép-Magyarország",
+    "lat": 47.4706329,
+    "lon": 19.2190331,
+    "country": "Magyarország",
+    "country_code": "HU"
+  },
+  "india (unknown)": {
+    "name": "Unknown, Madhya Pradesh",
+    "lat": 24.377802,
+    "lon": 80.7963558,
+    "country": "India",
+    "country_code": "IN"
+  },
+  "san francisco (unknown)": {
+    "name": "Unknown Soldiers, California",
+    "lat": 37.8000725,
+    "lon": -122.4650263,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "netherlands (unknown)": {
+    "name": "Internationaal monument voor het onbekende kind, Gelderland",
+    "lat": 52.0337462,
+    "lon": 5.9313729,
+    "country": "Nederland",
+    "country_code": "NL"
+  },
+  "south korea": {
+    "name": "대한민국",
+    "lat": 36.638392,
+    "lon": 127.6961188,
+    "country": "대한민국",
+    "country_code": "KR"
+  },
+  "srpska": {
+    "name": "Srpska, Opština Zeta",
+    "lat": 42.3742561,
+    "lon": 19.2181165,
+    "country": "Crna Gora / Црна Гора",
+    "country_code": "ME"
+  },
+  "bosnia and herzegovina ()": {
+    "name": "Bosna i Hercegovina",
+    "lat": 44.3053476,
+    "lon": 17.5961467,
+    "country": "Bosna i Hercegovina / Босна и Херцеговина",
+    "country_code": "BA"
+  },
+  "multiple locations united states (unknown)": {
+    "name": "Carmelite Monastery Cemetery (Exact Location Unknown), Georgia",
+    "lat": 31.937025,
+    "lon": -81.1545654,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "canada": {
+    "name": "Canada",
+    "lat": 61.0666922,
+    "lon": -107.991707,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "denmark": {
+    "name": "Denmark, Maine",
+    "lat": 43.9707277,
+    "lon": -70.8035298,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "serbia (unknown)": {
+    "name": "Споменик Незнаном јунаку, Централна Србија",
+    "lat": 44.6890762,
+    "lon": 20.5159203,
+    "country": "Србија",
+    "country_code": "RS"
+  },
+  "malaysia (unknown)": {
+    "name": "Unknown, Kelantan",
+    "lat": 6.1170702,
+    "lon": 102.2746957,
+    "country": "Malaysia",
+    "country_code": "MY"
+  },
+  "sweden (unknown)": {
+    "name": "Unknown, Jämtlands län",
+    "lat": 64.3100266,
+    "lon": 15.1791103,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "uk": {
+    "name": "Україна",
+    "lat": 49.4871968,
+    "lon": 31.2718321,
+    "country": "Україна",
+    "country_code": "UA"
   }
 }

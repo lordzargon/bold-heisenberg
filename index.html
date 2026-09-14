@@ -616,6 +616,20 @@
             <svg class="w-3.5 h-3.5 text-theme-subtle absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
 
+          <!-- Sort Dropdown -->
+          <div class="flex items-center gap-1.5 bg-theme-bg/90 border border-theme-border rounded-xl px-2.5 py-1 shadow-inner">
+            <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+            <span class="text-[11px] text-theme-subtle font-heading font-medium">Sort:</span>
+            <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-white font-heading font-medium focus:outline-none cursor-pointer">
+              <option value="date_desc" class="bg-[#0e1422] text-white">Date (Newest first)</option>
+              <option value="date_asc" class="bg-[#0e1422] text-white">Date (Oldest first)</option>
+              <option value="company_asc" class="bg-[#0e1422] text-white">Company (A → Z)</option>
+              <option value="company_desc" class="bg-[#0e1422] text-white">Company (Z → A)</option>
+              <option value="title_asc" class="bg-[#0e1422] text-white">Role Title (A → Z)</option>
+              <option value="source_asc" class="bg-[#0e1422] text-white">Source</option>
+            </select>
+          </div>
+
           <!-- View Mode Toggle -->
           <div class="flex items-center rounded-xl bg-theme-bg/90 border border-theme-border p-1 shadow-inner">
             <button id="btnViewCards" onclick="setViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition">Cards</button>
@@ -728,11 +742,12 @@
         <table class="w-full text-left text-xs text-white">
           <thead class="bg-theme-surface text-theme-subtle font-heading text-[11px] uppercase tracking-wider border-b border-theme-border">
             <tr>
-              <th class="py-3 px-4 font-semibold">Role</th>
-              <th class="py-3 px-4 font-semibold">Studio</th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
               <th class="py-3 px-4 font-semibold">Discipline</th>
               <th class="py-3 px-4 font-semibold">Location</th>
-              <th class="py-3 px-4 font-semibold">Source</th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
               <th class="py-3 px-4 font-semibold">Keywords</th>
               <th class="py-3 px-4 text-right font-semibold">Action</th>
             </tr>
@@ -1698,6 +1713,84 @@
       filterResultsTable();
     }
 
+    let currentSortMode = 'date_desc';
+
+    function setSortByColumn(col) {
+      if (col === 'date') {
+        currentSortMode = currentSortMode === 'date_desc' ? 'date_asc' : 'date_desc';
+      } else if (col === 'company') {
+        currentSortMode = currentSortMode === 'company_asc' ? 'company_desc' : 'company_asc';
+      } else if (col === 'title') {
+        currentSortMode = currentSortMode === 'title_asc' ? 'title_desc' : 'title_asc';
+      } else if (col === 'source') {
+        currentSortMode = currentSortMode === 'source_asc' ? 'source_desc' : 'source_asc';
+      }
+      const select = document.getElementById('sortResultsSelect');
+      if (select) select.value = currentSortMode;
+      updateSortIndicators();
+      filterResultsTable();
+    }
+
+    function applySortAndFilter() {
+      const select = document.getElementById('sortResultsSelect');
+      if (select) currentSortMode = select.value;
+      updateSortIndicators();
+      filterResultsTable();
+    }
+
+    function updateSortIndicators() {
+      const cols = ['title', 'company', 'date', 'source'];
+      cols.forEach(c => {
+        const el = document.getElementById(`thSort_${c}`);
+        if (!el) return;
+        if (currentSortMode.startsWith(c)) {
+          el.innerText = currentSortMode.endsWith('asc') ? ' ▲' : ' ▼';
+          el.className = 'text-indigo-400 font-bold';
+        } else {
+          el.innerText = ' ↕';
+          el.className = 'text-theme-subtle';
+        }
+      });
+    }
+
+    function sortJobsList(jobs) {
+      const list = [...jobs];
+      list.sort((a, b) => {
+        if (currentSortMode === 'date_desc') {
+          const tsA = a.date_posted_ts || a.date_added_ts || 0;
+          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          if (tsB !== tsA) return tsB - tsA;
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'date_asc') {
+          const tsA = a.date_posted_ts || a.date_added_ts || 0;
+          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          if (tsA !== tsB) return tsA - tsB;
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'company_asc') {
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'company_desc') {
+          return (b.company || '').localeCompare(a.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'title_asc') {
+          return (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'title_desc') {
+          return (b.title || '').localeCompare(a.title || '');
+        }
+        if (currentSortMode === 'source_asc') {
+          return (a.source || '').localeCompare(b.source || '') || (a.company || '').localeCompare(b.company || '');
+        }
+        if (currentSortMode === 'source_desc') {
+          return (b.source || '').localeCompare(a.source || '') || (a.company || '').localeCompare(b.company || '');
+        }
+        return 0;
+      });
+      return list;
+    }
+
     function filterResultsTable() {
       const q = (document.getElementById('filterResultsInput').value || '').toLowerCase().trim();
       const filtered = allSearchResults.filter(j => {
@@ -1706,7 +1799,7 @@
           const jSrc = (j.source || '').toLowerCase();
           const targetSrc = currentSourceFilter.toLowerCase();
           if (targetSrc === 'direct studio') {
-            if (!['direct web', 'greenhouse', 'lever', 'ashby', 'workable'].some(s => jSrc.includes(s))) {
+            if (!['direct web', 'direct studio web', 'greenhouse', 'lever', 'ashby', 'workable'].some(s => jSrc.includes(s))) {
               return false;
             }
           } else if (!jSrc.includes(targetSrc) && !targetSrc.includes(jSrc)) {
@@ -1716,12 +1809,14 @@
 
         if (!q) return true;
         const locBadge = (j.location_match && j.location_match.display_badge) || '';
-        const text = `${j.title} ${j.company} ${j.department || ''} ${j.location} ${locBadge} ${j.source} ${(j.matched_keywords || []).join(' ')}`.toLowerCase();
+        const text = `${j.title} ${j.company} ${j.department || ''} ${j.location} ${locBadge} ${j.source} ${j.date_posted || ''} ${(j.matched_keywords || []).join(' ')}`.toLowerCase();
         return text.includes(q);
       });
 
-      renderCards(filtered);
-      renderTable(filtered);
+      const sorted = sortJobsList(filtered);
+
+      renderCards(sorted);
+      renderTable(sorted);
 
       if (currentViewMode === 'cards') {
         document.getElementById('resultsCardsGrid').classList.remove('hidden');
@@ -1745,19 +1840,26 @@
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
           let color = 'text-theme-subtle bg-theme-surface border-theme-border';
-          if (m === 'remote' || job.remote) {
-            color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-          } else if (m === 'hybrid') {
+          if (m === 'hybrid' || job.hybrid) {
             color = 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
+          } else if (m === 'remote' || job.remote) {
+            color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
           } else if (m === 'on_site') {
             color = 'text-purple-400 bg-purple-500/10 border-purple-500/20';
           }
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono border ${color}">${escapeHTML(job.location_match.display_badge)}</span>`;
+        } else if (job.hybrid) {
+          const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">Remote</span>`;
         } else {
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.location || 'On-site')}</span>`;
         }
+
+        // Date Posted / Discovered Badge
+        const dateDisp = job.date_posted || job.date_added || '';
+        const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-theme-subtle px-2 py-0.5 rounded-full bg-theme-surface border border-theme-border flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading font-medium border border-indigo-500/20">${escapeHTML(k)}</span>`).join('');
         
@@ -1770,7 +1872,7 @@
         card.innerHTML = `
           <div class="space-y-3">
             
-            <!-- Top bar: Studio Monogram + Source + Location -->
+            <!-- Top bar: Studio Monogram + Source + Badges -->
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr ${studioGrad} flex items-center justify-center text-white font-heading font-extrabold text-xs shadow-sm flex-shrink-0">
@@ -1782,6 +1884,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                ${dateBadge}
                 ${expBadge}
                 ${locBadge}
               </div>
@@ -1829,25 +1932,31 @@
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading border border-indigo-500/20 mr-1">${escapeHTML(k)}</span>`).join('');
 
-        let locTableDisplay = escapeHTML(job.location || 'Onsite');
+        let locTableDisplay = escapeHTML(job.location || 'On-site');
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
-          if (m === 'remote' || job.remote) {
-            locTableDisplay = `<span class="text-emerald-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
-          } else if (m === 'hybrid') {
+          if (m === 'hybrid' || job.hybrid) {
             locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
+          } else if (m === 'remote' || job.remote) {
+            locTableDisplay = `<span class="text-emerald-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else if (m === 'on_site') {
             locTableDisplay = `<span class="text-purple-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else {
             locTableDisplay = escapeHTML(job.location_match.display_badge);
           }
+        } else if (job.hybrid) {
+          const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
+          locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
           locTableDisplay = '<span class="text-emerald-400 font-mono">Remote</span>';
         }
 
+        const dateDisp = job.date_posted || job.date_added || '—';
+
         tr.innerHTML = `
           <td class="py-3 px-4 font-heading font-semibold text-white">${escapeHTML(job.title)}</td>
           <td class="py-3 px-4 text-theme-textSecondary">${escapeHTML(job.company)}</td>
+          <td class="py-3 px-4 text-theme-subtle font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
           <td class="py-3 px-4 text-theme-subtle">${escapeHTML(job.department || '—')}</td>
           <td class="py-3 px-4 text-theme-subtle">${locTableDisplay}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.source)}</span></td>
@@ -1870,8 +1979,8 @@
         btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
         btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
       } else {
-        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
         btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
+        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
       }
       filterResultsTable();
     }
@@ -1886,9 +1995,11 @@
     // --- Export Functions ---
     function exportCSV() {
       if (!allSearchResults.length) return showToast('No results to export', 'warning');
-      let csv = 'Title,Company,Department,Source,Location,Remote,URL\n';
+      let csv = 'Title,Company,Date Posted,Department,Source,Workplace,Location,URL\n';
       allSearchResults.forEach(j => {
-        csv += `"${(j.title || '').replace(/"/g, '""')}","${(j.company || '').replace(/"/g, '""')}","${(j.department || '').replace(/"/g, '""')}","${j.source}","${(j.location || '').replace(/"/g, '""')}",${j.remote ? 'Yes' : 'No'},"${j.url}"\n`;
+        const workplaceMode = j.hybrid ? 'Hybrid' : (j.remote ? 'Remote' : 'On-site');
+        const dateVal = j.date_posted || j.date_added || '';
+        csv += `"${(j.title || '').replace(/"/g, '""')}","${(j.company || '').replace(/"/g, '""')}","${dateVal}","${(j.department || '').replace(/"/g, '""')}","${j.source}","${workplaceMode}","${(j.location || '').replace(/"/g, '""')}","${j.url}"\n`;
       });
       downloadFile(csv, `gamedev_jobs_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
     }

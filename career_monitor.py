@@ -147,6 +147,47 @@ def save_seen_jobs(seen_ids):
     with open(SEEN_JOBS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
+def parse_date_to_timestamp(date_val):
+    if not date_val:
+        return "", 0.0
+    if isinstance(date_val, (int, float)):
+        ts = float(date_val)
+        if ts > 1e11:
+            ts = ts / 1000.0
+        try:
+            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            return "", 0.0
+    if not isinstance(date_val, str):
+        return "", 0.0
+    date_str = date_val.strip()
+    if not date_str:
+        return "", 0.0
+    if date_str.isdigit():
+        ts = float(date_str)
+        if ts > 1e11:
+            ts = ts / 1000.0
+        try:
+            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            pass
+    iso_clean = re.sub(r'(\.\d+)?(Z|[+-]\d{2}:\d{2})$', '', date_str)
+    formats = [
+        "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S",
+        "%d %b %Y", "%d %B %Y", "%b %d, %Y", "%B %d, %Y", "%d/%m/%Y", "%m/%d/%Y"
+    ]
+    for fmt in formats:
+        try:
+            target_str = iso_clean[:19] if "T" in fmt else iso_clean[:10] if fmt == "%Y-%m-%d" else date_str
+            dt = datetime.datetime.strptime(target_str, fmt)
+            ts = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            continue
+    return date_str, 0.0
+
 def fetch_greenhouse_jobs(board_token, company_name):
     """Fetches jobs via Greenhouse public JSON API"""
     api_url = f"https://boards-api.greenhouse.io/v1/boards/{board_token}/jobs"
@@ -155,15 +196,26 @@ def fetch_greenhouse_jobs(board_token, company_name):
         with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             jobs = []
+            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
             for j in data.get("jobs", []):
+                loc = (j.get("location", {}) or {}).get("name", "")
+                title = j.get("title", "").strip()
+                updated_raw = j.get("updated_at") or ""
+                disp_date, ts = parse_date_to_timestamp(updated_raw)
+                full_text = f"{title} {loc}".lower()
                 jobs.append({
                     "id": f"gh_{j.get('id')}",
-                    "title": j.get("title", "").strip(),
+                    "title": title,
                     "company": company_name,
-                    "location": (j.get("location", {}) or {}).get("name", ""),
+                    "location": loc,
+                    "hybrid": "hybrid" in full_text,
+                    "remote": "remote" in full_text,
                     "url": j.get("absolute_url", ""),
                     "department": ((j.get("departments") or [{}])[0]).get("name", ""),
                     "source": "Greenhouse",
+                    "date_posted": disp_date,
+                    "date_posted_ts": ts,
+                    "date_added_ts": now_ts,
                 })
             return jobs
     except Exception:
@@ -177,16 +229,28 @@ def fetch_lever_jobs(site_name, company_name):
         with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             jobs = []
+            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
             for j in data:
                 categories = j.get("categories", {}) or {}
+                loc = categories.get("location", "")
+                title = j.get("text", "").strip()
+                workplace_type = (categories.get("workplaceType") or "").lower()
+                created_raw = j.get("createdAt")
+                disp_date, ts = parse_date_to_timestamp(created_raw)
+                full_text = f"{title} {loc} {workplace_type}".lower()
                 jobs.append({
                     "id": f"lever_{j.get('id')}",
-                    "title": j.get("text", "").strip(),
+                    "title": title,
                     "company": company_name,
-                    "location": categories.get("location", ""),
+                    "location": loc,
+                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                    "remote": "remote" in full_text or workplace_type == "remote",
                     "url": j.get("hostedUrl", ""),
                     "department": categories.get("department", ""),
                     "source": "Lever",
+                    "date_posted": disp_date,
+                    "date_posted_ts": ts,
+                    "date_added_ts": now_ts,
                 })
             return jobs
     except Exception:
@@ -200,15 +264,27 @@ def fetch_ashby_jobs(org_name, company_name):
         with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             jobs = []
+            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
             for j in data.get("jobs", []):
+                loc = j.get("location", "")
+                title = j.get("title", "").strip()
+                pub_raw = j.get("publishedAt") or j.get("openedAt") or ""
+                disp_date, ts = parse_date_to_timestamp(pub_raw)
+                workplace_type = (j.get("workplaceType") or "").lower()
+                full_text = f"{title} {loc} {workplace_type}".lower()
                 jobs.append({
                     "id": f"ashby_{j.get('id')}",
-                    "title": j.get("title", "").strip(),
+                    "title": title,
                     "company": company_name,
-                    "location": j.get("location", ""),
+                    "location": loc,
+                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                    "remote": "remote" in full_text or workplace_type == "remote" or j.get("isRemote", False),
                     "url": j.get("jobUrl", ""),
                     "department": j.get("department", ""),
                     "source": "Ashby",
+                    "date_posted": disp_date,
+                    "date_posted_ts": ts,
+                    "date_added_ts": now_ts,
                 })
             return jobs
     except Exception:
@@ -222,17 +298,28 @@ def fetch_workable_jobs(account_slug, company_name):
         with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             jobs = []
+            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
             for j in data.get("jobs", []):
                 loc_parts = [j.get("city"), j.get("state"), j.get("country")]
                 loc_str = ", ".join([p for p in loc_parts if p])
+                title = j.get("title", "").strip()
+                created_raw = j.get("created_at") or j.get("published_on") or ""
+                disp_date, ts = parse_date_to_timestamp(created_raw)
+                workplace_type = (j.get("workplace_type") or "").lower()
+                full_text = f"{title} {loc_str} {workplace_type}".lower()
                 jobs.append({
                     "id": f"workable_{j.get('shortcode') or j.get('code')}",
-                    "title": j.get("title", "").strip(),
+                    "title": title,
                     "company": company_name,
                     "location": loc_str or "UK / Remote",
+                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                    "remote": j.get("telecommuting", False) or "remote" in full_text or workplace_type == "remote",
                     "url": j.get("url") or j.get("shortlink") or j.get("application_url", ""),
                     "department": j.get("department", ""),
                     "source": "Workable",
+                    "date_posted": disp_date,
+                    "date_posted_ts": ts,
+                    "date_added_ts": now_ts,
                 })
             return jobs
     except Exception:

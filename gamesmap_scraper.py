@@ -51,8 +51,17 @@ PARKED_DOMAIN_TERMS = [
     "parkingcrew.net",
     "bodis.com",
     "undeveloped.com",
+    "domainmanage.com",
+    "buydomains.com",
     "domain-for-sale",
     "buy this domain",
+    "domain-sold.php",
+    "squadhelp.com",
+    "atom.com",
+    "uniregistry.com",
+    "brandbucket.com",
+    "domain is for sale",
+    "this domain may be for sale",
 ]
 
 CAREER_PATH_CANDIDATES = [
@@ -63,10 +72,25 @@ CAREER_PATH_CANDIDATES = [
     "/join-us",
     "/join-us/",
     "/join",
+    "/join/",
     "/work-with-us",
+    "/work-with-us/",
     "/vacancies",
+    "/vacancies/",
+    "/come-join-us",
+    "/come-join-us/",
+    "/careers.html",
+    "/jobs.html",
+    "/join.html",
+    "/vacancies.html",
+    "/working-here",
+    "/working-here/",
+    "/opportunities",
+    "/opportunities/",
     "/about/careers",
+    "/about/jobs",
     "/open-roles",
+    "/open-positions",
 ]
 
 ATS_DOMAINS = [
@@ -85,6 +109,8 @@ ATS_DOMAINS = [
     "personio.com",
     "breezy.hr",
     "workable.com",
+    "jobvite.com",
+    "talos360",
 ]
 
 def get_polite_headers(referer=None):
@@ -411,8 +437,25 @@ def find_careers_page_on_site(homepage_url, html_content=None):
             resp = safe_request(candidate_url, timeout=5)
             if resp["status"] == 200 and resp["text"]:
                 t = resp["text"].lower()
-                if any(w in t for w in ["open roles", "open positions", "apply", "job", "career", "join our team", "vacancies"]):
-                    return candidate_url, "direct_path"
+                final_u = resp["url"].lower()
+                if not any(p in final_u for p in PARKED_DOMAIN_TERMS):
+                    if any(w in t for w in ["open roles", "open positions", "apply", "job", "career", "join our team", "vacancies", "we are hiring", "speculative"]):
+                        return resp["url"], "direct_path"
+        except Exception:
+            pass
+
+    # 4. Test common subdomains (careers.domain, jobs.domain)
+    root_domain = domain[4:] if domain.startswith("www.") else domain
+    for sub in ["careers", "jobs"]:
+        cand_sub = f"https://{sub}.{root_domain}"
+        try:
+            resp = safe_request(cand_sub, timeout=5)
+            if resp["status"] == 200 and resp["text"]:
+                t = resp["text"].lower()
+                final_u = resp["url"].lower()
+                if not any(p in final_u for p in PARKED_DOMAIN_TERMS):
+                    if any(w in t for w in ["open roles", "open positions", "apply", "job", "career", "vacancies", "join our team", "we are hiring"]):
+                        return resp["url"], "subdomain"
         except Exception:
             pass
 
@@ -505,6 +548,15 @@ def enrich_all_companies(companies_db, max_workers=6, max_companies=None):
     save_companies_db(companies_db)
     print(f"[✓] Completed enrichment. Total studios with careers pages: {len([c for c in companies_db.values() if c.get('careers_url')])}/{len(companies_db)}")
     return companies_db
+
+def enrich_existing_companies(companies_db=None, max_workers=6, max_companies=None):
+    """
+    Enriches existing companies in the database with websites and career pages.
+    If companies_db is not provided, loads from companies.json.
+    """
+    if companies_db is None:
+        companies_db = load_companies_db()
+    return enrich_all_companies(companies_db, max_workers=max_workers, max_companies=max_companies)
 
 if __name__ == "__main__":
     import argparse

@@ -365,12 +365,13 @@ def classify_job_workplace_mode(job):
     loc_type = (job.get("locationType") or "").lower()
     workplace_type = (job.get("workplaceType") or "").lower()
     is_remote_flag = bool(job.get("remote") or job.get("is_remote"))
+    is_hybrid_flag = bool(job.get("hybrid") or job.get("is_hybrid"))
 
     full_text = f"{title} {location} {department} {loc_type} {workplace_type}"
     modes = set()
 
-    # 1. Hybrid detection
-    if "hybrid" in full_text or "flexible" in full_text:
+    # 1. Hybrid detection (check flags, keyword 'hybrid', 'flexible', or 'part-remote')
+    if is_hybrid_flag or any(w in full_text for w in ["hybrid", "flexible", "part remote", "part-remote", "office/remote"]):
         modes.add("hybrid")
 
     # 2. Remote detection
@@ -380,13 +381,18 @@ def classify_job_workplace_mode(job):
     # 3. On-site detection
     if any(w in full_text for w in ["on-site", "onsite", "in-office", "in office", "office-based", "studio-based"]):
         modes.add("on_site")
+    elif "hybrid" in modes and location and location.strip().lower() not in ["remote", "worldwide", "anywhere"]:
+        # Hybrid roles with a physical location inherently include an on-site office component
+        modes.add("on_site")
     elif location and "remote" not in location:
         # If a physical city is mentioned without being remote-only
         modes.add("on_site")
 
     # Default fallback: if no mode explicitly detected
     if not modes:
-        if is_remote_flag:
+        if is_hybrid_flag:
+            modes.add("hybrid")
+        elif is_remote_flag:
             modes.add("remote")
         else:
             modes.add("on_site")
@@ -474,7 +480,27 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
     active_rules = [r for r in (location_rules or []) if r.get("enabled", True)]
     
     if active_rules:
-        for rule in active_rules:
+        # Sort rules so specific location/distance and hybrid rules evaluate before broad remote rules
+        def _rule_priority(r):
+            m = (r.get("mode") or "").lower()
+            has_target = bool((r.get("target") or "").strip())
+            has_dist = r.get("max_distance_miles") is not None
+            # Highest priority: Hybrid with target/distance, then On-site with target/dist, then other targeted, then broad
+            if m == "hybrid" and (has_target or has_dist):
+                return 0
+            if has_dist:
+                return 1
+            if has_target and m != "remote":
+                return 2
+            if m == "hybrid":
+                return 3
+            if has_target:
+                return 4
+            return 5
+
+        sorted_rules = sorted(active_rules, key=_rule_priority)
+
+        for rule in sorted_rules:
             rule_mode = (rule.get("mode") or "any").lower().replace("-", "_")
             rule_target = (rule.get("target") or "").strip()
             max_dist = rule.get("max_distance_miles")
@@ -488,7 +514,11 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
             if rule_mode == "any":
                 mode_matches = True
             elif rule_mode == "remote" and "remote" in job_modes:
-                mode_matches = True
+                # If role is exclusively hybrid/office and doesn't offer full remote, don't match broad remote
+                if "hybrid" in job_modes and not any(w in full_loc_context for w in ["remote", "wfh", "work from home", "anywhere"]):
+                    mode_matches = False
+                else:
+                    mode_matches = True
             elif rule_mode == "hybrid" and ("hybrid" in job_modes or "on_site" in job_modes):
                 # Many hybrid roles are tagged as hybrid or on-site with flexible office
                 mode_matches = "hybrid" in job_modes or ("remote" not in full_loc_context and "on_site" in job_modes)
@@ -501,10 +531,12 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
             # If rule is pure Remote (optionally constrained by region)
             if rule_mode == "remote":
                 if not rule_target or is_country_or_location_in_region(full_loc_context, rule_target):
-                    badge = f"Remote ({rule_target})" if rule_target else "Remote"
+                    is_hyb = "hybrid" in job_modes
+                    prefix = "Hybrid / Remote" if is_hyb else "Remote"
+                    badge = f"{prefix} ({rule_target})" if rule_target else prefix
                     return True, {
-                        "matched_rule": rule.get("description") or f"Remote ({rule_target or 'Anywhere'})",
-                        "mode": "remote",
+                        "matched_rule": rule.get("description") or f"{prefix} ({rule_target or 'Anywhere'})",
+                        "mode": "hybrid" if is_hyb else "remote",
                         "distance_miles": None,
                         "display_badge": badge
                     }
@@ -542,7 +574,7 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
                         badge = f"{mode_label} • {dist_rounded} mi from {target_geo['name']}"
                         return True, {
                             "matched_rule": rule.get("description") or f"{mode_label} within {max_dist} mi of {rule_target}",
-                            "mode": rule_mode,
+                            "mode": "hybrid" if "hybrid" in job_modes else rule_mode,
                             "distance_miles": dist_rounded,
                             "display_badge": badge
                         }
@@ -552,7 +584,7 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
                         mode_label = "Hybrid" if "hybrid" in job_modes else "On-site"
                         return True, {
                             "matched_rule": rule.get("description") or f"{mode_label} in {rule_target}",
-                            "mode": rule_mode,
+                            "mode": "hybrid" if "hybrid" in job_modes else rule_mode,
                             "distance_miles": None,
                             "display_badge": f"{mode_label} • {rule_target}"
                         }
@@ -561,7 +593,7 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
                 mode_label = "Hybrid" if "hybrid" in job_modes else ("Remote" if "remote" in job_modes else "On-site")
                 return True, {
                     "matched_rule": rule.get("description") or mode_label,
-                    "mode": rule_mode,
+                    "mode": "hybrid" if "hybrid" in job_modes else rule_mode,
                     "distance_miles": None,
                     "display_badge": mode_label
                 }
@@ -579,9 +611,11 @@ def evaluate_location_rules(job, location_rules=None, legacy_location_filter=Non
         if not any(loc in full_loc_context for loc in legacy_filter):
             return False, {}
 
+    mode_label = "Hybrid" if "hybrid" in job_modes else ("Remote" if "remote" in job_modes else "On-site")
+    mode_key = "hybrid" if "hybrid" in job_modes else ("remote" if "remote" in job_modes else "on_site")
     return True, {
         "matched_rule": "Default",
-        "mode": "any",
+        "mode": mode_key,
         "distance_miles": None,
-        "display_badge": "Remote" if "remote" in job_modes else (job_loc_str or "On-site")
+        "display_badge": mode_label if not job_loc_str else (f"{mode_label} • {job_loc_str}" if mode_label != "On-site" else job_loc_str)
     }

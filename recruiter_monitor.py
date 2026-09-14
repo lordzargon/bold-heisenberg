@@ -19,6 +19,7 @@ import socket
 import urllib.request
 import urllib.parse
 import urllib.error
+import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Ensure hard global socket timeout
@@ -46,6 +47,47 @@ def clean_html_text(text):
     text = re.sub(r'<[^>]+>', ' ', text)
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
+
+def parse_date_to_timestamp(date_val):
+    if not date_val:
+        return "", 0.0
+    if isinstance(date_val, (int, float)):
+        ts = float(date_val)
+        if ts > 1e11:
+            ts = ts / 1000.0
+        try:
+            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            return "", 0.0
+    if not isinstance(date_val, str):
+        return "", 0.0
+    date_str = date_val.strip()
+    if not date_str:
+        return "", 0.0
+    if date_str.isdigit():
+        ts = float(date_str)
+        if ts > 1e11:
+            ts = ts / 1000.0
+        try:
+            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            pass
+    iso_clean = re.sub(r'(\.\d+)?(Z|[+-]\d{2}:\d{2})$', '', date_str)
+    formats = [
+        "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S",
+        "%d %b %Y", "%d %B %Y", "%b %d, %Y", "%B %d, %Y", "%d/%m/%Y", "%m/%d/%Y"
+    ]
+    for fmt in formats:
+        try:
+            target_str = iso_clean[:19] if "T" in fmt else iso_clean[:10] if fmt == "%Y-%m-%d" else date_str
+            dt = datetime.datetime.strptime(target_str, fmt)
+            ts = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
+            return dt.strftime("%d %b %Y"), ts
+        except Exception:
+            continue
+    return date_str, 0.0
 
 # --- 1. Aardvark Swift ---
 
@@ -94,17 +136,29 @@ def fetch_aardvark_swift_jobs(max_pages=5):
             desc_match = re.search(r"<p class='job-description'>\s*(.*?)\s*</p>", content[m.end():m.end()+800], re.DOTALL)
             desc = clean_html_text(desc_match.group(1)) if desc_match else ""
 
-            full_url = "https://www.aswift.com" + link if link.startswith("/") else link
+            now_dt = datetime.datetime.now(datetime.timezone.utc)
+            now_ts = now_dt.timestamp()
+            now_disp = now_dt.strftime("%d %b %Y")
+            loc_clean = loc or "UK / Hybrid / Remote"
+            full_text = f"{title} {loc_clean}".lower()
+            is_hybrid = "hybrid" in full_text
+            is_remote = "remote" in full_text
 
             all_jobs.append({
                 "id": job_id,
                 "title": title,
                 "company": "Aardvark Swift",
-                "location": loc or "UK / Hybrid / Remote",
+                "location": loc_clean,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
                 "url": full_url,
                 "department": "Games Recruitment",
                 "description": desc,
-                "source": "Aardvark Swift"
+                "source": "Aardvark Swift",
+                "date_posted": "",
+                "date_posted_ts": 0.0,
+                "date_added": now_disp,
+                "date_added_ts": now_ts,
             })
 
     return all_jobs
@@ -150,14 +204,28 @@ def fetch_ingame_jobs(max_pages=5):
                 continue
             seen_ids.add(job_id)
 
+            now_dt = datetime.datetime.now(datetime.timezone.utc)
+            now_ts = now_dt.timestamp()
+            now_disp = now_dt.strftime("%d %b %Y")
+            loc_clean = location or "Remote / Worldwide"
+            full_text = f"{title} {loc_clean}".lower()
+            is_hybrid = "hybrid" in full_text
+            is_remote = "remote" in full_text
+
             all_jobs.append({
                 "id": job_id,
                 "title": title,
                 "company": company,
-                "location": location or "Remote / Worldwide",
+                "location": loc_clean,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
                 "url": job_url,
                 "department": "InGame Job Board",
-                "source": "InGame Job"
+                "source": "InGame Job",
+                "date_posted": "",
+                "date_posted_ts": 0.0,
+                "date_added": now_disp,
+                "date_added_ts": now_ts,
             })
 
     return all_jobs
@@ -190,14 +258,21 @@ def fetch_gibiz_jobs(max_pages=5):
                 job_id = f"gibiz_{slug}"
                 if job_id not in seen_ids:
                     seen_ids.add(job_id)
+                    now_dt = datetime.datetime.now(datetime.timezone.utc)
                     all_jobs.append({
                         "id": job_id,
                         "title": title,
                         "company": "GamesIndustry.biz Partner",
                         "location": "UK / Europe / Remote",
+                        "hybrid": "hybrid" in title.lower(),
+                        "remote": True,
                         "url": job_url,
                         "department": "GamesIndustry.biz",
-                        "source": "GamesIndustry.biz"
+                        "source": "GamesIndustry.biz",
+                        "date_posted": "",
+                        "date_posted_ts": 0.0,
+                        "date_added": now_dt.strftime("%d %b %Y"),
+                        "date_added_ts": now_dt.timestamp(),
                     })
             break
 
@@ -216,20 +291,36 @@ def fetch_gibiz_jobs(max_pages=5):
             loc_m = re.search(r'class="job__location"[^>]*>([^<]+)', n) or re.search(r'class="[^"]*location[^"]*"[^>]*>([^<]+)', n)
             location = clean_html_text(loc_m.group(1)) if loc_m else ""
 
+            # Check for posted date in node snippet
+            time_m = re.search(r'<time[^>]*datetime=["\']([^"\']+)["\']', n) or re.search(r'<time[^>]*>([^<]+)</time>', n)
+            disp_date, ts = parse_date_to_timestamp(time_m.group(1)) if time_m else ("", 0.0)
+
             slug = job_url.rstrip("/").split("/")[-1]
             job_id = f"gibiz_{slug}"
             if job_id in seen_ids:
                 continue
             seen_ids.add(job_id)
 
+            now_dt = datetime.datetime.now(datetime.timezone.utc)
+            loc_clean = location or "UK / Remote"
+            full_text = f"{title} {loc_clean}".lower()
+            is_hybrid = "hybrid" in full_text
+            is_remote = "remote" in full_text
+
             all_jobs.append({
                 "id": job_id,
                 "title": title,
                 "company": company,
-                "location": location or "UK / Remote",
+                "location": loc_clean,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
                 "url": job_url,
                 "department": "GamesIndustry.biz",
-                "source": "GamesIndustry.biz"
+                "source": "GamesIndustry.biz",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added": now_dt.strftime("%d %b %Y"),
+                "date_added_ts": now_dt.timestamp(),
             })
 
     return all_jobs
@@ -284,14 +375,25 @@ def fetch_workwithindies_jobs():
             continue
         seen_ids.add(job_id)
 
+        now_dt = datetime.datetime.now(datetime.timezone.utc)
+        full_text = f"{title} {location}".lower()
+        is_hybrid = "hybrid" in full_text
+        is_remote = "remote" in full_text or location.strip().lower() == "remote"
+
         all_jobs.append({
             "id": job_id,
             "title": title,
             "company": company,
             "location": location,
+            "hybrid": is_hybrid,
+            "remote": is_remote,
             "url": full_url,
             "department": "Indie Games",
-            "source": "Work With Indies"
+            "source": "Work With Indies",
+            "date_posted": "",
+            "date_posted_ts": 0.0,
+            "date_added": now_dt.strftime("%d %b %Y"),
+            "date_added_ts": now_dt.timestamp(),
         })
 
     return all_jobs
@@ -312,17 +414,25 @@ def fetch_datascope_jobs():
                 return []
             
             jobs = []
+            now_dt = datetime.datetime.now(datetime.timezone.utc)
             for m in re.finditer(r'<a\s+[^>]*href=["\'](https://datascope\.co\.uk/job/[^"\']+|/job/[^"\']+)["\'][^>]*>(.*?)</a>', content):
                 link = m.group(1)
                 title = clean_html_text(m.group(2))
                 if len(title) > 3 and not any(w in title.lower() for w in ["apply", "more", "view"]):
+                    full_text = title.lower()
                     jobs.append({
                         "id": f"datascope_{re.sub(r'[^a-z0-9]', '', link.lower())}",
                         "title": title,
                         "company": "Datascope Recruitment",
                         "location": "UK / Remote",
+                        "hybrid": "hybrid" in full_text,
+                        "remote": "remote" in full_text,
                         "url": urllib.parse.urljoin(url, link),
-                        "source": "Datascope"
+                        "source": "Datascope",
+                        "date_posted": "",
+                        "date_posted_ts": 0.0,
+                        "date_added": now_dt.strftime("%d %b %Y"),
+                        "date_added_ts": now_dt.timestamp(),
                     })
             return jobs
     except Exception:
