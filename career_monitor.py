@@ -16,6 +16,7 @@ import urllib.error
 import ssl
 import socket
 import datetime
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Ensure hard global socket timeout so no network call can ever hang indefinitely
@@ -42,6 +43,8 @@ CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
 SEEN_JOBS_FILE = os.path.join(SCRIPT_DIR, "seen_career_jobs.json")
 TECH_ART_REPORT_JSON = os.path.join(SCRIPT_DIR, "tech_artist_jobs.json")
 TECH_ART_REPORT_MD = os.path.join(SCRIPT_DIR, "tech_artist_roles_found.md")
+FAILED_PAGES_JSON = os.path.join(SCRIPT_DIR, "failed_job_pages.json")
+FAILED_PAGES_MD = os.path.join(SCRIPT_DIR, "failed_job_pages.md")
 
 SSL_CTX = ssl.create_default_context()
 SSL_CTX.check_hostname = False
@@ -188,144 +191,203 @@ def parse_date_to_timestamp(date_val):
             continue
     return date_str, 0.0
 
+def classify_fetch_error(err):
+    """Categorizes exceptions into structured status and readable descriptions."""
+    if isinstance(err, urllib.error.HTTPError):
+        if err.code == 429:
+            return "rate_limited", "HTTP 429 (Rate Limited / Throttled)"
+        elif err.code == 403:
+            return "forbidden", "HTTP 403 (Access Forbidden / Cloudflare)"
+        elif err.code == 404:
+            return "not_found", "HTTP 404 (Page Not Found)"
+        elif err.code == 504:
+            return "gateway_timeout", "HTTP 504 (Gateway Timeout)"
+        elif err.code in (500, 502, 503):
+            return "server_error", f"HTTP {err.code} (Server Error)"
+        return "http_error", f"HTTP {err.code} ({err.reason})"
+    elif isinstance(err, (socket.timeout, TimeoutError)):
+        return "timeout", "Connection Timeout (Request took >10s)"
+    elif isinstance(err, urllib.error.URLError):
+        reason = getattr(err, 'reason', None)
+        reason_str = str(reason)
+        if isinstance(reason, (socket.timeout, TimeoutError)) or "timed out" in reason_str.lower():
+            return "timeout", "Connection Timeout (Request took >10s)"
+        if "temporary failure in name resolution" in reason_str.lower() or "getaddrinfo failed" in reason_str.lower():
+            return "dns_error", f"DNS Resolution Failed: {reason_str}"
+        return "network_error", f"Network Error: {reason_str}"
+    else:
+        err_str = str(err)
+        if "timed out" in err_str.lower():
+            return "timeout", "Connection Timeout (Request took >10s)"
+        return "error", f"Error: {err_str}"
+
+def save_failed_pages_reports(failed_pages):
+    """
+    Saves failed/timed-out career pages to both failed_job_pages.json
+    and failed_job_pages.md for easy manual inspection.
+    """
+    now_iso = datetime.datetime.now().isoformat()
+    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 1. JSON Report
+    json_data = {
+        "generated_at": now_iso,
+        "total_failed": len(failed_pages),
+        "failures": failed_pages
+    }
+    with open(FAILED_PAGES_JSON, "w", encoding="utf-8") as f:
+        json.dump(json_data, f, indent=2, ensure_ascii=False)
+
+    # 2. Markdown Report
+    lines = [
+        "# Failed / Timed Out Career & Job Listing Pages",
+        f"\n*Generated on {now_str}*",
+        f"\nTotal Pages Requiring Manual Check: **{len(failed_pages)}**\n"
+    ]
+
+    if not failed_pages:
+        lines.append("> [!NOTE]\n> All career pages responded successfully during the latest check. No timeouts or errors recorded.\n")
+    else:
+        lines.append("> [!WARNING]\n> The following studio career pages or job widgets timed out or encountered errors (such as throttling or Cloudflare blocks). Use the links below to manually review these sites.\n")
+        lines.append("| Studio | Source / ATS | Error Type | Details | Direct Link |")
+        lines.append("| :--- | :--- | :--- | :--- | :--- |")
+        for item in sorted(failed_pages, key=lambda x: (x.get("status") != "timeout", x.get("company", "").lower())):
+            comp = item.get("company", "Unknown")
+            src = item.get("source", "Web")
+            err_type = item.get("error_type", "Error")
+            detail = item.get("detail", "").replace("|", "/")
+            url = item.get("url", "#")
+            lines.append(f"| **{comp}** | {src} | `{err_type}` | {detail} | [Open Careers Page]({url}) |")
+
+    with open(FAILED_PAGES_MD, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
 def fetch_greenhouse_jobs(board_token, company_name):
     """Fetches jobs via Greenhouse public JSON API"""
     api_url = f"https://boards-api.greenhouse.io/v1/boards/{board_token}/jobs"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc = (j.get("location", {}) or {}).get("name", "")
-                title = j.get("title", "").strip()
-                updated_raw = j.get("updated_at") or ""
-                disp_date, ts = parse_date_to_timestamp(updated_raw)
-                full_text = f"{title} {loc}".lower()
-                jobs.append({
-                    "id": f"gh_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": "hybrid" in full_text,
-                    "remote": "remote" in full_text,
-                    "url": j.get("absolute_url", ""),
-                    "department": ((j.get("departments") or [{}])[0]).get("name", ""),
-                    "source": "Greenhouse",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc = (j.get("location", {}) or {}).get("name", "")
+            title = j.get("title", "").strip()
+            updated_raw = j.get("updated_at") or ""
+            disp_date, ts = parse_date_to_timestamp(updated_raw)
+            full_text = f"{title} {loc}".lower()
+            jobs.append({
+                "id": f"gh_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": "hybrid" in full_text,
+                "remote": "remote" in full_text,
+                "url": j.get("absolute_url", ""),
+                "department": ((j.get("departments") or [{}])[0]).get("name", ""),
+                "source": "Greenhouse",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_lever_jobs(site_name, company_name):
     """Fetches jobs via Lever public JSON API"""
     api_url = f"https://api.lever.co/v0/postings/{site_name}?mode=json"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data:
-                categories = j.get("categories", {}) or {}
-                loc = categories.get("location", "")
-                title = j.get("text", "").strip()
-                workplace_type = (categories.get("workplaceType") or "").lower()
-                created_raw = j.get("createdAt")
-                disp_date, ts = parse_date_to_timestamp(created_raw)
-                full_text = f"{title} {loc} {workplace_type}".lower()
-                jobs.append({
-                    "id": f"lever_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
-                    "remote": "remote" in full_text or workplace_type == "remote",
-                    "url": j.get("hostedUrl", ""),
-                    "department": categories.get("department", ""),
-                    "source": "Lever",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data:
+            categories = j.get("categories", {}) or {}
+            loc = categories.get("location", "")
+            title = j.get("text", "").strip()
+            workplace_type = (categories.get("workplaceType") or "").lower()
+            created_raw = j.get("createdAt")
+            disp_date, ts = parse_date_to_timestamp(created_raw)
+            full_text = f"{title} {loc} {workplace_type}".lower()
+            jobs.append({
+                "id": f"lever_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                "remote": "remote" in full_text or workplace_type == "remote",
+                "url": j.get("hostedUrl", ""),
+                "department": categories.get("department", ""),
+                "source": "Lever",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_ashby_jobs(org_name, company_name):
     """Fetches jobs via Ashby public API"""
     api_url = f"https://api.ashbyhq.com/posting-api/job-board/{org_name}"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc = j.get("location", "")
-                title = j.get("title", "").strip()
-                pub_raw = j.get("publishedAt") or j.get("openedAt") or ""
-                disp_date, ts = parse_date_to_timestamp(pub_raw)
-                workplace_type = (j.get("workplaceType") or "").lower()
-                full_text = f"{title} {loc} {workplace_type}".lower()
-                jobs.append({
-                    "id": f"ashby_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
-                    "remote": "remote" in full_text or workplace_type == "remote" or j.get("isRemote", False),
-                    "url": j.get("jobUrl", ""),
-                    "department": j.get("department", ""),
-                    "source": "Ashby",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc = j.get("location", "")
+            title = j.get("title", "").strip()
+            pub_raw = j.get("publishedAt") or j.get("openedAt") or ""
+            disp_date, ts = parse_date_to_timestamp(pub_raw)
+            workplace_type = (j.get("workplaceType") or "").lower()
+            full_text = f"{title} {loc} {workplace_type}".lower()
+            jobs.append({
+                "id": f"ashby_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                "remote": "remote" in full_text or workplace_type == "remote" or j.get("isRemote", False),
+                "url": j.get("jobUrl", ""),
+                "department": j.get("department", ""),
+                "source": "Ashby",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_workable_jobs(account_slug, company_name):
     """Fetches jobs via Workable public Widget JSON API"""
     api_url = f"https://apply.workable.com/api/v1/widget/accounts/{account_slug}"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc_parts = [j.get("city"), j.get("state"), j.get("country")]
-                loc_str = ", ".join([p for p in loc_parts if p])
-                title = j.get("title", "").strip()
-                created_raw = j.get("created_at") or j.get("published_on") or ""
-                disp_date, ts = parse_date_to_timestamp(created_raw)
-                workplace_type = (j.get("workplace_type") or "").lower()
-                full_text = f"{title} {loc_str} {workplace_type}".lower()
-                jobs.append({
-                    "id": f"workable_{j.get('shortcode') or j.get('code')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc_str or "UK / Remote",
-                    "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
-                    "remote": j.get("telecommuting", False) or "remote" in full_text or workplace_type == "remote",
-                    "url": j.get("url") or j.get("shortlink") or j.get("application_url", ""),
-                    "department": j.get("department", ""),
-                    "source": "Workable",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc_parts = [j.get("city"), j.get("state"), j.get("country")]
+            loc_str = ", ".join([p for p in loc_parts if p])
+            title = j.get("title", "").strip()
+            created_raw = j.get("created_at") or j.get("published_on") or ""
+            disp_date, ts = parse_date_to_timestamp(created_raw)
+            workplace_type = (j.get("workplace_type") or "").lower()
+            full_text = f"{title} {loc_str} {workplace_type}".lower()
+            jobs.append({
+                "id": f"workable_{j.get('shortcode') or j.get('code')}",
+                "title": title,
+                "company": company_name,
+                "location": loc_str or "UK / Remote",
+                "hybrid": "hybrid" in full_text or workplace_type == "hybrid",
+                "remote": j.get("telecommuting", False) or "remote" in full_text or workplace_type == "remote",
+                "url": j.get("url") or j.get("shortlink") or j.get("application_url", ""),
+                "department": j.get("department", ""),
+                "source": "Workable",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
-def fetch_html_career_page_jobs(careers_url, company_name):
+def fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=None):
     """
     Parses generic HTML career pages to extract job links and job titles with high precision.
     """
@@ -333,91 +395,98 @@ def fetch_html_career_page_jobs(careers_url, company_name):
         req = urllib.request.Request(careers_url, headers=DEFAULT_HEADERS)
         with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
             html = resp.read().decode('utf-8', errors='replace')
-
-            # Check if this HTML page delegates to Workable
-            workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
-            if workable_match:
-                slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
-                if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-                    w_jobs = fetch_workable_jobs(slug, company_name)
-                    if w_jobs:
-                        return w_jobs
-            
-            jobs = []
-            link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
-            
-            # Non-job noise words to reject
-            ignore_keywords = [
-                "home", "about", "contact", "privacy", "terms", "cookies", "login", "sign in", "sign up",
-                "apply now", "read more", "view all", "learn more", "partners", "partner", "articles",
-                "news", "blog", "events", "press", "services", "solutions", "sectors", "clients",
-                "all rights reserved", "subscribe", "newsletter", "cookie policy", "terms of use",
-                "startups", "start building", "find a partner", "facebook", "twitter", "linkedin",
-                "instagram", "youtube", "discord", "twitch", "technology", "our team", "who we are"
-            ]
-            
-            # Common job-related words in titles or links
-            job_indicators = [
-                "artist", "engineer", "developer", "programmer", "designer", "producer", "animator",
-                "director", "lead", "senior", "junior", "mid", "principal", "manager", "specialist",
-                "associate", "tester", "qa", "intern", "tech", "audio", "writer", "architect", "td"
-            ]
-            
-            for href, text in re.findall(link_pattern, html, re.DOTALL | re.IGNORECASE):
-                clean_title = re.sub(r'<[^>]+>', '', text).strip()
-                clean_title = re.sub(r'\s+', ' ', clean_title)
-                clean_lower = clean_title.lower()
-                href_lower = href.lower()
-
-                # Clean trailing noise words like 'LEARN MORE', 'APPLY NOW'
-                for noise in ["learn more", "apply now", "view role", "view job", "read more", "apply"]:
-                    if clean_lower.endswith(noise) and len(clean_lower) > len(noise) + 3:
-                        clean_title = clean_title[:len(clean_title)-len(noise)].strip(" -:|•")
-                        clean_lower = clean_title.lower()
-                
-                # Check length
-                if 5 <= len(clean_title) <= 80:
-                    # Filter out navigation/noise words
-                    if any(clean_lower == kw or clean_lower.startswith(f"{kw} ") for kw in ignore_keywords):
-                        continue
-                    if any(kw in clean_lower for kw in ["privacy policy", "cookie", "copyright", "terms and conditions", "all rights reserved"]):
-                        continue
-                        
-                    # Must contain a job indicator or the URL must look like a job listing URL
-                    has_job_indicator = any(ind in clean_lower.split() or f"-{ind}" in clean_lower or f" {ind}" in clean_lower for ind in job_indicators)
-                    is_job_url = any(p in href_lower for p in ["/job/", "/jobs/", "/vacancy/", "/vacancies/", "/position/", "/role/", "/opening/", "/careers/", "boards.greenhouse", "jobs.lever", "ashbyhq", "workable", "teamtailor"])
-                    
-                    if has_job_indicator or is_job_url:
-                        # Skip javascript or hash links and use careers_url instead
-                        if href.strip().lower().startswith(("javascript:", "#")):
-                            full_url = careers_url
-                        else:
-                            full_url = urllib.parse.urljoin(careers_url, href)
-                            
-                        # Skip external social links
-                        if any(s in full_url.lower() for s in ["youtube.com", "facebook.com", "twitter.com", "linkedin.com", "instagram.com", "cloudflare.com"]):
-                            continue
-                            
-                        job_id = f"html_{company_name}_{clean_title}".lower().replace(' ', '_')
-                        job_id = re.sub(r'[^a-z0-9_]', '', job_id)
-                        
-                        jobs.append({
-                            "id": job_id,
-                            "title": clean_title,
-                            "company": company_name,
-                            "location": "",
-                            "url": full_url,
-                            "department": "",
-                            "source": "Direct Web",
-                        })
-                        
-            return jobs
-    except Exception:
+    except Exception as e:
+        if failed_recorder:
+            failed_recorder("Direct Web", e, careers_url)
         return []
 
-def extract_jobs_from_company(comp):
+    # Check if this HTML page delegates to Workable
+    workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
+    if workable_match:
+        slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
+        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
+            try:
+                w_jobs = fetch_workable_jobs(slug, company_name)
+                if w_jobs:
+                    return w_jobs
+            except Exception as we:
+                if failed_recorder:
+                    failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
+    
+    jobs = []
+    link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
+    
+    # Non-job noise words to reject
+    ignore_keywords = [
+        "home", "about", "contact", "privacy", "terms", "cookies", "login", "sign in", "sign up",
+        "apply now", "read more", "view all", "learn more", "partners", "partner", "articles",
+        "news", "blog", "events", "press", "services", "solutions", "sectors", "clients",
+        "all rights reserved", "subscribe", "newsletter", "cookie policy", "terms of use",
+        "startups", "start building", "find a partner", "facebook", "twitter", "linkedin",
+        "instagram", "youtube", "discord", "twitch", "technology", "our team", "who we are"
+    ]
+    
+    # Common job-related words in titles or links
+    job_indicators = [
+        "artist", "engineer", "developer", "programmer", "designer", "producer", "animator",
+        "director", "lead", "senior", "junior", "mid", "principal", "manager", "specialist",
+        "associate", "tester", "qa", "intern", "tech", "audio", "writer", "architect", "td"
+    ]
+    
+    for href, text in re.findall(link_pattern, html, re.DOTALL | re.IGNORECASE):
+        clean_title = re.sub(r'<[^>]+>', '', text).strip()
+        clean_title = re.sub(r'\s+', ' ', clean_title)
+        clean_lower = clean_title.lower()
+        href_lower = href.lower()
+
+        # Clean trailing noise words like 'LEARN MORE', 'APPLY NOW'
+        for noise in ["learn more", "apply now", "view role", "view job", "read more", "apply"]:
+            if clean_lower.endswith(noise) and len(clean_lower) > len(noise) + 3:
+                clean_title = clean_title[:len(clean_title)-len(noise)].strip(" -:|•")
+                clean_lower = clean_title.lower()
+        
+        # Check length
+        if 5 <= len(clean_title) <= 80:
+            # Filter out navigation/noise words
+            if any(clean_lower == kw or clean_lower.startswith(f"{kw} ") for kw in ignore_keywords):
+                continue
+            if any(kw in clean_lower for kw in ["privacy policy", "cookie", "copyright", "terms and conditions", "all rights reserved"]):
+                continue
+                
+            # Must contain a job indicator or the URL must look like a job listing URL
+            has_job_indicator = any(ind in clean_lower.split() or f"-{ind}" in clean_lower or f" {ind}" in clean_lower for ind in job_indicators)
+            is_job_url = any(p in href_lower for p in ["/job/", "/jobs/", "/vacancy/", "/vacancies/", "/position/", "/role/", "/opening/", "/careers/", "boards.greenhouse", "jobs.lever", "ashbyhq", "workable", "teamtailor"])
+            
+            if has_job_indicator or is_job_url:
+                # Skip javascript or hash links and use careers_url instead
+                if href.strip().lower().startswith(("javascript:", "#")):
+                    full_url = careers_url
+                else:
+                    full_url = urllib.parse.urljoin(careers_url, href)
+                    
+                # Skip external social links
+                if any(s in full_url.lower() for s in ["youtube.com", "facebook.com", "twitter.com", "linkedin.com", "instagram.com", "cloudflare.com"]):
+                    continue
+                    
+                job_id = f"html_{company_name}_{clean_title}".lower().replace(' ', '_')
+                job_id = re.sub(r'[^a-z0-9_]', '', job_id)
+                
+                jobs.append({
+                    "id": job_id,
+                    "title": clean_title,
+                    "company": company_name,
+                    "location": "",
+                    "url": full_url,
+                    "department": "",
+                    "source": "Direct Web",
+                })
+                
+    return jobs
+
+def extract_jobs_from_company(comp, failed_pages=None, failed_lock=None):
     """
     Routes company to appropriate parser based on ATS or careers URL.
+    Captures any timeouts or network errors for manual review.
     """
     careers_url = comp.get("careers_url")
     company_name = comp.get("name", "")
@@ -425,30 +494,68 @@ def extract_jobs_from_company(comp):
     if not careers_url:
         return []
         
+    def _record_fail(source, err, url=None):
+        if failed_pages is not None:
+            status, err_type = classify_fetch_error(err)
+            entry = {
+                "company": company_name,
+                "url": url or careers_url,
+                "source": source,
+                "status": status,
+                "error_type": err_type,
+                "detail": str(err),
+                "timestamp": datetime.datetime.now().isoformat()
+            }
+            if failed_lock:
+                with failed_lock:
+                    failed_pages.append(entry)
+            else:
+                failed_pages.append(entry)
+        
     # Check Greenhouse
     gh_match = re.search(r'greenhouse\.io/([^/?#]+)', careers_url)
     if gh_match:
-        return fetch_greenhouse_jobs(gh_match.group(1), company_name)
+        try:
+            return fetch_greenhouse_jobs(gh_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Greenhouse", e, careers_url)
+            return []
         
     # Check Lever
     lever_match = re.search(r'jobs\.lever\.co/([^/?#]+)', careers_url)
     if lever_match:
-        return fetch_lever_jobs(lever_match.group(1), company_name)
+        try:
+            return fetch_lever_jobs(lever_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Lever", e, careers_url)
+            return []
         
     # Check Ashby
     ashby_match = re.search(r'jobs\.ashbyhq\.com/([^/?#]+)', careers_url)
     if ashby_match:
-        return fetch_ashby_jobs(ashby_match.group(1), company_name)
+        try:
+            return fetch_ashby_jobs(ashby_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Ashby", e, careers_url)
+            return []
 
     # Check Workable
     workable_match = re.search(r'(?:apply\.workable\.com/|([a-zA-Z0-9_\-]+)\.workable\.com)(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)?', careers_url)
     if workable_match:
         slug = workable_match.group(2) or workable_match.group(1)
         if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            return fetch_workable_jobs(slug, company_name)
+            try:
+                return fetch_workable_jobs(slug, company_name)
+            except Exception as e:
+                _record_fail("Workable", e, careers_url)
+                return []
 
     # Fallback to HTML parser
-    return fetch_html_career_page_jobs(careers_url, company_name)
+    try:
+        return fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=_record_fail)
+    except Exception as e:
+        _record_fail("Direct Web", e, careers_url)
+        return []
 
 def is_matching_job(job, search_config):
     """
@@ -600,9 +707,11 @@ def scan_all_career_pages(max_workers=8, init_mode=False, dry_run=False):
     
     all_matched_jobs = []
     total_jobs_found = 0
+    failed_pages = []
+    failed_lock = threading.Lock()
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_to_comp = {executor.submit(extract_jobs_from_company, comp): comp for comp in studios_with_careers}
+        future_to_comp = {executor.submit(extract_jobs_from_company, comp, failed_pages, failed_lock): comp for comp in studios_with_careers}
         
         completed_count = 0
         total_count = len(studios_with_careers)
@@ -645,6 +754,25 @@ def scan_all_career_pages(max_workers=8, init_mode=False, dry_run=False):
     
     # Generate structured Tech Artist report
     generate_tech_artist_report(all_matched_jobs)
+    
+    # Save and output failed/timed-out career pages report
+    save_failed_pages_reports(failed_pages)
+    
+    if failed_pages:
+        timeouts = [p for p in failed_pages if p.get("status") == "timeout"]
+        throttled = [p for p in failed_pages if p.get("status") == "rate_limited"]
+        others = [p for p in failed_pages if p.get("status") not in ("timeout", "rate_limited")]
+        print("\n" + "="*70)
+        print(f"⚠️  CAREER PAGES WITH TIMEOUTS OR ERRORS ({len(failed_pages)} total):")
+        print(f"   (Timeouts: {len(timeouts)}, Throttled/429: {len(throttled)}, Other: {len(others)})")
+        print(f"   Saved report for manual checking: failed_job_pages.md")
+        print("="*70)
+        for p in failed_pages:
+            print(f"  🏢 {p['company']} ({p['source']}): {p['error_type']}")
+            print(f"     🔗 {p['url']}")
+        print("="*70 + "\n")
+    else:
+        print("[✓] All studio career pages responded with 0 timeouts or network errors.")
     
     new_jobs = [j for j in all_matched_jobs if j["id"] not in seen_ids]
     

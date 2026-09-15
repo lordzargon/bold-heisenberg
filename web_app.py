@@ -51,6 +51,8 @@ SEEN_CAREER_FILE = os.path.join(SCRIPT_DIR, "seen_career_jobs.json")
 SEEN_JOBS_FILE = os.path.join(SCRIPT_DIR, "seen_jobs.json")
 PROGRESS_FILE = os.path.join(SCRIPT_DIR, "gamesmap_progress.json")
 ASGC_API_URL = "https://jobs.asgc.gg/api/job-listings"
+FAILED_PAGES_JSON = os.path.join(SCRIPT_DIR, "failed_job_pages.json")
+FAILED_PAGES_MD = os.path.join(SCRIPT_DIR, "failed_job_pages.md")
 
 SSL_CTX = ssl.create_default_context()
 SSL_CTX.check_hostname = False
@@ -74,6 +76,7 @@ BACKGROUND_STATE = {
         "message": "Ready"
     },
     "last_search_results": [],
+    "last_failed_pages": [],
     "last_search_time": None
 }
 
@@ -313,254 +316,362 @@ def parse_date_to_timestamp(date_val):
 
 # --- Crawlers & Fetchers ---
 
+def classify_fetch_error(err):
+    """Categorizes exceptions into structured status and readable descriptions."""
+    if isinstance(err, urllib.error.HTTPError):
+        if err.code == 429:
+            return "rate_limited", "HTTP 429 (Rate Limited / Throttled)"
+        elif err.code == 403:
+            return "forbidden", "HTTP 403 (Access Forbidden / Cloudflare)"
+        elif err.code == 404:
+            return "not_found", "HTTP 404 (Page Not Found)"
+        elif err.code == 504:
+            return "gateway_timeout", "HTTP 504 (Gateway Timeout)"
+        elif err.code in (500, 502, 503):
+            return "server_error", f"HTTP {err.code} (Server Error)"
+        return "http_error", f"HTTP {err.code} ({err.reason})"
+    elif isinstance(err, (socket.timeout, TimeoutError)):
+        return "timeout", "Connection Timeout (Request took >10s)"
+    elif isinstance(err, urllib.error.URLError):
+        reason = getattr(err, 'reason', None)
+        reason_str = str(reason)
+        if isinstance(reason, (socket.timeout, TimeoutError)) or "timed out" in reason_str.lower():
+            return "timeout", "Connection Timeout (Request took >10s)"
+        if "temporary failure in name resolution" in reason_str.lower() or "getaddrinfo failed" in reason_str.lower():
+            return "dns_error", f"DNS Resolution Failed: {reason_str}"
+        return "network_error", f"Network Error: {reason_str}"
+    else:
+        err_str = str(err)
+        if "timed out" in err_str.lower():
+            return "timeout", "Connection Timeout (Request took >10s)"
+        return "error", f"Error: {err_str}"
+
+def save_failed_pages_reports(failed_pages):
+    """
+    Saves failed/timed-out career pages to both failed_job_pages.json
+    and failed_job_pages.md for easy manual inspection.
+    """
+    now_iso = datetime.datetime.now().isoformat()
+    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 1. JSON Report
+    json_data = {
+        "generated_at": now_iso,
+        "total_failed": len(failed_pages),
+        "failures": failed_pages
+    }
+    with open(FAILED_PAGES_JSON, "w", encoding="utf-8") as f:
+        json.dump(json_data, f, indent=2, ensure_ascii=False)
+
+    # 2. Markdown Report
+    lines = [
+        "# Failed / Timed Out Career & Job Listing Pages",
+        f"\n*Generated on {now_str}*",
+        f"\nTotal Pages Requiring Manual Check: **{len(failed_pages)}**\n"
+    ]
+
+    if not failed_pages:
+        lines.append("> [!NOTE]\n> All career pages responded successfully during the latest check. No timeouts or errors recorded.\n")
+    else:
+        lines.append("> [!WARNING]\n> The following studio career pages or job widgets timed out or encountered errors (such as throttling or Cloudflare blocks). Use the links below to manually review these sites.\n")
+        lines.append("| Studio | Source / ATS | Error Type | Details | Direct Link |")
+        lines.append("| :--- | :--- | :--- | :--- | :--- |")
+        for item in sorted(failed_pages, key=lambda x: (x.get("status") != "timeout", x.get("company", "").lower())):
+            comp = item.get("company", "Unknown")
+            src = item.get("source", "Web")
+            err_type = item.get("error_type", "Error")
+            detail = item.get("detail", "").replace("|", "/")
+            url = item.get("url", "#")
+            lines.append(f"| **{comp}** | {src} | `{err_type}` | {detail} | [Open Careers Page]({url}) |")
+
+    with open(FAILED_PAGES_MD, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
 def fetch_greenhouse_jobs(board_token, company_name):
     api_url = f"https://boards-api.greenhouse.io/v1/boards/{board_token}/jobs"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc = (j.get("location", {}) or {}).get("name", "")
-                title = j.get("title", "").strip()
-                updated_raw = j.get("updated_at") or ""
-                disp_date, ts = parse_date_to_timestamp(updated_raw)
-                full_text = f"{title} {loc}".lower()
-                is_hybrid = "hybrid" in full_text
-                is_remote = "remote" in full_text
-                jobs.append({
-                    "id": f"gh_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": is_hybrid,
-                    "remote": is_remote,
-                    "url": j.get("absolute_url", ""),
-                    "department": ((j.get("departments") or [{}])[0]).get("name", ""),
-                    "source": "Greenhouse",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc = (j.get("location", {}) or {}).get("name", "")
+            title = j.get("title", "").strip()
+            updated_raw = j.get("updated_at") or ""
+            disp_date, ts = parse_date_to_timestamp(updated_raw)
+            full_text = f"{title} {loc}".lower()
+            is_hybrid = "hybrid" in full_text
+            is_remote = "remote" in full_text
+            jobs.append({
+                "id": f"gh_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
+                "url": j.get("absolute_url", ""),
+                "department": ((j.get("departments") or [{}])[0]).get("name", ""),
+                "source": "Greenhouse",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_lever_jobs(site_name, company_name):
     api_url = f"https://api.lever.co/v0/postings/{site_name}?mode=json"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data:
-                categories = j.get("categories", {}) or {}
-                loc = categories.get("location", "")
-                title = j.get("text", "").strip()
-                workplace_type = (categories.get("workplaceType") or "").lower()
-                created_raw = j.get("createdAt")
-                disp_date, ts = parse_date_to_timestamp(created_raw)
-                full_text = f"{title} {loc} {workplace_type}".lower()
-                is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
-                is_remote = "remote" in full_text or workplace_type == "remote"
-                jobs.append({
-                    "id": f"lever_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": is_hybrid,
-                    "remote": is_remote,
-                    "url": j.get("hostedUrl", ""),
-                    "department": categories.get("department", ""),
-                    "source": "Lever",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data:
+            categories = j.get("categories", {}) or {}
+            loc = categories.get("location", "")
+            title = j.get("text", "").strip()
+            workplace_type = (categories.get("workplaceType") or "").lower()
+            created_raw = j.get("createdAt")
+            disp_date, ts = parse_date_to_timestamp(created_raw)
+            full_text = f"{title} {loc} {workplace_type}".lower()
+            is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
+            is_remote = "remote" in full_text or workplace_type == "remote"
+            jobs.append({
+                "id": f"lever_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
+                "url": j.get("hostedUrl", ""),
+                "department": categories.get("department", ""),
+                "source": "Lever",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_ashby_jobs(org_name, company_name):
     api_url = f"https://api.ashbyhq.com/posting-api/job-board/{org_name}"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc = j.get("location", "")
-                title = j.get("title", "").strip()
-                pub_raw = j.get("publishedAt") or j.get("openedAt") or ""
-                disp_date, ts = parse_date_to_timestamp(pub_raw)
-                workplace_type = (j.get("workplaceType") or "").lower()
-                full_text = f"{title} {loc} {workplace_type}".lower()
-                is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
-                is_remote = "remote" in full_text or workplace_type == "remote" or j.get("isRemote", False)
-                jobs.append({
-                    "id": f"ashby_{j.get('id')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc,
-                    "hybrid": is_hybrid,
-                    "remote": is_remote,
-                    "url": j.get("jobUrl", ""),
-                    "department": j.get("department", ""),
-                    "source": "Ashby",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc = j.get("location", "")
+            title = j.get("title", "").strip()
+            pub_raw = j.get("publishedAt") or j.get("openedAt") or ""
+            disp_date, ts = parse_date_to_timestamp(pub_raw)
+            workplace_type = (j.get("workplaceType") or "").lower()
+            full_text = f"{title} {loc} {workplace_type}".lower()
+            is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
+            is_remote = "remote" in full_text or workplace_type == "remote" or j.get("isRemote", False)
+            jobs.append({
+                "id": f"ashby_{j.get('id')}",
+                "title": title,
+                "company": company_name,
+                "location": loc,
+                "hybrid": is_hybrid,
+                "remote": is_remote,
+                "url": j.get("jobUrl", ""),
+                "department": j.get("department", ""),
+                "source": "Ashby",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
 def fetch_workable_jobs(account_slug, company_name):
     """Fetches jobs via Workable public Widget JSON API"""
     api_url = f"https://apply.workable.com/api/v1/widget/accounts/{account_slug}"
-    try:
-        req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            jobs = []
-            now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
-            for j in data.get("jobs", []):
-                loc_parts = [j.get("city"), j.get("state"), j.get("country")]
-                loc_str = ", ".join([p for p in loc_parts if p])
-                title = j.get("title", "").strip()
-                created_raw = j.get("created_at") or j.get("published_on") or ""
-                disp_date, ts = parse_date_to_timestamp(created_raw)
-                workplace_type = (j.get("workplace_type") or "").lower()
-                full_text = f"{title} {loc_str} {workplace_type}".lower()
-                is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
-                is_remote = j.get("telecommuting", False) or "remote" in full_text or workplace_type == "remote"
-                jobs.append({
-                    "id": f"workable_{j.get('shortcode') or j.get('code')}",
-                    "title": title,
-                    "company": company_name,
-                    "location": loc_str or "UK / Remote",
-                    "hybrid": is_hybrid,
-                    "remote": is_remote,
-                    "url": j.get("url") or j.get("shortlink") or j.get("application_url", ""),
-                    "department": j.get("department", ""),
-                    "source": "Workable",
-                    "date_posted": disp_date,
-                    "date_posted_ts": ts,
-                    "date_added_ts": now_ts,
-                })
-            return jobs
-    except Exception:
-        return []
+    req = urllib.request.Request(api_url, headers=DEFAULT_HEADERS)
+    with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+        jobs = []
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        for j in data.get("jobs", []):
+            loc_parts = [j.get("city"), j.get("state"), j.get("country")]
+            loc_str = ", ".join([p for p in loc_parts if p])
+            title = j.get("title", "").strip()
+            created_raw = j.get("created_at") or j.get("published_on") or ""
+            disp_date, ts = parse_date_to_timestamp(created_raw)
+            workplace_type = (j.get("workplace_type") or "").lower()
+            full_text = f"{title} {loc_str} {workplace_type}".lower()
+            is_hybrid = "hybrid" in full_text or workplace_type == "hybrid"
+            is_remote = j.get("telecommuting", False) or "remote" in full_text or workplace_type == "remote"
+            jobs.append({
+                "id": f"workable_{j.get('shortcode') or j.get('code')}",
+                "title": title,
+                "company": company_name,
+                "location": loc_str or "UK / Remote",
+                "hybrid": is_hybrid,
+                "remote": is_remote,
+                "url": j.get("url") or j.get("shortlink") or j.get("application_url", ""),
+                "department": j.get("department", ""),
+                "source": "Workable",
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
+                "date_added_ts": now_ts,
+            })
+        return jobs
 
-def fetch_html_career_page_jobs(careers_url, company_name):
+def fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=None):
     try:
         req = urllib.request.Request(careers_url, headers=DEFAULT_HEADERS)
-        with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
+        with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
             html = resp.read().decode('utf-8', errors='replace')
-
-            # Check if this HTML page delegates to Workable
-            workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
-            if workable_match:
-                slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
-                if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-                    w_jobs = fetch_workable_jobs(slug, company_name)
-                    if w_jobs:
-                        return w_jobs
-
-            jobs = []
-            link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
-            ignore_keywords = [
-                "home", "about", "contact", "privacy", "terms", "cookies", "login", "sign in", "sign up",
-                "apply now", "read more", "view all", "learn more", "partners", "partner", "articles",
-                "news", "blog", "events", "press", "services", "solutions", "sectors", "clients",
-                "all rights reserved", "subscribe", "newsletter", "cookie policy", "terms of use",
-                "startups", "start building", "find a partner", "facebook", "twitter", "linkedin",
-                "instagram", "youtube", "discord", "twitch", "technology", "our team", "who we are"
-            ]
-            job_indicators = [
-                "artist", "engineer", "developer", "programmer", "designer", "producer", "animator",
-                "director", "lead", "senior", "junior", "mid", "principal", "manager", "specialist",
-                "associate", "tester", "qa", "intern", "tech", "audio", "writer", "architect", "td"
-            ]
-            now_dt = datetime.datetime.now(datetime.timezone.utc)
-            now_ts = now_dt.timestamp()
-            now_disp = now_dt.strftime("%d %b %Y")
-            
-            for href, text in re.findall(link_pattern, html, re.DOTALL | re.IGNORECASE):
-                clean_title = re.sub(r'<[^>]+>', '', text).strip()
-                clean_title = re.sub(r'\s+', ' ', clean_title)
-                clean_lower = clean_title.lower()
-                href_lower = href.lower()
-
-                # Clean trailing noise words like 'LEARN MORE', 'APPLY NOW'
-                for noise in ["learn more", "apply now", "view role", "view job", "read more", "apply"]:
-                    if clean_lower.endswith(noise) and len(clean_lower) > len(noise) + 3:
-                        clean_title = clean_title[:len(clean_title)-len(noise)].strip(" -:|•")
-                        clean_lower = clean_title.lower()
-                
-                if 5 <= len(clean_title) <= 80:
-                    if any(clean_lower == kw or clean_lower.startswith(f"{kw} ") for kw in ignore_keywords):
-                        continue
-                    if any(kw in clean_lower for kw in ["privacy policy", "cookie", "copyright", "terms and conditions", "all rights reserved"]):
-                        continue
-                        
-                    has_job_indicator = any(ind in clean_lower.split() or f"-{ind}" in clean_lower or f" {ind}" in clean_lower for ind in job_indicators)
-                    is_job_url = any(p in href_lower for p in ["/job/", "/jobs/", "/vacancy/", "/vacancies/", "/position/", "/role/", "/opening/", "/careers/", "boards.greenhouse", "jobs.lever", "ashbyhq", "workable", "teamtailor"])
-                    
-                    if has_job_indicator or is_job_url:
-                        if href.strip().lower().startswith(("javascript:", "#")):
-                            full_url = careers_url
-                        else:
-                            full_url = urllib.parse.urljoin(careers_url, href)
-                            
-                        if any(s in full_url.lower() for s in ["youtube.com", "facebook.com", "twitter.com", "linkedin.com", "instagram.com", "cloudflare.com"]):
-                            continue
-                            
-                        job_id = f"html_{company_name}_{clean_title}".lower().replace(' ', '_')
-                        job_id = re.sub(r'[^a-z0-9_]', '', job_id)
-                        
-                        jobs.append({
-                            "id": job_id,
-                            "title": clean_title,
-                            "company": company_name,
-                            "location": "See Details",
-                            "hybrid": "hybrid" in clean_lower,
-                            "remote": "remote" in clean_lower,
-                            "url": full_url,
-                            "department": "",
-                            "source": "Direct Studio Web",
-                            "date_posted": "",
-                            "date_posted_ts": 0.0,
-                            "date_added": now_disp,
-                            "date_added_ts": now_ts,
-                        })
-            return jobs
-    except Exception:
+    except Exception as e:
+        if failed_recorder:
+            failed_recorder("Direct Studio Web", e, careers_url)
         return []
 
-def extract_jobs_from_company(comp):
+    # Check if this HTML page delegates to Workable
+    workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
+    if workable_match:
+        slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
+        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
+            try:
+                w_jobs = fetch_workable_jobs(slug, company_name)
+                if w_jobs:
+                    return w_jobs
+            except Exception as we:
+                if failed_recorder:
+                    failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
+
+    jobs = []
+    link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
+    ignore_keywords = [
+        "home", "about", "contact", "privacy", "terms", "cookies", "login", "sign in", "sign up",
+        "apply now", "read more", "view all", "learn more", "partners", "partner", "articles",
+        "news", "blog", "events", "press", "services", "solutions", "sectors", "clients",
+        "all rights reserved", "subscribe", "newsletter", "cookie policy", "terms of use",
+        "startups", "start building", "find a partner", "facebook", "twitter", "linkedin",
+        "instagram", "youtube", "discord", "twitch", "technology", "our team", "who we are"
+    ]
+    job_indicators = [
+        "artist", "engineer", "developer", "programmer", "designer", "producer", "animator",
+        "director", "lead", "senior", "junior", "mid", "principal", "manager", "specialist",
+        "associate", "tester", "qa", "intern", "tech", "audio", "writer", "architect", "td"
+    ]
+    now_dt = datetime.datetime.now(datetime.timezone.utc)
+    now_ts = now_dt.timestamp()
+    now_disp = now_dt.strftime("%d %b %Y")
+    
+    for href, text in re.findall(link_pattern, html, re.DOTALL | re.IGNORECASE):
+        clean_title = re.sub(r'<[^>]+>', '', text).strip()
+        clean_title = re.sub(r'\s+', ' ', clean_title)
+        clean_lower = clean_title.lower()
+        href_lower = href.lower()
+
+        # Clean trailing noise words like 'LEARN MORE', 'APPLY NOW'
+        for noise in ["learn more", "apply now", "view role", "view job", "read more", "apply"]:
+            if clean_lower.endswith(noise) and len(clean_lower) > len(noise) + 3:
+                clean_title = clean_title[:len(clean_title)-len(noise)].strip(" -:|•")
+                clean_lower = clean_title.lower()
+        
+        if 5 <= len(clean_title) <= 80:
+            if any(clean_lower == kw or clean_lower.startswith(f"{kw} ") for kw in ignore_keywords):
+                continue
+            if any(kw in clean_lower for kw in ["privacy policy", "cookie", "copyright", "terms and conditions", "all rights reserved"]):
+                continue
+                
+            has_job_indicator = any(ind in clean_lower.split() or f"-{ind}" in clean_lower or f" {ind}" in clean_lower for ind in job_indicators)
+            is_job_url = any(p in href_lower for p in ["/job/", "/jobs/", "/vacancy/", "/vacancies/", "/position/", "/role/", "/opening/", "/careers/", "boards.greenhouse", "jobs.lever", "ashbyhq", "workable", "teamtailor"])
+            
+            if has_job_indicator or is_job_url:
+                if href.strip().lower().startswith(("javascript:", "#")):
+                    full_url = careers_url
+                else:
+                    full_url = urllib.parse.urljoin(careers_url, href)
+                    
+                if any(s in full_url.lower() for s in ["youtube.com", "facebook.com", "twitter.com", "linkedin.com", "instagram.com", "cloudflare.com"]):
+                    continue
+                    
+                job_id = f"html_{company_name}_{clean_title}".lower().replace(' ', '_')
+                job_id = re.sub(r'[^a-z0-9_]', '', job_id)
+                
+                jobs.append({
+                    "id": job_id,
+                    "title": clean_title,
+                    "company": company_name,
+                    "location": "See Details",
+                    "hybrid": "hybrid" in clean_lower,
+                    "remote": "remote" in clean_lower,
+                    "url": full_url,
+                    "department": "",
+                    "source": "Direct Studio Web",
+                    "date_posted": "",
+                    "date_posted_ts": 0.0,
+                    "date_added": now_disp,
+                    "date_added_ts": now_ts,
+                })
+    return jobs
+
+def extract_jobs_from_company(comp, failed_pages=None, failed_lock=None):
     careers_url = comp.get("careers_url")
     company_name = comp.get("name", "")
     if not careers_url:
         return []
+
+    def _record_fail(source, err, url=None):
+        if failed_pages is not None:
+            status, err_type = classify_fetch_error(err)
+            entry = {
+                "company": company_name,
+                "url": url or careers_url,
+                "source": source,
+                "status": status,
+                "error_type": err_type,
+                "detail": str(err),
+                "timestamp": datetime.datetime.now().isoformat()
+            }
+            if failed_lock:
+                with failed_lock:
+                    failed_pages.append(entry)
+            else:
+                failed_pages.append(entry)
+
     gh_match = re.search(r'greenhouse\.io/([^/?#]+)', careers_url)
     if gh_match:
-        return fetch_greenhouse_jobs(gh_match.group(1), company_name)
+        try:
+            return fetch_greenhouse_jobs(gh_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Greenhouse", e, careers_url)
+            return []
+
     lever_match = re.search(r'jobs\.lever\.co/([^/?#]+)', careers_url)
     if lever_match:
-        return fetch_lever_jobs(lever_match.group(1), company_name)
+        try:
+            return fetch_lever_jobs(lever_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Lever", e, careers_url)
+            return []
+
     ashby_match = re.search(r'jobs\.ashbyhq\.com/([^/?#]+)', careers_url)
     if ashby_match:
-        return fetch_ashby_jobs(ashby_match.group(1), company_name)
+        try:
+            return fetch_ashby_jobs(ashby_match.group(1), company_name)
+        except Exception as e:
+            _record_fail("Ashby", e, careers_url)
+            return []
+
     workable_match = re.search(r'(?:apply\.workable\.com/|([a-zA-Z0-9_\-]+)\.workable\.com)(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)?', careers_url)
     if workable_match:
         slug = workable_match.group(2) or workable_match.group(1)
         if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            return fetch_workable_jobs(slug, company_name)
-    return fetch_html_career_page_jobs(careers_url, company_name)
+            try:
+                return fetch_workable_jobs(slug, company_name)
+            except Exception as e:
+                _record_fail("Workable", e, careers_url)
+                return []
+
+    try:
+        return fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=_record_fail)
+    except Exception as e:
+        _record_fail("Direct Studio Web", e, careers_url)
+        return []
 
 def fetch_asgc_jobs():
     req = urllib.request.Request(ASGC_API_URL, headers=DEFAULT_HEADERS)
@@ -748,6 +859,9 @@ def run_live_search(config, progress_callback=None):
                 })
             return []
 
+    failed_pages = []
+    failed_lock = threading.Lock()
+
     def _fetch_studios_task():
         nonlocal studios_count, scanned_studios_count, completed_studios, raw_jobs_accum, matched_jobs_accum
         if not query_studios or not active_comps:
@@ -768,12 +882,29 @@ def run_live_search(config, progress_callback=None):
                     "percent": round(5 + (completed_studios / max(1, total_studios)) * 88, 1),
                     "raw_jobs_total": raw_jobs_accum,
                     "matched_jobs_total": matched_jobs_accum,
+                    "failed_pages_total": len(failed_pages),
                     "message": f"Scanning {c_name}..."
                 })
+
+            failed_before = len(failed_pages)
             try:
-                c_jobs = extract_jobs_from_company(comp)
-            except Exception:
+                c_jobs = extract_jobs_from_company(comp, failed_pages=failed_pages, failed_lock=failed_lock)
+            except Exception as ex:
+                status, err_type = classify_fetch_error(ex)
+                with failed_lock:
+                    failed_pages.append({
+                        "company": c_name,
+                        "url": comp.get("careers_url", ""),
+                        "source": "Direct Studio Web",
+                        "status": status,
+                        "error_type": err_type,
+                        "detail": str(ex),
+                        "timestamp": datetime.datetime.now().isoformat()
+                    })
                 c_jobs = []
+
+            has_new_failure = len(failed_pages) > failed_before
+            latest_fail = failed_pages[-1] if has_new_failure else None
 
             c_matches = 0
             for j in (c_jobs or []):
@@ -788,8 +919,14 @@ def run_live_search(config, progress_callback=None):
                 matched_jobs_accum += c_matches
 
             if progress_callback:
-                log_type = "match" if c_matches > 0 else "studio"
-                match_note = f" -> ✨ {c_matches} matching role(s) found!" if c_matches > 0 else ""
+                if latest_fail:
+                    log_type = "warning"
+                    fail_text = f"⚠️ {c_name} ({latest_fail.get('source')}): {latest_fail.get('error_type')}"
+                    match_note = f" -> {fail_text}"
+                else:
+                    log_type = "match" if c_matches > 0 else "studio"
+                    match_note = f" -> ✨ {c_matches} matching role(s) found!" if c_matches > 0 else ""
+
                 progress_callback("progress", {
                     "active": list(active_studios)[:6],
                     "completed": completed_studios,
@@ -797,9 +934,10 @@ def run_live_search(config, progress_callback=None):
                     "percent": round(5 + (completed_studios / max(1, total_studios)) * 88, 1),
                     "raw_jobs_total": raw_jobs_accum,
                     "matched_jobs_total": matched_jobs_accum,
+                    "failed_pages_total": len(failed_pages),
                     "message": f"Scanned {c_name} ({len(c_jobs or [])} jobs){match_note}",
                     "log_entry": {
-                        "text": f"{c_name}: {len(c_jobs or [])} openings found{match_note}",
+                        "text": f"{c_name}: {len(c_jobs or [])} openings found{match_note}" if not latest_fail else fail_text,
                         "type": log_type
                     }
                 })
@@ -927,16 +1065,21 @@ def run_live_search(config, progress_callback=None):
     ))
     duration = round(time.time() - t0, 2)
 
+    save_failed_pages_reports(failed_pages)
+    BACKGROUND_STATE["last_failed_pages"] = failed_pages
+
     result_payload = {
         "success": True,
         "total_matched": len(matching_jobs),
         "total_raw": len(all_raw_jobs),
         "jobs": matching_jobs,
+        "failed_pages": failed_pages,
         "stats": {
             "asgc_raw_count": asgc_count,
             "studios_raw_count": studios_count,
             "recruiters_raw_count": recruiters_count,
             "scanned_studios": scanned_studios_count,
+            "failed_pages_count": len(failed_pages),
             "duration_seconds": duration
         }
     }
@@ -1189,7 +1332,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   <!-- Top Navigation Bar (WordPress Sticky Header Style) -->
   <header class="glass-nav border-b border-theme-border/70 px-4 sm:px-6 lg:px-10 py-3.5 sticky top-0 z-40 transition-all">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <div class="max-w-7xl 2xl:max-w-[1600px] mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand & Title with Logo Icon -->
       <div class="flex items-center gap-3.5">
@@ -1205,26 +1348,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div>
             <div class="flex items-center gap-2">
               <span class="font-heading font-bold text-sm tracking-tight text-white group-hover:text-indigo-300 transition">GameDev Radar</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-wider text-indigo-300 bg-indigo-500/10 border border-indigo-500/20">Studio Edition</span>
+
             </div>
-            <p class="text-[11px] text-theme-subtle font-sans leading-none mt-0.5">Live Career Crawler & Distance Match Engine</p>
+
           </div>
         </a>
       </div>
 
-      <!-- Center Quick Navigation (Theme Menu Links) -->
-      <nav class="hidden lg:flex items-center gap-1 font-heading text-xs font-medium text-theme-subtle">
-        <a href="#keywords-section" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition">Target Roles</a>
-        <a href="#location-section" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition">Distance & Modes</a>
-        <a href="#scheduler-section" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition">Automation</a>
-        <a href="#resultsSection" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition">Search Feed</a>
-        <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition flex items-center gap-1 font-sans">
-          Looker Studio ↗
-        </a>
-      </nav>
 
       <!-- Action Buttons Cluster -->
       <div class="flex items-center gap-2.5">
+        <button id="btnToggleConfig" onclick="toggleConfigRow()" class="px-3 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-subtle hover:text-white text-xs font-heading font-medium border border-theme-border transition shadow-sm flex items-center gap-1.5" title="Toggle Search Options Panel">
+          <svg id="btnToggleConfigIcon" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          <span id="btnToggleConfigText">Options</span>
+        </button>
+
         <button id="btnSaveConfig" onclick="saveConfiguration()" class="px-3.5 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-text text-xs font-heading font-semibold border border-theme-border hover:border-theme-borderLight transition shadow-sm active:scale-[0.98]">
           Save Settings
         </button>
@@ -1238,499 +1376,338 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
   </header>
 
-  <!-- Editorial Hero Section (Theme Showcase Banner) -->
-  <section class="border-b border-theme-border/60 relative overflow-hidden bg-gradient-to-b from-indigo-950/20 via-transparent to-transparent">
-    
-    <!-- Decorative background glow dots -->
-    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-1/2 right-10 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-10 relative z-10 space-y-6">
-      
-      <!-- Top Kicker Pill -->
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>REAL-TIME INDUSTRY RADAR • 360+ STUDIOS + AMIR SATVAT ASGC FEED</span>
-        </div>
-        
-        <div class="flex items-center gap-2 text-xs font-mono text-theme-subtle">
-          <span class="px-2.5 py-1 rounded-md bg-theme-surface/70 border border-theme-border">Local Port: 8765</span>
-          <span id="headerClock" class="px-2.5 py-1 rounded-md bg-theme-surface/70 border border-theme-border text-theme-text"></span>
-        </div>
-      </div>
-
-      <!-- Hero Header & Value Proposition -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        
-        <div class="lg:col-span-8 space-y-3">
-          <h1 class="font-editorial text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-white leading-[1.15]">
-            Curated intelligence for <span class="gradient-text-accent italic font-medium">game creators & technical artists</span>.
-          </h1>
-          <p class="text-sm sm:text-base text-theme-textSecondary max-w-2xl leading-relaxed">
-            Continuously crawls Greenhouse, Lever, Ashby, Workable, direct studio websites, and the Looker Studio ASGC games repository. Filters by exact keyword relevance, negative exclusions, and geocoded distance radii.
-          </p>
-        </div>
-
-        <!-- Metric Cards Grid (Theme Stat Blocks) -->
-        <div class="lg:col-span-4 grid grid-cols-2 gap-3">
-          
-          <div class="glass-card rounded-xl p-3.5 border border-theme-border shadow-card hover:border-indigo-500/40 transition">
-            <div class="flex items-center justify-between text-indigo-400 mb-1">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-theme-subtle">Studios</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            </div>
-            <div id="statStudios" class="font-heading font-extrabold text-xl text-white">360+</div>
-            <div class="text-[11px] text-theme-subtle mt-0.5">Tracked companies</div>
-          </div>
-
-          <div class="glass-card rounded-xl p-3.5 border border-theme-border shadow-card hover:border-cyan-500/40 transition">
-            <div class="flex items-center justify-between text-cyan-400 mb-1">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-theme-subtle">Portals</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-            </div>
-            <div id="statPortals" class="font-heading font-extrabold text-xl text-cyan-300">185+</div>
-            <div class="text-[11px] text-theme-subtle mt-0.5">Verified ATS links</div>
-          </div>
-
-          <div class="glass-card rounded-xl p-3.5 border border-theme-border shadow-card hover:border-emerald-500/40 transition">
-            <div class="flex items-center justify-between text-emerald-400 mb-1">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-theme-subtle">Global Database</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-            </div>
-            <div class="font-heading font-extrabold text-xl text-emerald-300">41,000+</div>
-            <div class="text-[11px] text-theme-subtle mt-0.5">ASGC live repository</div>
-          </div>
-
-          <div class="glass-card rounded-xl p-3.5 border border-theme-border shadow-card hover:border-violet-500/40 transition">
-            <div class="flex items-center justify-between text-violet-400 mb-1">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-theme-subtle">Distance Engine</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-            </div>
-            <div class="font-heading font-extrabold text-xl text-violet-300">Active</div>
-            <div class="text-[11px] text-theme-subtle mt-0.5">Haversine geocoding</div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
   <!-- Main Content Body -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-10 py-8 space-y-8">
+  <main class="flex-1 max-w-7xl 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-5">
     
-    <!-- Config Grid (WordPress Block Style) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Config Grid: All 4 option modules on the same row on desktop -->
+    <div id="configGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-stretch transition-all duration-300">
 
-      <!-- Left Column (8 cols): Keywords, Negatives & Avoid Lists -->
-      <div class="lg:col-span-8 space-y-6">
-        
-        <!-- Target Keywords Card -->
-        <div id="keywords-section" class="glass-card rounded-2xl p-6 shadow-card hover:shadow-card-hover transition duration-300 space-y-4">
-          
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-theme-border/60 pb-4">
-            <div class="space-y-0.5">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <h2 class="font-heading font-bold text-base text-white">Target Roles & Keywords</h2>
-              </div>
-              <p class="text-xs text-theme-subtle">Roles matching any of these terms in job title, discipline, or summary will be collected</p>
-            </div>
-            
+      <!-- 1. Roles & Keyword Filters -->
+      <div id="keywords-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <!-- Header with Clear & Reset -->
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
             <div class="flex items-center gap-2">
-              <button onclick="clearKeywords()" class="text-xs text-theme-subtle hover:text-white px-2.5 py-1 rounded-lg hover:bg-white/5 transition font-heading">Clear all</button>
-              <button onclick="resetKeywords()" class="text-xs text-indigo-300 hover:text-white px-3 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 font-heading font-semibold transition">Reset defaults</button>
+              <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+              <h2 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Roles & Filters</h2>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px]">
+              <button onclick="clearKeywords()" class="text-theme-subtle hover:text-white px-1.5 py-0.5 rounded hover:bg-white/5 transition font-heading">Clear</button>
+              <button onclick="resetKeywords()" class="text-indigo-300 hover:text-white px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 font-heading font-semibold transition">Reset</button>
             </div>
           </div>
 
-          <!-- Discipline Presets (Pill Chips) -->
-          <div class="space-y-1.5">
-            <span class="text-theme-subtle text-[11px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
-            <div class="flex flex-wrap items-center gap-1.5 text-xs">
-              <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 text-[11px] font-heading font-medium shadow-sm flex items-center gap-1">
-                <span>✦</span> Tech Art & Tools
-              </button>
-              <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Programming
-              </button>
-              <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Design
-              </button>
-              <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + 3D Art & Anim
-              </button>
-              <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Production & QA
-              </button>
-              <button onclick="addKeywordPreset(['sound designer', 'audio programmer', 'audio designer', 'composer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Audio
-              </button>
-            </div>
+          <!-- Filter Sub-Tabs -->
+          <div class="flex items-center p-1 rounded-lg bg-theme-bg/80 border border-theme-border text-[11px] font-heading font-medium shrink-0">
+            <button type="button" id="tabBtnTarget" onclick="switchFilterTab('target')" class="flex-1 py-1 rounded-md text-white bg-indigo-600 shadow-sm font-semibold text-center transition">Roles</button>
+            <button type="button" id="tabBtnAvoid" onclick="switchFilterTab('avoid')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Avoid<span id="tabAvoidBadge" class="text-[9px] font-mono ml-0.5"></span></button>
+            <button type="button" id="tabBtnStudios" onclick="switchFilterTab('studios')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Studios<span id="tabStudioBadge" class="text-[9px] font-mono ml-0.5"></span></button>
           </div>
 
-          <!-- Tag Input Container -->
-          <div class="p-3 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[100px] flex flex-wrap gap-2 items-center focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/20 transition shadow-inner">
-            <div id="keywordsList" class="flex flex-wrap gap-1.5"></div>
-            <input id="keywordInput" type="text" placeholder="Type keyword and press Enter or comma..." 
-              class="flex-1 min-w-[220px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-2 py-1 font-sans"
-              onkeydown="handleTagKey(event, 'keywordInput', addKeyword)">
-          </div>
-        </div>
-
-        <!-- 2 Column Split: Words to Avoid + Studios to Avoid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <!-- Words to Avoid -->
-          <div class="glass-card rounded-2xl p-5 space-y-3.5 shadow-card hover:shadow-card-hover transition duration-300">
-            <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-              <div class="space-y-0.5">
-                <h3 class="font-heading font-bold text-xs text-white flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                  Negative Keywords
-                </h3>
-                <p class="text-[11px] text-theme-subtle">Reject postings containing any of these words</p>
+          <!-- TAB 1: Target Roles & Keywords -->
+          <div id="filterTabTarget" class="flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="space-y-1 shrink-0">
+              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Discipline Presets:</span>
+              <div class="flex flex-wrap gap-1 text-[10px]">
+                <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 font-medium">✦ Tech Art</button>
+                <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Prog</button>
+                <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Design</button>
+                <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ 3D/Anim</button>
+                <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ QA/Prod</button>
               </div>
             </div>
 
-            <!-- Quick Avoid Presets -->
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading">
-                + Unpaid/Crypto/Casino
-              </button>
-              <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading">
-                + Non-games
-              </button>
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-indigo-500/80 focus-within:ring-1 focus-within:ring-indigo-500/20 transition shadow-inner">
+              <div id="keywordsList" class="flex flex-wrap gap-1"></div>
+              <input id="keywordInput" type="text" placeholder="+ Add keyword & Enter..." 
+                class="flex-1 min-w-[130px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                onkeydown="handleTagKey(event, 'keywordInput', addKeyword)">
+            </div>
+          </div>
+
+          <!-- TAB 2: Avoid Keywords -->
+          <div id="filterTabAvoid" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="space-y-1 shrink-0">
+              <span class="text-rose-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
+              <div class="flex flex-wrap gap-1 text-[10px]">
+                <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Unpaid/Crypto</button>
+                <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Non-games</button>
+              </div>
             </div>
 
-            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[76px] flex flex-wrap gap-1.5 items-center focus-within:border-rose-500/70 focus-within:ring-2 focus-within:ring-rose-500/10 transition shadow-inner">
-              <div id="excludeKeywordsList" class="flex flex-wrap gap-1.5"></div>
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-rose-500/70 focus-within:ring-1 focus-within:ring-rose-500/20 transition shadow-inner">
+              <div id="excludeKeywordsList" class="flex flex-wrap gap-1"></div>
               <input id="excludeKeywordInput" type="text" placeholder="Add word to avoid..." 
                 class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeKeywordInput', addExcludeKeyword)">
             </div>
           </div>
 
-          <!-- Studios to Avoid -->
-          <div class="glass-card rounded-2xl p-5 space-y-3.5 shadow-card hover:shadow-card-hover transition duration-300">
-            <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-              <div class="space-y-0.5">
-                <h3 class="font-heading font-bold text-xs text-white flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  Excluded Studios
-                </h3>
-                <p class="text-[11px] text-theme-subtle">Hide postings from specific companies</p>
-              </div>
-              <span id="excludeCompanyCount" class="font-mono text-[11px] text-amber-300 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20">0 excluded</span>
+          <!-- TAB 3: Excluded Studios -->
+          <div id="filterTabStudios" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="flex items-center justify-between shrink-0">
+              <span class="text-amber-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Blocked Studios:</span>
+              <span id="excludeCompanyCount" class="font-mono text-[10px] text-amber-300 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">0 excluded</span>
             </div>
 
-            <div class="text-[11px] text-theme-subtle italic">Click "Exclude studio" directly on any search card to add it here.</div>
-
-            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[76px] flex flex-wrap gap-1.5 items-center focus-within:border-amber-500/70 focus-within:ring-2 focus-within:ring-amber-500/10 transition shadow-inner">
-              <div id="excludeCompaniesList" class="flex flex-wrap gap-1.5"></div>
-              <input id="excludeCompanyInput" type="text" placeholder="Type studio name & Enter..." 
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-amber-500/70 focus-within:ring-1 focus-within:ring-amber-500/20 transition shadow-inner">
+              <div id="excludeCompaniesList" class="flex flex-wrap gap-1"></div>
+              <input id="excludeCompanyInput" type="text" placeholder="Type studio & Enter..." 
                 class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeCompanyInput', addExcludeCompany)">
             </div>
+            <p class="text-[10px] text-theme-subtle italic shrink-0">Click "Exclude studio" on any card to add it here.</p>
           </div>
-
         </div>
 
+        <p class="text-[10px] text-theme-subtle truncate pt-1 border-t border-theme-border/40 shrink-0">Matched on title, discipline & summary</p>
       </div>
 
-      <!-- Right Column (4 cols): Sources, Location Matrix & Automation -->
-      <div class="lg:col-span-4 space-y-6">
-
-        <!-- Sources & Feeds Card -->
-        <div class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center gap-2">
-              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              Live Data Sources
-            </h3>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">Active Feeds</span>
-          </div>
-
-          <!-- Source Toggles -->
-          <div class="space-y-2.5">
-            <!-- Source 1: Looker Studio & ASGC -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-heading font-semibold text-white">Amir Satvat / ASGC Games Board</span>
-                </div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  41,000+ postings synchronized from the global games directory
-                </div>
-                <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="inline-flex items-center gap-1 mt-1 text-[11px] text-indigo-400 hover:text-indigo-300 font-medium">
-                  Open Looker Studio ↗
-                </a>
-              </div>
-              <input type="checkbox" id="srcAsgc" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 2: Direct Studio Careers -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Direct Studio Career Portals</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  360+ tracked game studios (Greenhouse, Lever, Ashby, Workable, direct web)
-                </div>
-              </div>
-              <input type="checkbox" id="srcStudios" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 3: Aardvark Swift -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Aardvark Swift Recruitment</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Specialist UK & global games industry recruitment agency (aswift.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcAardvark" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 4: InGame Job -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">InGame Job Board</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Curated international game development vacancies & studio roles (ingamejob.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcInGame" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 5: GamesIndustry.biz -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">GamesIndustry.biz Jobs</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Leading European and global games business job board (jobs.gamesindustry.biz)
-                </div>
-              </div>
-              <input type="checkbox" id="srcGibiz" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 6: Work With Indies -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Work With Indies</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Dedicated remote & indie studio job board (workwithindies.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcWorkWithIndies" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 7: Datascope -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Datascope Recruitment</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Games & interactive technology recruitment consultancy (datascope.co.uk)
-                </div>
-              </div>
-              <input type="checkbox" id="srcDatascope" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-          </div>
-
-          <!-- Studio Portal Re-scrape tool -->
-          <div class="pt-2 border-t border-theme-border/60">
-            <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-2 px-3 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-theme-text flex items-center justify-center gap-2 transition active:scale-[0.98]">
-              <svg id="refreshSpinner" class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-              <span>Refresh 360+ Studio Portals</span>
-            </button>
-            <div id="refreshStatus" class="mt-1.5 text-[11px] text-theme-subtle text-center font-mono truncate"></div>
-          </div>
-
-        </div>
-
-        <!-- Location & Workplace Rules Card -->
-        <div id="location-section" class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <div>
-              <h4 class="font-heading font-bold text-xs text-white flex items-center gap-2">
-                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-                Location & Distance Rules
-              </h4>
-              <p class="text-[11px] text-theme-subtle">Multi-mode distance matrix with geocoding</p>
+      <!-- 2. Location & Workplace Rules -->
+      <div id="location-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              <h4 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Location Rules</h4>
             </div>
-            <span id="locationRuleCount" class="font-mono text-[11px] text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">0 rules</span>
+            <span id="locationRuleCount" class="font-mono text-[10px] text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">0 rules</span>
           </div>
 
           <!-- Quick Presets -->
-          <div class="space-y-1.5">
-            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block">Curated Presets:</span>
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white text-[11px] font-heading font-medium">🏠 Remote in Europe</button>
-              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 hover:text-white text-[11px] font-heading font-medium">🔄 Hybrid ≤30mi London</button>
-              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-purple-300 hover:text-white text-[11px] font-heading font-medium">🏢 On-site ≤20mi Camb</button>
-              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white text-[11px] font-heading font-medium">🌐 Remote Global</button>
+          <div class="space-y-1 shrink-0">
+            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block">Presets:</span>
+            <div class="flex flex-wrap gap-1 text-[10px]">
+              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white font-medium">🏠 Remote EU</button>
+              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 hover:text-white font-medium">🔄 London 30mi</button>
+              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-purple-300 hover:text-white font-medium">🏢 Cambridge</button>
+              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white font-medium">🌐 Global</button>
             </div>
           </div>
 
-          <!-- Active Rules Container -->
-          <div id="locationRulesContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
+          <!-- Active Rules Container (Expands vertically to avoid scrollbars) -->
+          <div id="locationRulesContainer" class="flex-1 min-h-[90px] overflow-y-auto space-y-1.5 pr-1"></div>
 
           <!-- Add Rule Form -->
-          <div class="p-3 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2.5 shadow-inner">
-            <div class="text-[11px] font-heading font-bold text-white uppercase tracking-wider">Add Custom Distance Rule</div>
-            
-            <div class="grid grid-cols-12 gap-2">
-              <div class="col-span-4">
-                <select id="newRuleMode" class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-heading">
+          <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner shrink-0">
+            <div class="grid grid-cols-12 gap-1.5">
+              <div class="col-span-5">
+                <select id="newRuleMode" class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-heading">
                   <option value="remote">Remote</option>
                   <option value="hybrid" selected>Hybrid</option>
                   <option value="on_site">On-site</option>
                   <option value="any">Any Mode</option>
                 </select>
               </div>
-              <div class="col-span-8">
-                <input id="newRuleTarget" type="text" placeholder="City or Region (e.g. London, Europe)" 
-                  class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-sans"
+              <div class="col-span-7">
+                <input id="newRuleTarget" type="text" placeholder="City / Region" 
+                  class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-sans"
                   onkeydown="if(event.key==='Enter'){event.preventDefault();addNewLocationRule();}">
               </div>
             </div>
 
-            <div class="flex items-center gap-2">
-              <select id="newRuleDist" class="flex-1 px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-sans">
-                <option value="10">Within 10 miles</option>
-                <option value="20">Within 20 miles</option>
-                <option value="30" selected>Within 30 miles</option>
-                <option value="50">Within 50 miles</option>
-                <option value="75">Within 75 miles</option>
-                <option value="100">Within 100 miles</option>
-                <option value="">No distance limit (exact/region)</option>
+            <div class="flex items-center gap-1.5">
+              <select id="newRuleDist" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-sans">
+                <option value="10">≤ 10 miles</option>
+                <option value="20">≤ 20 miles</option>
+                <option value="30" selected>≤ 30 miles</option>
+                <option value="50">≤ 50 miles</option>
+                <option value="75">≤ 75 miles</option>
+                <option value="100">≤ 100 miles</option>
+                <option value="">No limit</option>
               </select>
-
-              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2.5 py-1.5 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-xs text-theme-subtle hover:text-white font-heading font-medium transition">
-                📍 Test
-              </button>
-              <button type="button" onclick="addNewLocationRule()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-sm">
-                + Add
-              </button>
+              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] text-theme-subtle hover:text-white font-heading font-medium transition">📍 Test</button>
+              <button type="button" onclick="addNewLocationRule()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
             </div>
             
-            <div id="geocodeTestResult" class="hidden text-[11px] font-mono p-2 rounded-lg bg-theme-surface border border-theme-border"></div>
+            <div id="geocodeTestResult" class="hidden text-[10px] font-mono p-1.5 rounded bg-theme-surface border border-theme-border"></div>
           </div>
-
-          <!-- Legacy fallback toggle / simple keyword box -->
-          <details class="text-[11px] text-theme-subtle">
-            <summary class="cursor-pointer hover:text-white font-medium select-none">Legacy text filter / remote-only fallback</summary>
-            <div class="mt-2 pt-2 border-t border-theme-border/60 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-theme-textSecondary">Remote roles only (legacy)</span>
-                <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-surface border-theme-border cursor-pointer">
-              </div>
-              <div>
-                <label class="text-[11px] text-theme-subtle block mb-1">Simple keyword match (e.g. UK, London)</label>
-                <div class="p-1.5 rounded-lg bg-theme-bg/80 border border-theme-border flex flex-wrap gap-1 items-center">
-                  <div id="locationList" class="flex flex-wrap gap-1"></div>
-                  <input id="locationInput" type="text" placeholder="Add text..." 
-                    class="flex-1 min-w-[70px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
-                    onkeydown="handleTagKey(event, 'locationInput', addLocation)">
-                </div>
-              </div>
-            </div>
-          </details>
         </div>
 
-        <!-- Automated Scheduler & Alerts Card -->
-        <div id="scheduler-section" class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <div>
-              <h3 class="font-heading font-bold text-xs text-white flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Automated Background Scheduler
-              </h3>
-              <p class="text-[11px] text-theme-subtle">Silent Windows Task checks & Alerts</p>
+        <!-- Legacy fallback toggle -->
+        <details class="text-[10px] text-theme-subtle pt-1 border-t border-theme-border/40 shrink-0">
+          <summary class="cursor-pointer hover:text-white font-medium select-none">Legacy text filter / remote-only ▾</summary>
+          <div class="mt-1.5 pt-1.5 border-t border-theme-border/60 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span>Remote roles only</span>
+              <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-surface border-theme-border cursor-pointer">
             </div>
-            <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Active</span>
+            <div class="p-1 rounded bg-theme-bg/80 border border-theme-border flex flex-wrap gap-1 items-center">
+              <div id="locationList" class="flex flex-wrap gap-1"></div>
+              <input id="locationInput" type="text" placeholder="Add text..." 
+                class="flex-1 min-w-[60px] bg-transparent text-[11px] text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                onkeydown="handleTagKey(event, 'locationInput', addLocation)">
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- 3. Live Data Sources -->
+      <div class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              Data Sources
+            </h3>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">7 Feeds</span>
           </div>
 
+          <!-- Source Toggles compact list (Expands vertically to show all feeds) -->
+          <div class="flex-1 min-h-[220px] overflow-y-auto space-y-1.5 pr-1">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                  <span>ASGC Games Board</span>
+                  <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                </div>
+                <div class="text-[10px] text-theme-subtle">41,000+ synchronized postings</div>
+              </div>
+              <input type="checkbox" id="srcAsgc" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Direct Studio Portals</div>
+                <div class="text-[10px] text-theme-subtle">360+ tracked game studios</div>
+              </div>
+              <input type="checkbox" id="srcStudios" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Aardvark Swift</div>
+                <div class="text-[10px] text-theme-subtle">UK & global recruiter (aswift.com)</div>
+              </div>
+              <input type="checkbox" id="srcAardvark" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">InGame Job Board</div>
+                <div class="text-[10px] text-theme-subtle">Curated vacancies (ingamejob.com)</div>
+              </div>
+              <input type="checkbox" id="srcInGame" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">GamesIndustry.biz</div>
+                <div class="text-[10px] text-theme-subtle">European & global games trade</div>
+              </div>
+              <input type="checkbox" id="srcGibiz" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Work With Indies</div>
+                <div class="text-[10px] text-theme-subtle">Remote & indie studio jobs</div>
+              </div>
+              <input type="checkbox" id="srcWorkWithIndies" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Datascope</div>
+                <div class="text-[10px] text-theme-subtle">Games consultancy (datascope.co.uk)</div>
+              </div>
+              <input type="checkbox" id="srcDatascope" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+          </div>
+        </div>
+
+        <!-- Studio Portal Re-scrape tool -->
+        <div class="pt-2 border-t border-theme-border/60 shrink-0">
+          <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-theme-text flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
+            <svg id="refreshSpinner" class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>Refresh 360+ Studios</span>
+          </button>
+          <div id="refreshStatus" class="mt-1 text-[10px] text-theme-subtle text-center font-mono truncate"></div>
+        </div>
+      </div>
+
+      <!-- 4. Background Scheduler & Alerts -->
+      <div id="scheduler-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col space-y-3 min-h-[460px]">
+        <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Scheduler & Alerts</h3>
+          </div>
+          <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Active</span>
+        </div>
+
+        <!-- Scrollable Scheduler Body with dedicated scrollbar so alert channels are easily edited -->
+        <div class="flex-1 min-h-0 overflow-y-auto pr-1 space-y-3">
           <!-- Master enable toggle -->
-          <label class="flex items-center justify-between p-2.5 rounded-xl bg-theme-surface/70 border border-theme-border cursor-pointer hover:border-theme-borderLight transition">
+          <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border cursor-pointer hover:border-theme-borderLight transition">
             <div class="space-y-0.5">
-              <span class="text-xs font-heading font-semibold text-white">Enable Background Scheduler</span>
-              <div class="text-[10px] text-theme-subtle">Runs automated checks in Windows Task Scheduler</div>
+              <span class="text-xs font-heading font-semibold text-white">Background Checks</span>
+              <div class="text-[10px] text-theme-subtle">Silent Windows Task scheduler</div>
             </div>
-            <input type="checkbox" id="scheduleEnabled" class="w-4 h-4 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer" checked onchange="toggleScheduleMaster()">
+            <input type="checkbox" id="scheduleEnabled" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer" checked onchange="toggleScheduleMaster()">
           </label>
 
           <!-- Quick Presets -->
-          <div class="space-y-1.5">
-            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle">Schedule Presets:</div>
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white text-[11px] font-heading font-medium">⚡ 3x Daily (9am, 1pm, 6pm)</button>
-              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white text-[11px] font-heading font-medium">4x Daily (8am, 12, 4, 8)</button>
-              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-amber-300 hover:text-white text-[11px] font-heading font-medium">+ 1 PM Lunch</button>
+          <div class="space-y-1">
+            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle">Presets:</div>
+            <div class="flex flex-wrap gap-1 text-[10px]">
+              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 font-medium">⚡ 3x Daily</button>
+              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle font-medium">4x Daily</button>
+              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-amber-300 font-medium">+ 1 PM</button>
             </div>
           </div>
 
-          <!-- Active Schedule Time List -->
+          <!-- Active Times & Add Time -->
           <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="text-theme-subtle font-heading font-semibold uppercase tracking-wider text-[10px]">Configured Check Times:</span>
-              <span id="scheduleCountBadge" class="font-mono text-[10px] text-theme-subtle">3 times</span>
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="text-theme-subtle font-heading font-semibold uppercase tracking-wider">Times:</span>
+              <span id="scheduleCountBadge" class="font-mono text-theme-subtle">3 times</span>
             </div>
-            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1.5 min-h-[44px] p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border items-center shadow-inner"></div>
+            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1 min-h-[34px] max-h-[56px] overflow-y-auto p-1.5 rounded-xl bg-theme-bg/80 border border-theme-border items-center shadow-inner"></div>
+            
+            <div class="flex items-center gap-1.5">
+              <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-mono">
+              <button type="button" onclick="addScheduleFromInput()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
+            </div>
           </div>
 
-          <!-- Add Custom Time Form -->
-          <div class="flex items-center gap-2">
-            <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-3 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-mono">
-            <button type="button" onclick="addScheduleFromInput()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-sm">
-              + Add Time
-            </button>
-          </div>
-
-          <!-- Windows Task Scheduler Sync & Live Status -->
-          <div class="pt-2 border-t border-theme-border/60 space-y-2">
-            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-2 px-3 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white flex items-center justify-center gap-2 transition active:scale-[0.98]">
+          <!-- Windows Task Sync Button & Status Info -->
+          <div class="space-y-1.5 pt-2 border-t border-theme-border/60">
+            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] font-heading font-semibold text-white flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
               <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-              <span>Sync to Windows Task Scheduler</span>
+              <span>Sync Windows Task</span>
             </button>
-            <div id="schedulerStatusInfo" class="text-[10px] font-mono text-theme-subtle bg-theme-bg/80 p-2.5 rounded-xl border border-theme-border space-y-1">
-              <div class="flex items-center justify-between">
-                <span>Task: GamesMap_Career_JobMonitor</span>
-                <span id="schedulerStatusState" class="text-emerald-400 font-semibold">Ready</span>
-              </div>
-              <div id="schedulerNextRun" class="text-theme-subtle truncate">Next Run: Checking...</div>
+            <div id="schedulerStatusInfo" class="text-[9px] font-mono text-theme-subtle bg-theme-bg/80 p-1.5 rounded-lg border border-theme-border flex items-center justify-between">
+              <span class="truncate">Task: JobMonitor</span>
+              <span id="schedulerStatusState" class="text-emerald-400 font-semibold ml-1">Ready</span>
             </div>
+            <div id="schedulerNextRun" class="hidden"></div>
           </div>
 
-          <!-- Notification Channels Sub-Block -->
-          <div class="pt-3 border-t border-theme-border/60 space-y-2.5">
+          <!-- Alert Channels (Directly accessible and scrollable) -->
+          <div class="space-y-2 pt-2 border-t border-theme-border/60">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-heading font-bold text-white uppercase tracking-wider">Alert Channels</span>
-              <button onclick="testNotifications()" class="text-[11px] px-2.5 py-0.5 rounded-md bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 font-heading font-semibold transition">
-                Test Alert
-              </button>
+              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Alert Channels:</span>
+              <button type="button" onclick="testNotifications()" class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 font-heading font-semibold transition">Test</button>
             </div>
-
-            <label class="flex items-center justify-between p-2 rounded-lg bg-theme-surface/70 border border-theme-border cursor-pointer">
-              <span class="text-xs text-white font-heading">Windows Desktop Toast</span>
-              <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <div>
-              <label class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block mb-1">Discord Webhook</label>
-              <input type="text" id="discordWebhook" placeholder="https://discord.com/api/webhooks/..." 
-                class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-mono text-[11px]">
-            </div>
-
-            <div>
-              <label class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block mb-1">Slack Webhook</label>
-              <input type="text" id="slackWebhook" placeholder="https://hooks.slack.com/services/..." 
-                class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-mono text-[11px]">
+            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner">
+              <div class="flex items-center justify-between">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border" checked>
+                  <span class="text-white text-[11px]">Windows Toast</span>
+                </label>
+              </div>
+              <div>
+                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Discord Webhook URL</label>
+                <input type="text" id="discordWebhook" placeholder="Discord webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+              </div>
+              <div>
+                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Slack Webhook URL</label>
+                <input type="text" id="slackWebhook" placeholder="Slack webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+              </div>
             </div>
           </div>
-
         </div>
-
       </div>
 
     </div>
@@ -1745,6 +1722,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="flex items-center gap-3">
             <h2 class="font-editorial text-2xl font-normal text-white">Live Industry Matches</h2>
             <span id="resultsCountBadge" class="px-3 py-0.5 rounded-full text-xs font-mono font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm">0 matches</span>
+            <button id="failedPagesBadgeBtn" type="button" onclick="openFailedPagesModal()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Click to review studio career pages that timed out or failed">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="failedPagesCountLabel">0 Timed Out</span>
+            </button>
           </div>
           <p id="resultsStatsSubtitle" class="text-xs text-theme-subtle font-mono">Run a scan to query active game dev studio portals & Looker Studio database</p>
         </div>
@@ -1756,6 +1737,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <input type="text" id="filterResultsInput" oninput="filterResultsTable()" placeholder="Filter within matches..." 
               class="w-48 sm:w-60 px-3 py-1.5 pl-8 rounded-xl bg-theme-bg/90 border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition font-sans shadow-inner">
             <svg class="w-3.5 h-3.5 text-theme-subtle absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="flex items-center gap-1.5 bg-theme-bg/90 border border-theme-border rounded-xl px-2.5 py-1 shadow-inner">
+            <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+            <span class="text-[11px] text-theme-subtle font-heading font-medium">Sort:</span>
+            <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-white font-heading font-medium focus:outline-none cursor-pointer">
+              <option value="date_desc" class="bg-[#0e1422] text-white">Date (Newest first)</option>
+              <option value="date_asc" class="bg-[#0e1422] text-white">Date (Oldest first)</option>
+              <option value="company_asc" class="bg-[#0e1422] text-white">Company (A → Z)</option>
+              <option value="company_desc" class="bg-[#0e1422] text-white">Company (Z → A)</option>
+              <option value="title_asc" class="bg-[#0e1422] text-white">Role Title (A → Z)</option>
+              <option value="source_asc" class="bg-[#0e1422] text-white">Source</option>
+            </select>
           </div>
 
           <!-- View Mode Toggle -->
@@ -1870,11 +1865,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <table class="w-full text-left text-xs text-white">
           <thead class="bg-theme-surface text-theme-subtle font-heading text-[11px] uppercase tracking-wider border-b border-theme-border">
             <tr>
-              <th class="py-3 px-4 font-semibold">Role</th>
-              <th class="py-3 px-4 font-semibold">Studio</th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
               <th class="py-3 px-4 font-semibold">Discipline</th>
               <th class="py-3 px-4 font-semibold">Location</th>
-              <th class="py-3 px-4 font-semibold">Source</th>
+              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
               <th class="py-3 px-4 font-semibold">Keywords</th>
               <th class="py-3 px-4 text-right font-semibold">Action</th>
             </tr>
@@ -1892,19 +1888,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       
       <div class="flex items-center gap-3">
-        <div class="w-6 h-6 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400 font-heading font-extrabold text-[10px]">
-          GD
-        </div>
-        <span class="font-heading font-semibold text-white">Game Dev Job Monitor</span>
-        <span class="text-theme-subtle">• Pure Python 3 & Web Standards</span>
+
       </div>
 
       <div class="flex flex-wrap items-center gap-6 font-heading text-xs">
-        <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-300 transition">Amir Satvat ASGC Feed ↗</a>
-        <a href="https://greenhouse.io" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-300 transition">Greenhouse</a>
-        <a href="https://lever.co" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-300 transition">Lever</a>
-        <a href="https://ashbyhq.com" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-300 transition">Ashby</a>
-        <a href="https://workable.com" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-300 transition">Workable</a>
+       
       </div>
 
       <div class="font-mono text-[11px] text-theme-subtle">
@@ -2290,6 +2278,56 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
     }
 
+    // --- Filter Sub-Tabs & Options Toggle ---
+    function switchFilterTab(tab) {
+      const tabBtnTarget = document.getElementById('tabBtnTarget');
+      const tabBtnAvoid = document.getElementById('tabBtnAvoid');
+      const tabBtnStudios = document.getElementById('tabBtnStudios');
+      const filterTabTarget = document.getElementById('filterTabTarget');
+      const filterTabAvoid = document.getElementById('filterTabAvoid');
+      const filterTabStudios = document.getElementById('filterTabStudios');
+
+      if (!tabBtnTarget || !filterTabTarget) return;
+
+      const activeClasses = ['text-white', 'bg-indigo-600', 'font-semibold', 'shadow-sm'];
+      const inactiveClasses = ['text-theme-subtle', 'hover:text-white'];
+
+      [tabBtnTarget, tabBtnAvoid, tabBtnStudios].forEach(btn => {
+        if (btn) {
+          btn.classList.remove(...activeClasses);
+          btn.classList.add(...inactiveClasses);
+        }
+      });
+
+      if (filterTabTarget) filterTabTarget.classList.add('hidden');
+      if (filterTabAvoid) filterTabAvoid.classList.add('hidden');
+      if (filterTabStudios) filterTabStudios.classList.add('hidden');
+
+      if (tab === 'target' && tabBtnTarget && filterTabTarget) {
+        tabBtnTarget.classList.add(...activeClasses);
+        tabBtnTarget.classList.remove(...inactiveClasses);
+        filterTabTarget.classList.remove('hidden');
+      } else if (tab === 'avoid' && tabBtnAvoid && filterTabAvoid) {
+        tabBtnAvoid.classList.add(...activeClasses);
+        tabBtnAvoid.classList.remove(...inactiveClasses);
+        filterTabAvoid.classList.remove('hidden');
+      } else if (tab === 'studios' && tabBtnStudios && filterTabStudios) {
+        tabBtnStudios.classList.add(...activeClasses);
+        tabBtnStudios.classList.remove(...inactiveClasses);
+        filterTabStudios.classList.remove('hidden');
+      }
+    }
+
+    function toggleConfigRow() {
+      const grid = document.getElementById('configGrid');
+      const text = document.getElementById('btnToggleConfigText');
+      const icon = document.getElementById('btnToggleConfigIcon');
+      if (!grid) return;
+      const isHidden = grid.classList.toggle('hidden');
+      if (text) text.innerText = isHidden ? 'Show Options' : 'Options';
+      if (icon) icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
     // --- UI Sync & Tag Rendering ---
     function renderConfigUI() {
       // 1. Keywords
@@ -2297,11 +2335,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       
       // 2. Exclude Keywords
       renderTagList('excludeKeywordsList', currentConfig.search.exclude_keywords, removeExcludeKeyword, 'bg-rose-500/10 text-rose-300 border-rose-500/20');
+      const tabAvoidBadge = document.getElementById('tabAvoidBadge');
+      if (tabAvoidBadge) {
+        const count = currentConfig.search.exclude_keywords?.length || 0;
+        tabAvoidBadge.innerText = count ? ` (${count})` : '';
+      }
       
       // 3. Exclude Companies
       renderTagList('excludeCompaniesList', currentConfig.search.exclude_companies, removeExcludeCompany, 'bg-amber-500/10 text-amber-300 border-amber-500/20');
       const countEl = document.getElementById('excludeCompanyCount');
       if (countEl) countEl.innerText = `${currentConfig.search.exclude_companies.length} excluded`;
+      const tabStudioBadge = document.getElementById('tabStudioBadge');
+      if (tabStudioBadge) {
+        const count = currentConfig.search.exclude_companies?.length || 0;
+        tabStudioBadge.innerText = count ? ` (${count})` : '';
+      }
 
       // 4. Location Rules
       renderLocationRules();
@@ -2812,6 +2860,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       badge.innerText = `${jobs.length} match${jobs.length === 1 ? '' : 'es'}`;
       subtitle.innerText = `Completed in ${data.stats.duration_seconds}s • ASGC Listings: ${data.stats.asgc_raw_count.toLocaleString()} • Studio Portals Scanned: ${data.stats.scanned_studios}`;
 
+      // Update failed / timed out pages badge
+      updateFailedPagesBadge(data.failed_pages || []);
+
       if (jobs.length === 0) {
         emptyState.classList.remove('hidden');
         cardsGrid.classList.add('hidden');
@@ -2848,6 +2899,84 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       filterResultsTable();
     }
 
+    let currentSortMode = 'date_desc';
+
+    function setSortByColumn(col) {
+      if (col === 'date') {
+        currentSortMode = currentSortMode === 'date_desc' ? 'date_asc' : 'date_desc';
+      } else if (col === 'company') {
+        currentSortMode = currentSortMode === 'company_asc' ? 'company_desc' : 'company_asc';
+      } else if (col === 'title') {
+        currentSortMode = currentSortMode === 'title_asc' ? 'title_desc' : 'title_asc';
+      } else if (col === 'source') {
+        currentSortMode = currentSortMode === 'source_asc' ? 'source_desc' : 'source_asc';
+      }
+      const select = document.getElementById('sortResultsSelect');
+      if (select) select.value = currentSortMode;
+      updateSortIndicators();
+      filterResultsTable();
+    }
+
+    function applySortAndFilter() {
+      const select = document.getElementById('sortResultsSelect');
+      if (select) currentSortMode = select.value;
+      updateSortIndicators();
+      filterResultsTable();
+    }
+
+    function updateSortIndicators() {
+      const cols = ['title', 'company', 'date', 'source'];
+      cols.forEach(c => {
+        const el = document.getElementById(`thSort_${c}`);
+        if (!el) return;
+        if (currentSortMode.startsWith(c)) {
+          el.innerText = currentSortMode.endsWith('asc') ? ' ▲' : ' ▼';
+          el.className = 'text-indigo-400 font-bold';
+        } else {
+          el.innerText = ' ↕';
+          el.className = 'text-theme-subtle';
+        }
+      });
+    }
+
+    function sortJobsList(jobs) {
+      const list = [...jobs];
+      list.sort((a, b) => {
+        if (currentSortMode === 'date_desc') {
+          const tsA = a.date_posted_ts || a.date_added_ts || 0;
+          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          if (tsB !== tsA) return tsB - tsA;
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'date_asc') {
+          const tsA = a.date_posted_ts || a.date_added_ts || 0;
+          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          if (tsA !== tsB) return tsA - tsB;
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'company_asc') {
+          return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'company_desc') {
+          return (b.company || '').localeCompare(a.company || '') || (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'title_asc') {
+          return (a.title || '').localeCompare(b.title || '');
+        }
+        if (currentSortMode === 'title_desc') {
+          return (b.title || '').localeCompare(a.title || '');
+        }
+        if (currentSortMode === 'source_asc') {
+          return (a.source || '').localeCompare(b.source || '') || (a.company || '').localeCompare(b.company || '');
+        }
+        if (currentSortMode === 'source_desc') {
+          return (b.source || '').localeCompare(a.source || '') || (a.company || '').localeCompare(b.company || '');
+        }
+        return 0;
+      });
+      return list;
+    }
+
     function filterResultsTable() {
       const q = (document.getElementById('filterResultsInput').value || '').toLowerCase().trim();
       const filtered = allSearchResults.filter(j => {
@@ -2856,7 +2985,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           const jSrc = (j.source || '').toLowerCase();
           const targetSrc = currentSourceFilter.toLowerCase();
           if (targetSrc === 'direct studio') {
-            if (!['direct web', 'greenhouse', 'lever', 'ashby', 'workable'].some(s => jSrc.includes(s))) {
+            if (!['direct web', 'direct studio web', 'greenhouse', 'lever', 'ashby', 'workable'].some(s => jSrc.includes(s))) {
               return false;
             }
           } else if (!jSrc.includes(targetSrc) && !targetSrc.includes(jSrc)) {
@@ -2866,12 +2995,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         if (!q) return true;
         const locBadge = (j.location_match && j.location_match.display_badge) || '';
-        const text = `${j.title} ${j.company} ${j.department || ''} ${j.location} ${locBadge} ${j.source} ${(j.matched_keywords || []).join(' ')}`.toLowerCase();
+        const text = `${j.title} ${j.company} ${j.department || ''} ${j.location} ${locBadge} ${j.source} ${j.date_posted || ''} ${(j.matched_keywords || []).join(' ')}`.toLowerCase();
         return text.includes(q);
       });
 
-      renderCards(filtered);
-      renderTable(filtered);
+      const sorted = sortJobsList(filtered);
+
+      renderCards(sorted);
+      renderTable(sorted);
 
       if (currentViewMode === 'cards') {
         document.getElementById('resultsCardsGrid').classList.remove('hidden');
@@ -2895,19 +3026,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
           let color = 'text-theme-subtle bg-theme-surface border-theme-border';
-          if (m === 'remote' || job.remote) {
-            color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-          } else if (m === 'hybrid') {
+          if (m === 'hybrid' || job.hybrid) {
             color = 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
+          } else if (m === 'remote' || job.remote) {
+            color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
           } else if (m === 'on_site') {
             color = 'text-purple-400 bg-purple-500/10 border-purple-500/20';
           }
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono border ${color}">${escapeHTML(job.location_match.display_badge)}</span>`;
+        } else if (job.hybrid) {
+          const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">Remote</span>`;
         } else {
           locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.location || 'On-site')}</span>`;
         }
+
+        // Date Posted / Discovered Badge
+        const dateDisp = job.date_posted || job.date_added || '';
+        const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-theme-subtle px-2 py-0.5 rounded-full bg-theme-surface border border-theme-border flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading font-medium border border-indigo-500/20">${escapeHTML(k)}</span>`).join('');
         
@@ -2920,7 +3058,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         card.innerHTML = `
           <div class="space-y-3">
             
-            <!-- Top bar: Studio Monogram + Source + Location -->
+            <!-- Top bar: Studio Monogram + Source + Badges -->
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr ${studioGrad} flex items-center justify-center text-white font-heading font-extrabold text-xs shadow-sm flex-shrink-0">
@@ -2932,6 +3070,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 </div>
               </div>
               <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                ${dateBadge}
                 ${expBadge}
                 ${locBadge}
               </div>
@@ -2979,25 +3118,31 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading border border-indigo-500/20 mr-1">${escapeHTML(k)}</span>`).join('');
 
-        let locTableDisplay = escapeHTML(job.location || 'Onsite');
+        let locTableDisplay = escapeHTML(job.location || 'On-site');
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
-          if (m === 'remote' || job.remote) {
-            locTableDisplay = `<span class="text-emerald-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
-          } else if (m === 'hybrid') {
+          if (m === 'hybrid' || job.hybrid) {
             locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
+          } else if (m === 'remote' || job.remote) {
+            locTableDisplay = `<span class="text-emerald-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else if (m === 'on_site') {
             locTableDisplay = `<span class="text-purple-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else {
             locTableDisplay = escapeHTML(job.location_match.display_badge);
           }
+        } else if (job.hybrid) {
+          const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
+          locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
           locTableDisplay = '<span class="text-emerald-400 font-mono">Remote</span>';
         }
 
+        const dateDisp = job.date_posted || job.date_added || '—';
+
         tr.innerHTML = `
           <td class="py-3 px-4 font-heading font-semibold text-white">${escapeHTML(job.title)}</td>
           <td class="py-3 px-4 text-theme-textSecondary">${escapeHTML(job.company)}</td>
+          <td class="py-3 px-4 text-theme-subtle font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
           <td class="py-3 px-4 text-theme-subtle">${escapeHTML(job.department || '—')}</td>
           <td class="py-3 px-4 text-theme-subtle">${locTableDisplay}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.source)}</span></td>
@@ -3020,8 +3165,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
         btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
       } else {
-        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
         btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
+        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
       }
       filterResultsTable();
     }
@@ -3036,9 +3181,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     // --- Export Functions ---
     function exportCSV() {
       if (!allSearchResults.length) return showToast('No results to export', 'warning');
-      let csv = 'Title,Company,Department,Source,Location,Remote,URL\n';
+      let csv = 'Title,Company,Date Posted,Department,Source,Workplace,Location,URL\n';
       allSearchResults.forEach(j => {
-        csv += `"${(j.title || '').replace(/"/g, '""')}","${(j.company || '').replace(/"/g, '""')}","${(j.department || '').replace(/"/g, '""')}","${j.source}","${(j.location || '').replace(/"/g, '""')}",${j.remote ? 'Yes' : 'No'},"${j.url}"\n`;
+        const workplaceMode = j.hybrid ? 'Hybrid' : (j.remote ? 'Remote' : 'On-site');
+        const dateVal = j.date_posted || j.date_added || '';
+        csv += `"${(j.title || '').replace(/"/g, '""')}","${(j.company || '').replace(/"/g, '""')}","${dateVal}","${(j.department || '').replace(/"/g, '""')}","${j.source}","${workplaceMode}","${(j.location || '').replace(/"/g, '""')}","${j.url}"\n`;
       });
       downloadFile(csv, `gamedev_jobs_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
     }
@@ -3069,7 +3216,154 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (!str) return '';
       return String(str).replace(/'/g, "\\'");
     }
+
+    // --- Failed / Timed Out Pages Management ---
+    let currentFailedPages = [];
+
+    function updateFailedPagesBadge(failedList) {
+      currentFailedPages = failedList || [];
+      const badgeBtn = document.getElementById('failedPagesBadgeBtn');
+      const label = document.getElementById('failedPagesCountLabel');
+      if (!badgeBtn || !label) return;
+
+      if (currentFailedPages.length > 0) {
+        label.innerText = `${currentFailedPages.length} Timed Out / Failed`;
+        badgeBtn.classList.remove('hidden');
+      } else {
+        badgeBtn.classList.add('hidden');
+      }
+    }
+
+    function openFailedPagesModal() {
+      const modal = document.getElementById('failedPagesModal');
+      const container = document.getElementById('failedPagesListContainer');
+      const countBadge = document.getElementById('modalFailedCountBadge');
+      if (!modal || !container) return;
+
+      if (countBadge) countBadge.innerText = `${currentFailedPages.length} site${currentFailedPages.length === 1 ? '' : 's'}`;
+
+      if (currentFailedPages.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 space-y-2">
+            <p class="text-sm text-theme-subtle">No failed pages or timeouts recorded.</p>
+            <p class="text-xs text-theme-subtle">All studio career pages responded successfully during the scan.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = currentFailedPages.map(item => {
+          const isTimeout = item.status === 'timeout';
+          const isRateLimit = item.status === 'rate_limited';
+          const badgeClass = isTimeout 
+            ? 'bg-amber-500/10 text-amber-300 border-amber-500/30' 
+            : isRateLimit
+            ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+            : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+
+          return `
+            <div class="pt-2.5 first:pt-0 flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-theme-bg/40 hover:bg-theme-surface/50 border border-theme-border/40 transition">
+              <div class="space-y-1 min-w-[220px]">
+                <div class="flex items-center gap-2">
+                  <span class="font-heading font-semibold text-sm text-white">${escapeHTML(item.company || 'Unknown Studio')}</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${badgeClass}">${escapeHTML(item.source || 'Web')}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="font-mono text-[11px] text-amber-400/90">${escapeHTML(item.error_type || 'Error')}</span>
+                  <span class="text-theme-subtle truncate max-w-sm text-[11px]">${escapeHTML(item.detail || '')}</span>
+                </div>
+                <div class="text-[11px] text-theme-subtle font-mono truncate max-w-md">
+                  ${escapeHTML(item.url || '')}
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="${escapeHTML(item.url || '#')}" target="_blank" rel="noopener noreferrer" 
+                  class="chip-btn px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                  <span>Open Page</span>
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeFailedPagesModal() {
+      const modal = document.getElementById('failedPagesModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function copyFailedUrls() {
+      if (!currentFailedPages || currentFailedPages.length === 0) {
+        showToast('No failed URLs to copy', 'warning');
+        return;
+      }
+      const urls = currentFailedPages.map(p => `${p.company}: ${p.url}`).join('\n');
+      navigator.clipboard.writeText(urls).then(() => {
+        showToast(`Copied ${currentFailedPages.length} URLs to clipboard`, 'success');
+      }).catch(() => {
+        showToast('Failed to copy to clipboard', 'error');
+      });
+    }
+
+    // Check failed pages on initial load
+    fetch('/api/failed-pages')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.failures && data.failures.length > 0) {
+          updateFailedPagesBadge(data.failures);
+        }
+      })
+      .catch(() => {});
   </script>
+
+  <!-- Modal: Failed / Timed Out Career Pages -->
+  <div id="failedPagesModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden transition-opacity">
+    <div class="glass-card bg-[#0e1422]/95 border border-theme-border rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-5 border-b border-theme-border/70">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2.5">
+            <span class="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </span>
+            <h3 class="font-heading font-bold text-base text-white">Timed Out & Failed Career Pages</h3>
+            <span id="modalFailedCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">0 sites</span>
+          </div>
+          <p class="text-xs text-theme-subtle">These studio pages or ATS widgets (like Workable) timed out or encountered network throttling. Review them manually below.</p>
+        </div>
+        <button type="button" onclick="closeFailedPagesModal()" class="p-2 rounded-xl text-theme-subtle hover:text-white hover:bg-theme-surface transition" title="Close Modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Action Bar inside Modal -->
+      <div class="flex items-center justify-between px-5 py-2.5 bg-theme-bg/60 border-b border-theme-border/40 text-xs">
+        <span class="text-theme-subtle font-mono text-[11px]">Saved to <code class="text-indigo-300 bg-theme-surface px-1.5 py-0.5 rounded border border-theme-border">failed_job_pages.md</code></span>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            <span>Copy All URLs</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable List of Failures -->
+      <div id="failedPagesListContainer" class="p-5 overflow-y-auto space-y-2.5 divide-y divide-theme-border/30 max-h-[50vh]">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-theme-border/70 flex justify-end bg-theme-surface/40">
+        <button type="button" onclick="closeFailedPagesModal()" class="px-4 py-2 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
 """
@@ -3101,6 +3395,7 @@ class WebAppHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        global BACKGROUND_STATE
         url_parsed = urllib.parse.urlparse(self.path)
         path = url_parsed.path
 
@@ -3130,6 +3425,7 @@ class WebAppHandler(BaseHTTPRequestHandler):
                 "total_companies": len(comps),
                 "career_portals": with_careers,
                 "seen_career_jobs": 0,
+                "failed_pages_count": len(BACKGROUND_STATE.get("last_failed_pages", []))
             }
             if os.path.exists(SEEN_CAREER_FILE):
                 try:
@@ -3141,8 +3437,18 @@ class WebAppHandler(BaseHTTPRequestHandler):
             self.send_json_response(stats)
             return
 
+        if path == "/api/failed-pages":
+            if os.path.exists(FAILED_PAGES_JSON):
+                try:
+                    with open(FAILED_PAGES_JSON, "r", encoding="utf-8") as f:
+                        self.send_json_response(json.load(f))
+                        return
+                except Exception:
+                    pass
+            self.send_json_response({"generated_at": None, "total_failed": 0, "failures": []})
+            return
+
         if path == "/api/rescrape-status":
-            global BACKGROUND_STATE
             resp_data = dict(BACKGROUND_STATE["scrape_progress"])
             resp_data["is_scraping"] = BACKGROUND_STATE["is_scraping"]
             self.send_json_response(resp_data)

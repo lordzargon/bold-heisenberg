@@ -127,7 +127,7 @@
 
   <!-- Top Navigation Bar (WordPress Sticky Header Style) -->
   <header class="glass-nav border-b border-theme-border/70 px-4 sm:px-6 lg:px-10 py-3.5 sticky top-0 z-40 transition-all">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <div class="max-w-7xl 2xl:max-w-[1600px] mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand & Title with Logo Icon -->
       <div class="flex items-center gap-3.5">
@@ -153,6 +153,11 @@
 
       <!-- Action Buttons Cluster -->
       <div class="flex items-center gap-2.5">
+        <button id="btnToggleConfig" onclick="toggleConfigRow()" class="px-3 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-subtle hover:text-white text-xs font-heading font-medium border border-theme-border transition shadow-sm flex items-center gap-1.5" title="Toggle Search Options Panel">
+          <svg id="btnToggleConfigIcon" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          <span id="btnToggleConfigText">Options</span>
+        </button>
+
         <button id="btnSaveConfig" onclick="saveConfiguration()" class="px-3.5 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-text text-xs font-heading font-semibold border border-theme-border hover:border-theme-borderLight transition shadow-sm active:scale-[0.98]">
           Save Settings
         </button>
@@ -166,429 +171,338 @@
     </div>
   </header>
 
-  <!-- Editorial Hero Section (Theme Showcase Banner) -->
-  <section class="border-b border-theme-border/60 relative overflow-hidden bg-gradient-to-b from-indigo-950/20 via-transparent to-transparent">
-    
-    <!-- Decorative background glow dots -->
-    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-1/2 right-10 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
- 
-  </section>
-
   <!-- Main Content Body -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-10 py-8 space-y-8">
+  <main class="flex-1 max-w-7xl 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-5">
     
-    <!-- Config Grid (WordPress Block Style) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Config Grid: All 4 option modules on the same row on desktop -->
+    <div id="configGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-stretch transition-all duration-300">
 
-      <!-- Left Column (8 cols): Keywords, Negatives & Avoid Lists -->
-      <div class="lg:col-span-8 space-y-6">
-        
-        <!-- Target Keywords Card -->
-        <div id="keywords-section" class="glass-card rounded-2xl p-6 shadow-card hover:shadow-card-hover transition duration-300 space-y-4">
-          
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-theme-border/60 pb-4">
-            <div class="space-y-0.5">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <h2 class="font-heading font-bold text-base text-white">Target Roles & Keywords</h2>
-              </div>
-              <p class="text-xs text-theme-subtle">Roles matching any of these terms in job title, discipline, or summary will be collected</p>
-            </div>
-            
+      <!-- 1. Roles & Keyword Filters -->
+      <div id="keywords-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <!-- Header with Clear & Reset -->
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
             <div class="flex items-center gap-2">
-              <button onclick="clearKeywords()" class="text-xs text-theme-subtle hover:text-white px-2.5 py-1 rounded-lg hover:bg-white/5 transition font-heading">Clear all</button>
-              <button onclick="resetKeywords()" class="text-xs text-indigo-300 hover:text-white px-3 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 font-heading font-semibold transition">Reset defaults</button>
+              <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+              <h2 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Roles & Filters</h2>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px]">
+              <button onclick="clearKeywords()" class="text-theme-subtle hover:text-white px-1.5 py-0.5 rounded hover:bg-white/5 transition font-heading">Clear</button>
+              <button onclick="resetKeywords()" class="text-indigo-300 hover:text-white px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 font-heading font-semibold transition">Reset</button>
             </div>
           </div>
 
-          <!-- Discipline Presets (Pill Chips) -->
-          <div class="space-y-1.5">
-            <span class="text-theme-subtle text-[11px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
-            <div class="flex flex-wrap items-center gap-1.5 text-xs">
-              <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 text-[11px] font-heading font-medium shadow-sm flex items-center gap-1">
-                <span>✦</span> Tech Art & Tools
-              </button>
-              <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Programming
-              </button>
-              <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Design
-              </button>
-              <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + 3D Art & Anim
-              </button>
-              <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Production & QA
-              </button>
-              <button onclick="addKeywordPreset(['sound designer', 'audio programmer', 'audio designer', 'composer'])" class="chip-btn px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary text-[11px] font-heading font-medium shadow-sm">
-                + Audio
-              </button>
-            </div>
+          <!-- Filter Sub-Tabs -->
+          <div class="flex items-center p-1 rounded-lg bg-theme-bg/80 border border-theme-border text-[11px] font-heading font-medium shrink-0">
+            <button type="button" id="tabBtnTarget" onclick="switchFilterTab('target')" class="flex-1 py-1 rounded-md text-white bg-indigo-600 shadow-sm font-semibold text-center transition">Roles</button>
+            <button type="button" id="tabBtnAvoid" onclick="switchFilterTab('avoid')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Avoid<span id="tabAvoidBadge" class="text-[9px] font-mono ml-0.5"></span></button>
+            <button type="button" id="tabBtnStudios" onclick="switchFilterTab('studios')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Studios<span id="tabStudioBadge" class="text-[9px] font-mono ml-0.5"></span></button>
           </div>
 
-          <!-- Tag Input Container -->
-          <div class="p-3 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[100px] flex flex-wrap gap-2 items-center focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/20 transition shadow-inner">
-            <div id="keywordsList" class="flex flex-wrap gap-1.5"></div>
-            <input id="keywordInput" type="text" placeholder="Type keyword and press Enter or comma..." 
-              class="flex-1 min-w-[220px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-2 py-1 font-sans"
-              onkeydown="handleTagKey(event, 'keywordInput', addKeyword)">
-          </div>
-        </div>
-
-        <!-- 2 Column Split: Words to Avoid + Studios to Avoid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <!-- Words to Avoid -->
-          <div class="glass-card rounded-2xl p-5 space-y-3.5 shadow-card hover:shadow-card-hover transition duration-300">
-            <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-              <div class="space-y-0.5">
-                <h3 class="font-heading font-bold text-xs text-white flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                  Negative Keywords
-                </h3>
-                <p class="text-[11px] text-theme-subtle">Reject postings containing any of these words</p>
+          <!-- TAB 1: Target Roles & Keywords -->
+          <div id="filterTabTarget" class="flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="space-y-1 shrink-0">
+              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Discipline Presets:</span>
+              <div class="flex flex-wrap gap-1 text-[10px]">
+                <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 font-medium">✦ Tech Art</button>
+                <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Prog</button>
+                <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Design</button>
+                <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ 3D/Anim</button>
+                <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ QA/Prod</button>
               </div>
             </div>
 
-            <!-- Quick Avoid Presets -->
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading">
-                + Unpaid/Crypto/Casino
-              </button>
-              <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading">
-                + Non-games
-              </button>
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-indigo-500/80 focus-within:ring-1 focus-within:ring-indigo-500/20 transition shadow-inner">
+              <div id="keywordsList" class="flex flex-wrap gap-1"></div>
+              <input id="keywordInput" type="text" placeholder="+ Add keyword & Enter..." 
+                class="flex-1 min-w-[130px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                onkeydown="handleTagKey(event, 'keywordInput', addKeyword)">
+            </div>
+          </div>
+
+          <!-- TAB 2: Avoid Keywords -->
+          <div id="filterTabAvoid" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="space-y-1 shrink-0">
+              <span class="text-rose-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
+              <div class="flex flex-wrap gap-1 text-[10px]">
+                <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Unpaid/Crypto</button>
+                <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Non-games</button>
+              </div>
             </div>
 
-            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[76px] flex flex-wrap gap-1.5 items-center focus-within:border-rose-500/70 focus-within:ring-2 focus-within:ring-rose-500/10 transition shadow-inner">
-              <div id="excludeKeywordsList" class="flex flex-wrap gap-1.5"></div>
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-rose-500/70 focus-within:ring-1 focus-within:ring-rose-500/20 transition shadow-inner">
+              <div id="excludeKeywordsList" class="flex flex-wrap gap-1"></div>
               <input id="excludeKeywordInput" type="text" placeholder="Add word to avoid..." 
                 class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeKeywordInput', addExcludeKeyword)">
             </div>
           </div>
 
-          <!-- Studios to Avoid -->
-          <div class="glass-card rounded-2xl p-5 space-y-3.5 shadow-card hover:shadow-card-hover transition duration-300">
-            <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-              <div class="space-y-0.5">
-                <h3 class="font-heading font-bold text-xs text-white flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  Excluded Studios
-                </h3>
-                <p class="text-[11px] text-theme-subtle">Hide postings from specific companies</p>
-              </div>
-              <span id="excludeCompanyCount" class="font-mono text-[11px] text-amber-300 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20">0 excluded</span>
+          <!-- TAB 3: Excluded Studios -->
+          <div id="filterTabStudios" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
+            <div class="flex items-center justify-between shrink-0">
+              <span class="text-amber-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Blocked Studios:</span>
+              <span id="excludeCompanyCount" class="font-mono text-[10px] text-amber-300 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">0 excluded</span>
             </div>
 
-            <div class="text-[11px] text-theme-subtle italic">Click "Exclude studio" directly on any search card to add it here.</div>
-
-            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border min-h-[76px] flex flex-wrap gap-1.5 items-center focus-within:border-amber-500/70 focus-within:ring-2 focus-within:ring-amber-500/10 transition shadow-inner">
-              <div id="excludeCompaniesList" class="flex flex-wrap gap-1.5"></div>
-              <input id="excludeCompanyInput" type="text" placeholder="Type studio name & Enter..." 
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-amber-500/70 focus-within:ring-1 focus-within:ring-amber-500/20 transition shadow-inner">
+              <div id="excludeCompaniesList" class="flex flex-wrap gap-1"></div>
+              <input id="excludeCompanyInput" type="text" placeholder="Type studio & Enter..." 
                 class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeCompanyInput', addExcludeCompany)">
             </div>
+            <p class="text-[10px] text-theme-subtle italic shrink-0">Click "Exclude studio" on any card to add it here.</p>
           </div>
-
         </div>
 
+        <p class="text-[10px] text-theme-subtle truncate pt-1 border-t border-theme-border/40 shrink-0">Matched on title, discipline & summary</p>
       </div>
 
-      <!-- Right Column (4 cols): Sources, Location Matrix & Automation -->
-      <div class="lg:col-span-4 space-y-6">
-
-        <!-- Sources & Feeds Card -->
-        <div class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center gap-2">
-              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              Live Data Sources
-            </h3>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">Active Feeds</span>
-          </div>
-
-          <!-- Source Toggles -->
-          <div class="space-y-2.5">
-            <!-- Source 1: Looker Studio & ASGC -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-heading font-semibold text-white">Amir Satvat / ASGC Games Board</span>
-                </div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  41,000+ postings synchronized from the global games directory
-                </div>
-                <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="inline-flex items-center gap-1 mt-1 text-[11px] text-indigo-400 hover:text-indigo-300 font-medium">
-                  Open Looker Studio ↗
-                </a>
-              </div>
-              <input type="checkbox" id="srcAsgc" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 2: Direct Studio Careers -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Direct Studio Career Portals</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  360+ tracked game studios (Greenhouse, Lever, Ashby, Workable, direct web)
-                </div>
-              </div>
-              <input type="checkbox" id="srcStudios" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 3: Aardvark Swift -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Aardvark Swift Recruitment</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Specialist UK & global games industry recruitment agency (aswift.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcAardvark" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 4: InGame Job -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">InGame Job Board</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Curated international game development vacancies & studio roles (ingamejob.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcInGame" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 5: GamesIndustry.biz -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">GamesIndustry.biz Jobs</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Leading European and global games business job board (jobs.gamesindustry.biz)
-                </div>
-              </div>
-              <input type="checkbox" id="srcGibiz" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 6: Work With Indies -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Work With Indies</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Dedicated remote & indie studio job board (workwithindies.com)
-                </div>
-              </div>
-              <input type="checkbox" id="srcWorkWithIndies" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <!-- Source 7: Datascope -->
-            <label class="flex items-start justify-between p-3 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
-              <div class="pr-2 space-y-0.5">
-                <div class="text-xs font-heading font-semibold text-white">Datascope Recruitment</div>
-                <div class="text-[11px] text-theme-subtle leading-snug">
-                  Games & interactive technology recruitment consultancy (datascope.co.uk)
-                </div>
-              </div>
-              <input type="checkbox" id="srcDatascope" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
-            </label>
-          </div>
-
-          <!-- Studio Portal Re-scrape tool -->
-          <div class="pt-2 border-t border-theme-border/60">
-            <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-2 px-3 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-theme-text flex items-center justify-center gap-2 transition active:scale-[0.98]">
-              <svg id="refreshSpinner" class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-              <span>Refresh 360+ Studio Portals</span>
-            </button>
-            <div id="refreshStatus" class="mt-1.5 text-[11px] text-theme-subtle text-center font-mono truncate"></div>
-          </div>
-
-        </div>
-
-        <!-- Location & Workplace Rules Card -->
-        <div id="location-section" class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <div>
-              <h4 class="font-heading font-bold text-xs text-white flex items-center gap-2">
-                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-                Location & Distance Rules
-              </h4>
-              <p class="text-[11px] text-theme-subtle">Multi-mode distance matrix with geocoding</p>
+      <!-- 2. Location & Workplace Rules -->
+      <div id="location-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              <h4 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Location Rules</h4>
             </div>
-            <span id="locationRuleCount" class="font-mono text-[11px] text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">0 rules</span>
+            <span id="locationRuleCount" class="font-mono text-[10px] text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">0 rules</span>
           </div>
 
           <!-- Quick Presets -->
-          <div class="space-y-1.5">
-            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block">Curated Presets:</span>
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white text-[11px] font-heading font-medium">🏠 Remote in Europe</button>
-              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 hover:text-white text-[11px] font-heading font-medium">🔄 Hybrid ≤30mi London</button>
-              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-purple-300 hover:text-white text-[11px] font-heading font-medium">🏢 On-site ≤20mi Camb</button>
-              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white text-[11px] font-heading font-medium">🌐 Remote Global</button>
+          <div class="space-y-1 shrink-0">
+            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block">Presets:</span>
+            <div class="flex flex-wrap gap-1 text-[10px]">
+              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white font-medium">🏠 Remote EU</button>
+              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 hover:text-white font-medium">🔄 London 30mi</button>
+              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-purple-300 hover:text-white font-medium">🏢 Cambridge</button>
+              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white font-medium">🌐 Global</button>
             </div>
           </div>
 
-          <!-- Active Rules Container -->
-          <div id="locationRulesContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
+          <!-- Active Rules Container (Expands vertically to avoid scrollbars) -->
+          <div id="locationRulesContainer" class="flex-1 min-h-[90px] overflow-y-auto space-y-1.5 pr-1"></div>
 
           <!-- Add Rule Form -->
-          <div class="p-3 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2.5 shadow-inner">
-            <div class="text-[11px] font-heading font-bold text-white uppercase tracking-wider">Add Custom Distance Rule</div>
-            
-            <div class="grid grid-cols-12 gap-2">
-              <div class="col-span-4">
-                <select id="newRuleMode" class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-heading">
+          <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner shrink-0">
+            <div class="grid grid-cols-12 gap-1.5">
+              <div class="col-span-5">
+                <select id="newRuleMode" class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-heading">
                   <option value="remote">Remote</option>
                   <option value="hybrid" selected>Hybrid</option>
                   <option value="on_site">On-site</option>
                   <option value="any">Any Mode</option>
                 </select>
               </div>
-              <div class="col-span-8">
-                <input id="newRuleTarget" type="text" placeholder="City or Region (e.g. London, Europe)" 
-                  class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-sans"
+              <div class="col-span-7">
+                <input id="newRuleTarget" type="text" placeholder="City / Region" 
+                  class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-sans"
                   onkeydown="if(event.key==='Enter'){event.preventDefault();addNewLocationRule();}">
               </div>
             </div>
 
-            <div class="flex items-center gap-2">
-              <select id="newRuleDist" class="flex-1 px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-sans">
-                <option value="10">Within 10 miles</option>
-                <option value="20">Within 20 miles</option>
-                <option value="30" selected>Within 30 miles</option>
-                <option value="50">Within 50 miles</option>
-                <option value="75">Within 75 miles</option>
-                <option value="100">Within 100 miles</option>
-                <option value="">No distance limit (exact/region)</option>
+            <div class="flex items-center gap-1.5">
+              <select id="newRuleDist" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-sans">
+                <option value="10">≤ 10 miles</option>
+                <option value="20">≤ 20 miles</option>
+                <option value="30" selected>≤ 30 miles</option>
+                <option value="50">≤ 50 miles</option>
+                <option value="75">≤ 75 miles</option>
+                <option value="100">≤ 100 miles</option>
+                <option value="">No limit</option>
               </select>
-
-              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2.5 py-1.5 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-xs text-theme-subtle hover:text-white font-heading font-medium transition">
-                📍 Test
-              </button>
-              <button type="button" onclick="addNewLocationRule()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-sm">
-                + Add
-              </button>
+              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] text-theme-subtle hover:text-white font-heading font-medium transition">📍 Test</button>
+              <button type="button" onclick="addNewLocationRule()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
             </div>
             
-            <div id="geocodeTestResult" class="hidden text-[11px] font-mono p-2 rounded-lg bg-theme-surface border border-theme-border"></div>
+            <div id="geocodeTestResult" class="hidden text-[10px] font-mono p-1.5 rounded bg-theme-surface border border-theme-border"></div>
           </div>
-
-          <!-- Legacy fallback toggle / simple keyword box -->
-          <details class="text-[11px] text-theme-subtle">
-            <summary class="cursor-pointer hover:text-white font-medium select-none">Legacy text filter / remote-only fallback</summary>
-            <div class="mt-2 pt-2 border-t border-theme-border/60 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-theme-textSecondary">Remote roles only (legacy)</span>
-                <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-surface border-theme-border cursor-pointer">
-              </div>
-              <div>
-                <label class="text-[11px] text-theme-subtle block mb-1">Simple keyword match (e.g. UK, London)</label>
-                <div class="p-1.5 rounded-lg bg-theme-bg/80 border border-theme-border flex flex-wrap gap-1 items-center">
-                  <div id="locationList" class="flex flex-wrap gap-1"></div>
-                  <input id="locationInput" type="text" placeholder="Add text..." 
-                    class="flex-1 min-w-[70px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
-                    onkeydown="handleTagKey(event, 'locationInput', addLocation)">
-                </div>
-              </div>
-            </div>
-          </details>
         </div>
 
-        <!-- Automated Scheduler & Alerts Card -->
-        <div id="scheduler-section" class="glass-card rounded-2xl p-5 space-y-4 shadow-card hover:shadow-card-hover transition duration-300">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-3">
-            <div>
-              <h3 class="font-heading font-bold text-xs text-white flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Automated Background Scheduler
-              </h3>
-              <p class="text-[11px] text-theme-subtle">Silent Windows Task checks & Alerts</p>
+        <!-- Legacy fallback toggle -->
+        <details class="text-[10px] text-theme-subtle pt-1 border-t border-theme-border/40 shrink-0">
+          <summary class="cursor-pointer hover:text-white font-medium select-none">Legacy text filter / remote-only ▾</summary>
+          <div class="mt-1.5 pt-1.5 border-t border-theme-border/60 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span>Remote roles only</span>
+              <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-surface border-theme-border cursor-pointer">
             </div>
-            <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Active</span>
+            <div class="p-1 rounded bg-theme-bg/80 border border-theme-border flex flex-wrap gap-1 items-center">
+              <div id="locationList" class="flex flex-wrap gap-1"></div>
+              <input id="locationInput" type="text" placeholder="Add text..." 
+                class="flex-1 min-w-[60px] bg-transparent text-[11px] text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                onkeydown="handleTagKey(event, 'locationInput', addLocation)">
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- 3. Live Data Sources -->
+      <div class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
+        <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              Data Sources
+            </h3>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">7 Feeds</span>
           </div>
 
+          <!-- Source Toggles compact list (Expands vertically to show all feeds) -->
+          <div class="flex-1 min-h-[220px] overflow-y-auto space-y-1.5 pr-1">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                  <span>ASGC Games Board</span>
+                  <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                </div>
+                <div class="text-[10px] text-theme-subtle">41,000+ synchronized postings</div>
+              </div>
+              <input type="checkbox" id="srcAsgc" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Direct Studio Portals</div>
+                <div class="text-[10px] text-theme-subtle">360+ tracked game studios</div>
+              </div>
+              <input type="checkbox" id="srcStudios" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Aardvark Swift</div>
+                <div class="text-[10px] text-theme-subtle">UK & global recruiter (aswift.com)</div>
+              </div>
+              <input type="checkbox" id="srcAardvark" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">InGame Job Board</div>
+                <div class="text-[10px] text-theme-subtle">Curated vacancies (ingamejob.com)</div>
+              </div>
+              <input type="checkbox" id="srcInGame" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">GamesIndustry.biz</div>
+                <div class="text-[10px] text-theme-subtle">European & global games trade</div>
+              </div>
+              <input type="checkbox" id="srcGibiz" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Work With Indies</div>
+                <div class="text-[10px] text-theme-subtle">Remote & indie studio jobs</div>
+              </div>
+              <input type="checkbox" id="srcWorkWithIndies" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white">Datascope</div>
+                <div class="text-[10px] text-theme-subtle">Games consultancy (datascope.co.uk)</div>
+              </div>
+              <input type="checkbox" id="srcDatascope" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+          </div>
+        </div>
+
+        <!-- Studio Portal Re-scrape tool -->
+        <div class="pt-2 border-t border-theme-border/60 shrink-0">
+          <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-theme-text flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
+            <svg id="refreshSpinner" class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>Refresh 360+ Studios</span>
+          </button>
+          <div id="refreshStatus" class="mt-1 text-[10px] text-theme-subtle text-center font-mono truncate"></div>
+        </div>
+      </div>
+
+      <!-- 4. Background Scheduler & Alerts -->
+      <div id="scheduler-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col space-y-3 min-h-[460px]">
+        <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Scheduler & Alerts</h3>
+          </div>
+          <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Active</span>
+        </div>
+
+        <!-- Scrollable Scheduler Body with dedicated scrollbar so alert channels are easily edited -->
+        <div class="flex-1 min-h-0 overflow-y-auto pr-1 space-y-3">
           <!-- Master enable toggle -->
-          <label class="flex items-center justify-between p-2.5 rounded-xl bg-theme-surface/70 border border-theme-border cursor-pointer hover:border-theme-borderLight transition">
+          <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border cursor-pointer hover:border-theme-borderLight transition">
             <div class="space-y-0.5">
-              <span class="text-xs font-heading font-semibold text-white">Enable Background Scheduler</span>
-              <div class="text-[10px] text-theme-subtle">Runs automated checks in Windows Task Scheduler</div>
+              <span class="text-xs font-heading font-semibold text-white">Background Checks</span>
+              <div class="text-[10px] text-theme-subtle">Silent Windows Task scheduler</div>
             </div>
-            <input type="checkbox" id="scheduleEnabled" class="w-4 h-4 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer" checked onchange="toggleScheduleMaster()">
+            <input type="checkbox" id="scheduleEnabled" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer" checked onchange="toggleScheduleMaster()">
           </label>
 
           <!-- Quick Presets -->
-          <div class="space-y-1.5">
-            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle">Schedule Presets:</div>
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white text-[11px] font-heading font-medium">⚡ 3x Daily (9am, 1pm, 6pm)</button>
-              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white text-[11px] font-heading font-medium">4x Daily (8am, 12, 4, 8)</button>
-              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2.5 py-0.5 rounded-md bg-theme-surface hover:bg-theme-card border border-theme-border text-amber-300 hover:text-white text-[11px] font-heading font-medium">+ 1 PM Lunch</button>
+          <div class="space-y-1">
+            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle">Presets:</div>
+            <div class="flex flex-wrap gap-1 text-[10px]">
+              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 font-medium">⚡ 3x Daily</button>
+              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle font-medium">4x Daily</button>
+              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-amber-300 font-medium">+ 1 PM</button>
             </div>
           </div>
 
-          <!-- Active Schedule Time List -->
+          <!-- Active Times & Add Time -->
           <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="text-theme-subtle font-heading font-semibold uppercase tracking-wider text-[10px]">Configured Check Times:</span>
-              <span id="scheduleCountBadge" class="font-mono text-[10px] text-theme-subtle">3 times</span>
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="text-theme-subtle font-heading font-semibold uppercase tracking-wider">Times:</span>
+              <span id="scheduleCountBadge" class="font-mono text-theme-subtle">3 times</span>
             </div>
-            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1.5 min-h-[44px] p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border items-center shadow-inner"></div>
+            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1 min-h-[34px] max-h-[56px] overflow-y-auto p-1.5 rounded-xl bg-theme-bg/80 border border-theme-border items-center shadow-inner"></div>
+            
+            <div class="flex items-center gap-1.5">
+              <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-mono">
+              <button type="button" onclick="addScheduleFromInput()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
+            </div>
           </div>
 
-          <!-- Add Custom Time Form -->
-          <div class="flex items-center gap-2">
-            <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-3 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white focus:outline-none focus:border-indigo-500 font-mono">
-            <button type="button" onclick="addScheduleFromInput()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-sm">
-              + Add Time
-            </button>
-          </div>
-
-          <!-- Windows Task Scheduler Sync & Live Status -->
-          <div class="pt-2 border-t border-theme-border/60 space-y-2">
-            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-2 px-3 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white flex items-center justify-center gap-2 transition active:scale-[0.98]">
+          <!-- Windows Task Sync Button & Status Info -->
+          <div class="space-y-1.5 pt-2 border-t border-theme-border/60">
+            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] font-heading font-semibold text-white flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
               <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-              <span>Sync to Windows Task Scheduler</span>
+              <span>Sync Windows Task</span>
             </button>
-            <div id="schedulerStatusInfo" class="text-[10px] font-mono text-theme-subtle bg-theme-bg/80 p-2.5 rounded-xl border border-theme-border space-y-1">
-              <div class="flex items-center justify-between">
-                <span>Task: GamesMap_Career_JobMonitor</span>
-                <span id="schedulerStatusState" class="text-emerald-400 font-semibold">Ready</span>
-              </div>
-              <div id="schedulerNextRun" class="text-theme-subtle truncate">Next Run: Checking...</div>
+            <div id="schedulerStatusInfo" class="text-[9px] font-mono text-theme-subtle bg-theme-bg/80 p-1.5 rounded-lg border border-theme-border flex items-center justify-between">
+              <span class="truncate">Task: JobMonitor</span>
+              <span id="schedulerStatusState" class="text-emerald-400 font-semibold ml-1">Ready</span>
             </div>
+            <div id="schedulerNextRun" class="hidden"></div>
           </div>
 
-          <!-- Notification Channels Sub-Block -->
-          <div class="pt-3 border-t border-theme-border/60 space-y-2.5">
+          <!-- Alert Channels (Directly accessible and scrollable) -->
+          <div class="space-y-2 pt-2 border-t border-theme-border/60">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-heading font-bold text-white uppercase tracking-wider">Alert Channels</span>
-              <button onclick="testNotifications()" class="text-[11px] px-2.5 py-0.5 rounded-md bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 font-heading font-semibold transition">
-                Test Alert
-              </button>
+              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Alert Channels:</span>
+              <button type="button" onclick="testNotifications()" class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 font-heading font-semibold transition">Test</button>
             </div>
-
-            <label class="flex items-center justify-between p-2 rounded-lg bg-theme-surface/70 border border-theme-border cursor-pointer">
-              <span class="text-xs text-white font-heading">Windows Desktop Toast</span>
-              <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border" checked>
-            </label>
-
-            <div>
-              <label class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block mb-1">Discord Webhook</label>
-              <input type="text" id="discordWebhook" placeholder="https://discord.com/api/webhooks/..." 
-                class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-mono text-[11px]">
-            </div>
-
-            <div>
-              <label class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block mb-1">Slack Webhook</label>
-              <input type="text" id="slackWebhook" placeholder="https://hooks.slack.com/services/..." 
-                class="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-mono text-[11px]">
+            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner">
+              <div class="flex items-center justify-between">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border" checked>
+                  <span class="text-white text-[11px]">Windows Toast</span>
+                </label>
+              </div>
+              <div>
+                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Discord Webhook URL</label>
+                <input type="text" id="discordWebhook" placeholder="Discord webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+              </div>
+              <div>
+                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Slack Webhook URL</label>
+                <input type="text" id="slackWebhook" placeholder="Slack webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+              </div>
             </div>
           </div>
-
         </div>
-
       </div>
 
     </div>
@@ -603,6 +517,10 @@
           <div class="flex items-center gap-3">
             <h2 class="font-editorial text-2xl font-normal text-white">Live Industry Matches</h2>
             <span id="resultsCountBadge" class="px-3 py-0.5 rounded-full text-xs font-mono font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm">0 matches</span>
+            <button id="failedPagesBadgeBtn" type="button" onclick="openFailedPagesModal()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Click to review studio career pages that timed out or failed">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="failedPagesCountLabel">0 Timed Out</span>
+            </button>
           </div>
           <p id="resultsStatsSubtitle" class="text-xs text-theme-subtle font-mono">Run a scan to query active game dev studio portals & Looker Studio database</p>
         </div>
@@ -1155,6 +1073,56 @@
       }
     }
 
+    // --- Filter Sub-Tabs & Options Toggle ---
+    function switchFilterTab(tab) {
+      const tabBtnTarget = document.getElementById('tabBtnTarget');
+      const tabBtnAvoid = document.getElementById('tabBtnAvoid');
+      const tabBtnStudios = document.getElementById('tabBtnStudios');
+      const filterTabTarget = document.getElementById('filterTabTarget');
+      const filterTabAvoid = document.getElementById('filterTabAvoid');
+      const filterTabStudios = document.getElementById('filterTabStudios');
+
+      if (!tabBtnTarget || !filterTabTarget) return;
+
+      const activeClasses = ['text-white', 'bg-indigo-600', 'font-semibold', 'shadow-sm'];
+      const inactiveClasses = ['text-theme-subtle', 'hover:text-white'];
+
+      [tabBtnTarget, tabBtnAvoid, tabBtnStudios].forEach(btn => {
+        if (btn) {
+          btn.classList.remove(...activeClasses);
+          btn.classList.add(...inactiveClasses);
+        }
+      });
+
+      if (filterTabTarget) filterTabTarget.classList.add('hidden');
+      if (filterTabAvoid) filterTabAvoid.classList.add('hidden');
+      if (filterTabStudios) filterTabStudios.classList.add('hidden');
+
+      if (tab === 'target' && tabBtnTarget && filterTabTarget) {
+        tabBtnTarget.classList.add(...activeClasses);
+        tabBtnTarget.classList.remove(...inactiveClasses);
+        filterTabTarget.classList.remove('hidden');
+      } else if (tab === 'avoid' && tabBtnAvoid && filterTabAvoid) {
+        tabBtnAvoid.classList.add(...activeClasses);
+        tabBtnAvoid.classList.remove(...inactiveClasses);
+        filterTabAvoid.classList.remove('hidden');
+      } else if (tab === 'studios' && tabBtnStudios && filterTabStudios) {
+        tabBtnStudios.classList.add(...activeClasses);
+        tabBtnStudios.classList.remove(...inactiveClasses);
+        filterTabStudios.classList.remove('hidden');
+      }
+    }
+
+    function toggleConfigRow() {
+      const grid = document.getElementById('configGrid');
+      const text = document.getElementById('btnToggleConfigText');
+      const icon = document.getElementById('btnToggleConfigIcon');
+      if (!grid) return;
+      const isHidden = grid.classList.toggle('hidden');
+      if (text) text.innerText = isHidden ? 'Show Options' : 'Options';
+      if (icon) icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
     // --- UI Sync & Tag Rendering ---
     function renderConfigUI() {
       // 1. Keywords
@@ -1162,11 +1130,21 @@
       
       // 2. Exclude Keywords
       renderTagList('excludeKeywordsList', currentConfig.search.exclude_keywords, removeExcludeKeyword, 'bg-rose-500/10 text-rose-300 border-rose-500/20');
+      const tabAvoidBadge = document.getElementById('tabAvoidBadge');
+      if (tabAvoidBadge) {
+        const count = currentConfig.search.exclude_keywords?.length || 0;
+        tabAvoidBadge.innerText = count ? ` (${count})` : '';
+      }
       
       // 3. Exclude Companies
       renderTagList('excludeCompaniesList', currentConfig.search.exclude_companies, removeExcludeCompany, 'bg-amber-500/10 text-amber-300 border-amber-500/20');
       const countEl = document.getElementById('excludeCompanyCount');
       if (countEl) countEl.innerText = `${currentConfig.search.exclude_companies.length} excluded`;
+      const tabStudioBadge = document.getElementById('tabStudioBadge');
+      if (tabStudioBadge) {
+        const count = currentConfig.search.exclude_companies?.length || 0;
+        tabStudioBadge.innerText = count ? ` (${count})` : '';
+      }
 
       // 4. Location Rules
       renderLocationRules();
@@ -1677,6 +1655,9 @@
       badge.innerText = `${jobs.length} match${jobs.length === 1 ? '' : 'es'}`;
       subtitle.innerText = `Completed in ${data.stats.duration_seconds}s • ASGC Listings: ${data.stats.asgc_raw_count.toLocaleString()} • Studio Portals Scanned: ${data.stats.scanned_studios}`;
 
+      // Update failed / timed out pages badge
+      updateFailedPagesBadge(data.failed_pages || []);
+
       if (jobs.length === 0) {
         emptyState.classList.remove('hidden');
         cardsGrid.classList.add('hidden');
@@ -2030,6 +2011,153 @@
       if (!str) return '';
       return String(str).replace(/'/g, "\\'");
     }
+
+    // --- Failed / Timed Out Pages Management ---
+    let currentFailedPages = [];
+
+    function updateFailedPagesBadge(failedList) {
+      currentFailedPages = failedList || [];
+      const badgeBtn = document.getElementById('failedPagesBadgeBtn');
+      const label = document.getElementById('failedPagesCountLabel');
+      if (!badgeBtn || !label) return;
+
+      if (currentFailedPages.length > 0) {
+        label.innerText = `${currentFailedPages.length} Timed Out / Failed`;
+        badgeBtn.classList.remove('hidden');
+      } else {
+        badgeBtn.classList.add('hidden');
+      }
+    }
+
+    function openFailedPagesModal() {
+      const modal = document.getElementById('failedPagesModal');
+      const container = document.getElementById('failedPagesListContainer');
+      const countBadge = document.getElementById('modalFailedCountBadge');
+      if (!modal || !container) return;
+
+      if (countBadge) countBadge.innerText = `${currentFailedPages.length} site${currentFailedPages.length === 1 ? '' : 's'}`;
+
+      if (currentFailedPages.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 space-y-2">
+            <p class="text-sm text-theme-subtle">No failed pages or timeouts recorded.</p>
+            <p class="text-xs text-theme-subtle">All studio career pages responded successfully during the scan.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = currentFailedPages.map(item => {
+          const isTimeout = item.status === 'timeout';
+          const isRateLimit = item.status === 'rate_limited';
+          const badgeClass = isTimeout 
+            ? 'bg-amber-500/10 text-amber-300 border-amber-500/30' 
+            : isRateLimit
+            ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+            : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+
+          return `
+            <div class="pt-2.5 first:pt-0 flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-theme-bg/40 hover:bg-theme-surface/50 border border-theme-border/40 transition">
+              <div class="space-y-1 min-w-[220px]">
+                <div class="flex items-center gap-2">
+                  <span class="font-heading font-semibold text-sm text-white">${escapeHTML(item.company || 'Unknown Studio')}</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${badgeClass}">${escapeHTML(item.source || 'Web')}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="font-mono text-[11px] text-amber-400/90">${escapeHTML(item.error_type || 'Error')}</span>
+                  <span class="text-theme-subtle truncate max-w-sm text-[11px]">${escapeHTML(item.detail || '')}</span>
+                </div>
+                <div class="text-[11px] text-theme-subtle font-mono truncate max-w-md">
+                  ${escapeHTML(item.url || '')}
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="${escapeHTML(item.url || '#')}" target="_blank" rel="noopener noreferrer" 
+                  class="chip-btn px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                  <span>Open Page</span>
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeFailedPagesModal() {
+      const modal = document.getElementById('failedPagesModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function copyFailedUrls() {
+      if (!currentFailedPages || currentFailedPages.length === 0) {
+        showToast('No failed URLs to copy', 'warning');
+        return;
+      }
+      const urls = currentFailedPages.map(p => `${p.company}: ${p.url}`).join('\n');
+      navigator.clipboard.writeText(urls).then(() => {
+        showToast(`Copied ${currentFailedPages.length} URLs to clipboard`, 'success');
+      }).catch(() => {
+        showToast('Failed to copy to clipboard', 'error');
+      });
+    }
+
+    // Check failed pages on initial load
+    fetch('/api/failed-pages')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.failures && data.failures.length > 0) {
+          updateFailedPagesBadge(data.failures);
+        }
+      })
+      .catch(() => {});
   </script>
+
+  <!-- Modal: Failed / Timed Out Career Pages -->
+  <div id="failedPagesModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden transition-opacity">
+    <div class="glass-card bg-[#0e1422]/95 border border-theme-border rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-5 border-b border-theme-border/70">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2.5">
+            <span class="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </span>
+            <h3 class="font-heading font-bold text-base text-white">Timed Out & Failed Career Pages</h3>
+            <span id="modalFailedCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">0 sites</span>
+          </div>
+          <p class="text-xs text-theme-subtle">These studio pages or ATS widgets (like Workable) timed out or encountered network throttling. Review them manually below.</p>
+        </div>
+        <button type="button" onclick="closeFailedPagesModal()" class="p-2 rounded-xl text-theme-subtle hover:text-white hover:bg-theme-surface transition" title="Close Modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Action Bar inside Modal -->
+      <div class="flex items-center justify-between px-5 py-2.5 bg-theme-bg/60 border-b border-theme-border/40 text-xs">
+        <span class="text-theme-subtle font-mono text-[11px]">Saved to <code class="text-indigo-300 bg-theme-surface px-1.5 py-0.5 rounded border border-theme-border">failed_job_pages.md</code></span>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            <span>Copy All URLs</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable List of Failures -->
+      <div id="failedPagesListContainer" class="p-5 overflow-y-auto space-y-2.5 divide-y divide-theme-border/30 max-h-[50vh]">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-theme-border/70 flex justify-end bg-theme-surface/40">
+        <button type="button" onclick="closeFailedPagesModal()" class="px-4 py-2 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
