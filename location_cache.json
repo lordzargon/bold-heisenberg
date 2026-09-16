@@ -7283,13 +7283,6 @@
     "country": "United States",
     "country_code": "US"
   },
-  "uk": {
-    "name": "Україна",
-    "lat": 49.4871968,
-    "lon": 31.2718321,
-    "country": "Україна",
-    "country_code": "UA"
-  },
   "seville": {
     "name": "Seville, California",
     "lat": 36.485732,
@@ -36119,5 +36112,26 @@
     "lon": 21.0067249,
     "country": "Polska",
     "country_code": "PL"
+  },
+  "multiple locations china ()": {
+    "name": "Les Échappées d'Elles - Locations Haute-Savoie, Auvergne-Rhône-Alpes",
+    "lat": 46.0926311,
+    "lon": 6.1019611,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "multiple locations china": {
+    "name": "Les Échappées d'Elles - Locations Haute-Savoie, Auvergne-Rhône-Alpes",
+    "lat": 46.0926311,
+    "lon": 6.1019611,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "uk": {
+    "name": "Україна",
+    "lat": 49.4871968,
+    "lon": 31.2718321,
+    "country": "Україна",
+    "country_code": "UA"
   }
 }

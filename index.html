@@ -511,71 +511,33 @@
     <div id="resultsSection" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
       
       <!-- Section Header with Editorial Flair -->
+      <!-- Section Header with Editorial Flair & Primary Navigation Tabs -->
       <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-theme-border/60">
         
         <div class="space-y-1">
           <div class="flex items-center gap-3">
             <h2 class="font-editorial text-2xl font-normal text-white">Live Industry Matches</h2>
             <span id="resultsCountBadge" class="px-3 py-0.5 rounded-full text-xs font-mono font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm">0 matches</span>
-            <button id="failedPagesBadgeBtn" type="button" onclick="openFailedPagesModal()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Click to review studio career pages that timed out or failed">
-              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              <span id="failedPagesCountLabel">0 Timed Out</span>
+            <button id="btnViewScanLog" type="button" onclick="toggleScanLogPostSearch()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-theme-surface hover:bg-theme-card text-theme-subtle hover:text-white border border-theme-border transition flex items-center gap-1.5 shadow-sm" title="Inspect activity log from latest scan">
+              <span id="viewScanLogIcon">📋</span>
+              <span id="viewScanLogText">Scan Log</span>
             </button>
           </div>
           <p id="resultsStatsSubtitle" class="text-xs text-theme-subtle font-mono">Run a scan to query active game dev studio portals & Looker Studio database</p>
         </div>
 
-        <!-- Filter within results & Export actions -->
-        <div class="flex flex-wrap items-center gap-2.5">
-          <!-- Filter bar -->
-          <div class="relative">
-            <input type="text" id="filterResultsInput" oninput="filterResultsTable()" placeholder="Filter within matches..." 
-              class="w-48 sm:w-60 px-3 py-1.5 pl-8 rounded-xl bg-theme-bg/90 border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition font-sans shadow-inner">
-            <svg class="w-3.5 h-3.5 text-theme-subtle absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-
-          <!-- Sort Dropdown -->
-          <div class="flex items-center gap-1.5 bg-theme-bg/90 border border-theme-border rounded-xl px-2.5 py-1 shadow-inner">
-            <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-            <span class="text-[11px] text-theme-subtle font-heading font-medium">Sort:</span>
-            <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-white font-heading font-medium focus:outline-none cursor-pointer">
-              <option value="date_desc" class="bg-[#0e1422] text-white">Date (Newest first)</option>
-              <option value="date_asc" class="bg-[#0e1422] text-white">Date (Oldest first)</option>
-              <option value="company_asc" class="bg-[#0e1422] text-white">Company (A → Z)</option>
-              <option value="company_desc" class="bg-[#0e1422] text-white">Company (Z → A)</option>
-              <option value="title_asc" class="bg-[#0e1422] text-white">Role Title (A → Z)</option>
-              <option value="source_asc" class="bg-[#0e1422] text-white">Source</option>
-            </select>
-          </div>
-
-          <!-- View Mode Toggle -->
-          <div class="flex items-center rounded-xl bg-theme-bg/90 border border-theme-border p-1 shadow-inner">
-            <button id="btnViewCards" onclick="setViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition">Cards</button>
-            <button id="btnViewTable" onclick="setViewMode('table')" class="px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition">Table</button>
-          </div>
-
-          <!-- Export Actions -->
-          <div class="flex items-center gap-1.5">
-            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white flex items-center gap-1.5 transition shadow-sm">
-              <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-              CSV
-            </button>
-            <button onclick="exportJSON()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition shadow-sm">
-              JSON
-            </button>
-          </div>
-      </div>
-
-      <!-- Source Quick Filter Bar -->
-      <div id="sourceFilterChips" class="flex flex-wrap items-center gap-1.5 pt-1">
-        <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle mr-1">Filter Source:</span>
-        <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition">All Sources</button>
-        <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">ASGC Feed</button>
-        <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Direct Studios</button>
-        <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Aardvark Swift</button>
-        <button type="button" onclick="setSourceFilter('InGame Job')" id="srcChip_ingame" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">InGame Job</button>
-        <button type="button" onclick="setSourceFilter('GamesIndustry.biz')" id="srcChip_gibiz" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">GamesIndustry.biz</button>
-        <button type="button" onclick="setSourceFilter('Work With Indies')" id="srcChip_wwi" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Work With Indies</button>
+        <!-- Primary Results Tabs Switcher -->
+        <div class="flex items-center p-1 rounded-xl bg-theme-bg/90 border border-theme-border text-xs font-heading font-medium shadow-inner">
+          <button type="button" id="tabBtnMatches" onclick="switchResultsTab('matches')" class="px-4 py-1.5 rounded-lg text-white bg-indigo-600 font-semibold shadow-sm transition flex items-center gap-2">
+            <span>Matching Roles</span>
+            <span id="resultsMatchesTabBadge" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/20 text-white">0</span>
+          </button>
+          
+          <button type="button" id="tabBtnFailed" onclick="switchResultsTab('failed')" class="px-4 py-1.5 rounded-lg text-theme-subtle hover:text-white transition flex items-center gap-2" title="View studio career pages that timed out or failed">
+            <span>Failed / Unreachable</span>
+            <span id="resultsFailedTabBadge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse">0</span>
+          </button>
+        </div>
       </div>
 
       <!-- Real-Time Live Querying & Progress State (Glowing Live Console) -->
@@ -611,6 +573,10 @@
               <span class="text-theme-subtle text-[10px]">Matches:</span>
               <span id="liveStatMatches" class="text-emerald-400 font-semibold">0</span>
             </div>
+            <div id="liveStatFailedBox" class="px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition" title="Studio portals that timed out or failed">
+              <span class="text-theme-subtle text-[10px]">Failed:</span>
+              <span id="liveStatFailed" class="text-rose-400 font-semibold">0</span>
+            </div>
           </div>
         </div>
 
@@ -628,50 +594,190 @@
           <div id="liveActiveQueries" class="text-xs text-white font-mono truncate">Connecting to endpoints...</div>
         </div>
 
+        <!-- Live Activity Log Controls & Filter Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-theme-border/50">
+          <div class="flex items-center gap-1.5 text-[11px] font-mono">
+            <span class="text-theme-subtle text-[10px] uppercase font-semibold mr-0.5">Log:</span>
+            <button type="button" id="btnLogFilterAll" onclick="setLogFilter('all')" class="px-2 py-0.5 rounded bg-indigo-600 text-white font-semibold text-[10px] transition">
+              All (<span id="logFilterCountAll">0</span>)
+            </button>
+            <button type="button" id="btnLogFilterErrors" onclick="setLogFilter('errors')" class="px-2 py-0.5 rounded bg-theme-bg hover:bg-rose-500/20 text-rose-300 border border-theme-border text-[10px] transition flex items-center gap-1">
+              <span>⚠️ Failures</span>
+              <span id="logFilterCountErrors" class="font-bold">0</span>
+            </button>
+            <button type="button" id="btnLogFilterMatches" onclick="setLogFilter('matches')" class="px-2 py-0.5 rounded bg-theme-bg hover:bg-emerald-500/20 text-emerald-300 border border-theme-border text-[10px] transition flex items-center gap-1">
+              <span>✨ Matches</span>
+              <span id="logFilterCountMatches" class="font-bold">0</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btnToggleAutoScroll" onclick="toggleLogAutoScroll()" class="px-2 py-0.5 rounded bg-theme-bg text-theme-subtle hover:text-white border border-theme-border text-[10px] font-mono transition">
+              Auto-scroll: <span id="autoScrollLabel" class="text-emerald-400 font-semibold">ON</span>
+            </button>
+            <button type="button" onclick="clearLiveLog()" class="px-2 py-0.5 rounded bg-theme-bg text-theme-subtle hover:text-white border border-theme-border text-[10px] font-mono transition">
+              Clear
+            </button>
+          </div>
+        </div>
+
         <!-- Live Activity Log Window (Polished Terminal Look) -->
-        <div class="border border-theme-border rounded-xl bg-theme-bg/90 p-3 font-mono text-[11px] space-y-1.5 max-h-40 overflow-y-auto shadow-inner" id="liveActivityLog">
-          <div class="text-theme-subtle">[00:00:00] Initializing multi-threaded crawler across studio ATS feeds...</div>
+        <div class="border border-theme-border rounded-xl bg-theme-bg/90 p-3 font-mono text-[11px] space-y-1.5 max-h-48 overflow-y-auto shadow-inner" id="liveActivityLog">
+          <div class="text-theme-subtle log-entry" data-category="info">[00:00:00] Initializing multi-threaded crawler across studio ATS feeds...</div>
         </div>
 
       </div>
 
-      <!-- Empty State / Initial Prompt -->
-      <div id="emptyState" class="py-16 text-center space-y-4 max-w-md mx-auto">
-        <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto shadow-glow-sm">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      <!-- Tab View 1: Matching Roles View (Active by default) -->
+      <div id="resultsTabMatchesView" class="space-y-6">
+
+        <!-- Filter within results & Export actions -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <!-- Filter bar & Sort -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="relative">
+              <input type="text" id="filterResultsInput" oninput="filterResultsTable()" placeholder="Filter within matches..." 
+                class="w-48 sm:w-60 px-3 py-1.5 pl-8 rounded-xl bg-theme-bg/90 border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition font-sans shadow-inner">
+              <svg class="w-3.5 h-3.5 text-theme-subtle absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="flex items-center gap-1.5 bg-theme-bg/90 border border-theme-border rounded-xl px-2.5 py-1 shadow-inner">
+              <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+              <span class="text-[11px] text-theme-subtle font-heading font-medium">Sort:</span>
+              <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-white font-heading font-medium focus:outline-none cursor-pointer">
+                <option value="date_desc" class="bg-[#0e1422] text-white">Date (Newest first)</option>
+                <option value="date_asc" class="bg-[#0e1422] text-white">Date (Oldest first)</option>
+                <option value="company_asc" class="bg-[#0e1422] text-white">Company (A → Z)</option>
+                <option value="company_desc" class="bg-[#0e1422] text-white">Company (Z → A)</option>
+                <option value="title_asc" class="bg-[#0e1422] text-white">Role Title (A → Z)</option>
+                <option value="source_asc" class="bg-[#0e1422] text-white">Source</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- View Mode Toggle & Exports -->
+          <div class="flex items-center gap-2.5">
+            <div class="flex items-center rounded-xl bg-theme-bg/90 border border-theme-border p-1 shadow-inner">
+              <button id="btnViewCards" onclick="setViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition">Cards</button>
+              <button id="btnViewTable" onclick="setViewMode('table')" class="px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition">Table</button>
+            </div>
+            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white flex items-center gap-1.5 transition shadow-sm">
+              <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              CSV
+            </button>
+            <button onclick="exportJSON()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition shadow-sm">
+              JSON
+            </button>
+          </div>
         </div>
-        <div class="space-y-1">
-          <h3 class="font-heading font-bold text-base text-white">No Jobs Currently Displayed</h3>
-          <p class="text-xs text-theme-subtle leading-relaxed">
-            Customize your target keywords and location radius above, then click <span class="text-indigo-400 font-semibold font-heading">Run Live Scan</span> to search all 360+ studio career portals.
-          </p>
+
+        <!-- Source Quick Filter Bar -->
+        <div id="sourceFilterChips" class="flex flex-wrap items-center gap-1.5 pt-1">
+          <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle mr-1">Filter Source:</span>
+          <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition">All Sources</button>
+          <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">ASGC Feed</button>
+          <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Direct Studios</button>
+          <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Aardvark Swift</button>
+          <button type="button" onclick="setSourceFilter('InGame Job')" id="srcChip_ingame" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">InGame Job</button>
+          <button type="button" onclick="setSourceFilter('GamesIndustry.biz')" id="srcChip_gibiz" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">GamesIndustry.biz</button>
+          <button type="button" onclick="setSourceFilter('Work With Indies')" id="srcChip_wwi" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Work With Indies</button>
         </div>
-        <button onclick="executeLiveSearch()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-glow-sm active:scale-[0.98]">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>Start Live Job Scan</span>
-        </button>
+
+        <!-- Empty State / Initial Prompt -->
+        <div id="emptyState" class="py-16 text-center space-y-4 max-w-md mx-auto">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto shadow-glow-sm">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <div class="space-y-1">
+            <h3 class="font-heading font-bold text-base text-white">No Jobs Currently Displayed</h3>
+            <p class="text-xs text-theme-subtle leading-relaxed">
+              Customize your target keywords and location radius above, then click <span class="text-indigo-400 font-semibold font-heading">Run Live Scan</span> to search all 360+ studio career portals.
+            </p>
+          </div>
+          <button onclick="executeLiveSearch()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-glow-sm active:scale-[0.98]">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Start Live Job Scan</span>
+          </button>
+        </div>
+
+        <!-- Cards Grid (WordPress Portfolio & Directory style) -->
+        <div id="resultsCardsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+        <!-- Table View -->
+        <div id="resultsTableContainer" class="hidden overflow-x-auto rounded-2xl border border-theme-border shadow-card">
+          <table class="w-full text-left text-xs text-white">
+            <thead class="bg-theme-surface text-theme-subtle font-heading text-[11px] uppercase tracking-wider border-b border-theme-border">
+              <tr>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
+                <th class="py-3 px-4 font-semibold">Discipline</th>
+                <th class="py-3 px-4 font-semibold">Location</th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
+                <th class="py-3 px-4 font-semibold">Keywords</th>
+                <th class="py-3 px-4 text-right font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody" class="divide-y divide-theme-border bg-theme-bg/60 font-sans"></tbody>
+          </table>
+        </div>
+
       </div>
 
-      <!-- Cards Grid (WordPress Portfolio & Directory style) -->
-      <div id="resultsCardsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      <!-- Tab View 2: Failed & Unreachable Portals View (Behind Tab) -->
+      <div id="resultsTabFailedView" class="hidden space-y-4">
+        
+        <!-- Cards Container Panel when failures exist -->
+        <div id="failedPagesResultsSection" class="rounded-2xl border border-rose-500/30 bg-gradient-to-b from-rose-950/20 via-theme-card to-theme-surface p-5 space-y-4 shadow-card transition-all duration-300">
+          <!-- Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-theme-border/60 pb-3">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-2.5">
+                <span class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </span>
+                <h3 class="font-heading font-bold text-sm text-white flex items-center gap-2">
+                  <span>Studio Career Portals Requiring Attention</span>
+                  <span id="failedSectionCountBadge" class="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">0 Unreachable</span>
+                </h3>
+              </div>
+              <p class="text-xs text-theme-subtle">
+                These studios timed out (>10s), returned 429 rate limits, or were blocked by Cloudflare during the scan. Open their direct portals below to verify listings manually.
+              </p>
+            </div>
 
-      <!-- Table View -->
-      <div id="resultsTableContainer" class="hidden overflow-x-auto rounded-2xl border border-theme-border shadow-card">
-        <table class="w-full text-left text-xs text-white">
-          <thead class="bg-theme-surface text-theme-subtle font-heading text-[11px] uppercase tracking-wider border-b border-theme-border">
-            <tr>
-              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
-              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
-              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
-              <th class="py-3 px-4 font-semibold">Discipline</th>
-              <th class="py-3 px-4 font-semibold">Location</th>
-              <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
-              <th class="py-3 px-4 font-semibold">Keywords</th>
-              <th class="py-3 px-4 text-right font-semibold">Action</th>
-            </tr>
-          </thead>
-          <tbody id="resultsTableBody" class="divide-y divide-theme-border bg-theme-bg/60 font-sans"></tbody>
-        </table>
+            <!-- Actions -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="btnRetryFailed" type="button" onclick="retryFailedSitesOnly()" class="chip-btn px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                <svg id="retrySpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span id="retryFailedBtnText">Retry Failed Only</span>
+              </button>
+              <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
+                <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                <span>Copy All Links</span>
+              </button>
+              <button type="button" onclick="switchResultsTab('matches')" class="chip-btn px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition">
+                Back to Matches →
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards of Failed Sites -->
+          <div id="failedPagesCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- Clean Empty State when 0 failures -->
+        <div id="failedPagesEmptyState" class="hidden text-center py-12 space-y-3 bg-theme-bg/40 rounded-2xl border border-theme-border/40 p-6">
+          <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto text-xl">✓</div>
+          <h4 class="font-heading font-bold text-base text-white">All Studio Portals Reachable</h4>
+          <p class="text-xs text-theme-subtle max-w-md mx-auto">Every studio career portal responded successfully during the live scan. No timeouts, rate limits, or network errors were recorded.</p>
+          <button type="button" onclick="switchResultsTab('matches')" class="mt-2 chip-btn px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition">
+            View Matching Roles →
+          </button>
+        </div>
+
       </div>
 
     </div>
@@ -878,33 +984,64 @@
       statStudios.innerText = '0 / 0';
       statRaw.innerText = '0';
       statMatches.innerText = '0';
+      const liveFailedEl = document.getElementById('liveStatFailed');
+      if (liveFailedEl) liveFailedEl.innerText = '0';
+      const liveFailedBox = document.getElementById('liveStatFailedBox');
+      if (liveFailedBox) liveFailedBox.className = 'px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition';
+      
       activeQueries.innerText = 'Initializing feeds...';
+      logStats = { all: 0, errors: 0, matches: 0 };
+      updateLogFilterBadges();
       
       const startTimeStr = new Date().toLocaleTimeString();
-      logContainer.innerHTML = `<div class="text-theme-subtle flex items-center gap-2"><span class="text-[10px] font-mono text-indigo-400">[${startTimeStr}]</span> <span>🚀</span> <span>Starting live industry job scan...</span></div>`;
+      logContainer.innerHTML = `<div class="text-theme-subtle flex items-center gap-2 log-entry" data-category="info"><span class="text-[10px] font-mono text-indigo-400">[${startTimeStr}]</span> <span>🚀</span> <span>Starting live industry job scan...</span></div>`;
 
       function appendLog(text, type = 'info') {
         const timeStr = new Date().toLocaleTimeString();
         const div = document.createElement('div');
         let colorClass = 'text-theme-subtle';
         let icon = '•';
+        let category = 'info';
+
         if (type === 'match') {
-          colorClass = 'text-emerald-300 font-semibold';
+          colorClass = 'text-emerald-300 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20';
           icon = '✨';
+          category = 'match';
+          logStats.matches++;
         } else if (type === 'asgc') {
           colorClass = 'text-indigo-300';
           icon = '🌐';
         } else if (type === 'studio') {
           colorClass = 'text-white';
           icon = '🏢';
+        } else if (type === 'warning') {
+          colorClass = 'text-amber-300 font-medium bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20';
+          icon = '⚠️';
+          category = 'error';
+          logStats.errors++;
         } else if (type === 'error') {
-          colorClass = 'text-rose-400';
+          colorClass = 'text-rose-400 font-semibold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20';
           icon = '✗';
+          category = 'error';
+          logStats.errors++;
         }
-        div.className = `flex items-center gap-2 ${colorClass}`;
-        div.innerHTML = `<span class="text-[10px] font-mono text-theme-subtle">[${timeStr}]</span> <span>${icon}</span> <span class="truncate">${escapeHTML(text)}</span>`;
+        logStats.all++;
+        updateLogFilterBadges();
+
+        div.className = `flex items-center gap-2 log-entry ${colorClass}`;
+        div.dataset.category = category;
+        div.innerHTML = `<span class="text-[10px] font-mono text-theme-subtle shrink-0">[${timeStr}]</span> <span class="shrink-0">${icon}</span> <span class="break-all">${escapeHTML(text)}</span>`;
+
+        if (currentLogFilter === 'errors' && category !== 'error') {
+          div.classList.add('hidden');
+        } else if (currentLogFilter === 'matches' && category !== 'match') {
+          div.classList.add('hidden');
+        }
+
         logContainer.appendChild(div);
-        logContainer.scrollTop = logContainer.scrollHeight;
+        if (logAutoScroll) {
+          logContainer.scrollTop = logContainer.scrollHeight;
+        }
       }
 
       let finalResult = null;
@@ -966,6 +1103,18 @@
               if (eventData.matched_jobs_total !== undefined) {
                 statMatches.innerText = eventData.matched_jobs_total.toLocaleString();
               }
+              if (eventData.failed_pages_total !== undefined) {
+                const lf = document.getElementById('liveStatFailed');
+                const lb = document.getElementById('liveStatFailedBox');
+                if (lf) lf.innerText = eventData.failed_pages_total;
+                if (lb) {
+                  if (eventData.failed_pages_total > 0) {
+                    lb.className = 'px-2.5 py-1 rounded-lg bg-rose-500/20 border border-rose-500/50 flex items-center gap-1.5 transition shadow-sm';
+                  } else {
+                    lb.className = 'px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition';
+                  }
+                }
+              }
               if (eventData.log_entry) {
                 appendLog(eventData.log_entry.text, eventData.log_entry.type || 'info');
               }
@@ -1018,6 +1167,8 @@
         searchIcon.classList.remove('animate-spin');
         searchText.innerText = 'Run Live Scan';
         loadingState.classList.add('hidden');
+        const btnLog = document.getElementById('btnViewScanLog');
+        if (btnLog) btnLog.classList.remove('hidden');
       }
     }
 
@@ -1110,6 +1261,43 @@
         tabBtnStudios.classList.add(...activeClasses);
         tabBtnStudios.classList.remove(...inactiveClasses);
         filterTabStudios.classList.remove('hidden');
+      }
+    }
+
+    // --- Results Primary Tabs Switcher ---
+    let currentResultsTab = 'matches';
+
+    function switchResultsTab(tab) {
+      currentResultsTab = tab;
+      const tabBtnMatches = document.getElementById('tabBtnMatches');
+      const tabBtnFailed = document.getElementById('tabBtnFailed');
+      const matchesView = document.getElementById('resultsTabMatchesView');
+      const failedView = document.getElementById('resultsTabFailedView');
+
+      if (!tabBtnMatches || !tabBtnFailed || !matchesView || !failedView) return;
+
+      const activeMatchesClasses = ['text-white', 'bg-indigo-600', 'font-semibold', 'shadow-sm'];
+      const activeFailedClasses = ['text-white', 'bg-rose-600', 'font-semibold', 'shadow-sm'];
+      const inactiveClasses = ['text-theme-subtle', 'hover:text-white'];
+
+      if (tab === 'matches') {
+        tabBtnMatches.classList.remove(...inactiveClasses);
+        tabBtnMatches.classList.add(...activeMatchesClasses);
+
+        tabBtnFailed.classList.remove(...activeFailedClasses);
+        tabBtnFailed.classList.add(...inactiveClasses);
+
+        matchesView.classList.remove('hidden');
+        failedView.classList.add('hidden');
+      } else if (tab === 'failed') {
+        tabBtnFailed.classList.remove(...inactiveClasses);
+        tabBtnFailed.classList.add(...activeFailedClasses);
+
+        tabBtnMatches.classList.remove(...activeMatchesClasses);
+        tabBtnMatches.classList.add(...inactiveClasses);
+
+        matchesView.classList.add('hidden');
+        failedView.classList.remove('hidden');
       }
     }
 
@@ -1653,10 +1841,16 @@
       const emptyState = document.getElementById('emptyState');
 
       badge.innerText = `${jobs.length} match${jobs.length === 1 ? '' : 'es'}`;
+      const matchesTabBadge = document.getElementById('resultsMatchesTabBadge');
+      if (matchesTabBadge) matchesTabBadge.innerText = jobs.length;
       subtitle.innerText = `Completed in ${data.stats.duration_seconds}s • ASGC Listings: ${data.stats.asgc_raw_count.toLocaleString()} • Studio Portals Scanned: ${data.stats.scanned_studios}`;
 
-      // Update failed / timed out pages badge
+      // Update failed / timed out pages badge and tab view
       updateFailedPagesBadge(data.failed_pages || []);
+      renderFailedSitesSection(data.failed_pages || []);
+      switchResultsTab('matches');
+      const btnLog = document.getElementById('btnViewScanLog');
+      if (btnLog) btnLog.classList.remove('hidden');
 
       if (jobs.length === 0) {
         emptyState.classList.remove('hidden');
@@ -2012,6 +2206,85 @@
       return String(str).replace(/'/g, "\\'");
     }
 
+    // --- Live Log & Scan Monitoring State ---
+    let logAutoScroll = true;
+    let currentLogFilter = 'all';
+    let logStats = { all: 0, errors: 0, matches: 0 };
+
+    function setLogFilter(filter) {
+      currentLogFilter = filter;
+      const btnAll = document.getElementById('btnLogFilterAll');
+      const btnErrors = document.getElementById('btnLogFilterErrors');
+      const btnMatches = document.getElementById('btnLogFilterMatches');
+      
+      const activeCls = 'bg-indigo-600 text-white font-semibold shadow-sm';
+      const inactiveCls = 'bg-theme-bg text-theme-subtle hover:text-white border border-theme-border';
+      
+      [btnAll, btnErrors, btnMatches].forEach(b => {
+        if (!b) return;
+        b.className = `px-2 py-0.5 rounded text-[10px] transition ${inactiveCls}`;
+      });
+
+      if (filter === 'all' && btnAll) btnAll.className = `px-2 py-0.5 rounded text-[10px] transition ${activeCls}`;
+      if (filter === 'errors' && btnErrors) btnErrors.className = `px-2 py-0.5 rounded text-[10px] transition bg-rose-600 text-white font-semibold shadow-sm`;
+      if (filter === 'matches' && btnMatches) btnMatches.className = `px-2 py-0.5 rounded text-[10px] transition bg-emerald-600 text-white font-semibold shadow-sm`;
+
+      const entries = document.querySelectorAll('#liveActivityLog .log-entry');
+      entries.forEach(el => {
+        const cat = el.dataset.category;
+        if (filter === 'all') {
+          el.classList.remove('hidden');
+        } else if (filter === 'errors') {
+          el.classList.toggle('hidden', cat !== 'error');
+        } else if (filter === 'matches') {
+          el.classList.toggle('hidden', cat !== 'match');
+        }
+      });
+      if (logAutoScroll) {
+        const logContainer = document.getElementById('liveActivityLog');
+        if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
+      }
+    }
+
+    function toggleLogAutoScroll() {
+      logAutoScroll = !logAutoScroll;
+      const lbl = document.getElementById('autoScrollLabel');
+      if (lbl) {
+        lbl.innerText = logAutoScroll ? 'ON' : 'PAUSED';
+        lbl.className = logAutoScroll ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold';
+      }
+    }
+
+    function clearLiveLog() {
+      const logContainer = document.getElementById('liveActivityLog');
+      if (logContainer) logContainer.innerHTML = '';
+      logStats = { all: 0, errors: 0, matches: 0 };
+      updateLogFilterBadges();
+    }
+
+    function updateLogFilterBadges() {
+      const cAll = document.getElementById('logFilterCountAll');
+      const cErr = document.getElementById('logFilterCountErrors');
+      const cMat = document.getElementById('logFilterCountMatches');
+      if (cAll) cAll.innerText = logStats.all;
+      if (cErr) cErr.innerText = logStats.errors;
+      if (cMat) cMat.innerText = logStats.matches;
+    }
+
+    function toggleScanLogPostSearch() {
+      const loadingState = document.getElementById('searchLoadingState');
+      const btn = document.getElementById('btnViewScanLog');
+      const icon = document.getElementById('viewScanLogIcon');
+      const text = document.getElementById('viewScanLogText');
+      if (!loadingState) return;
+      const isHidden = loadingState.classList.toggle('hidden');
+      if (text) text.innerText = isHidden ? 'Scan Log' : 'Hide Log';
+      if (icon) icon.innerText = isHidden ? '📋' : '✕';
+      if (!isHidden) {
+        loadingState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
     // --- Failed / Timed Out Pages Management ---
     let currentFailedPages = [];
 
@@ -2019,13 +2292,175 @@
       currentFailedPages = failedList || [];
       const badgeBtn = document.getElementById('failedPagesBadgeBtn');
       const label = document.getElementById('failedPagesCountLabel');
-      if (!badgeBtn || !label) return;
+      const tabBadge = document.getElementById('resultsFailedTabBadge');
 
-      if (currentFailedPages.length > 0) {
-        label.innerText = `${currentFailedPages.length} Timed Out / Failed`;
-        badgeBtn.classList.remove('hidden');
-      } else {
-        badgeBtn.classList.add('hidden');
+      if (tabBadge) {
+        tabBadge.innerText = currentFailedPages.length;
+        if (currentFailedPages.length > 0) {
+          tabBadge.classList.remove('hidden');
+        } else {
+          tabBadge.classList.add('hidden');
+        }
+      }
+
+      if (badgeBtn && label) {
+        if (currentFailedPages.length > 0) {
+          label.innerText = `${currentFailedPages.length} Unreachable Site${currentFailedPages.length === 1 ? '' : 's'}`;
+          badgeBtn.classList.remove('hidden');
+        } else {
+          badgeBtn.classList.add('hidden');
+        }
+      }
+    }
+
+    function scrollToFailedSites() {
+      switchResultsTab('failed');
+      const failedView = document.getElementById('resultsTabFailedView');
+      if (failedView) {
+        failedView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function toggleFailedCardsCollapse() {
+      const container = document.getElementById('failedPagesCardsContainer');
+      const btn = document.getElementById('btnToggleFailedCollapse');
+      if (!container) return;
+      const isHidden = container.classList.toggle('hidden');
+      if (btn) btn.innerText = isHidden ? 'Expand' : 'Collapse';
+    }
+
+    function renderFailedSitesSection(failedList) {
+      currentFailedPages = failedList || [];
+      const section = document.getElementById('failedPagesResultsSection');
+      const emptyState = document.getElementById('failedPagesEmptyState');
+      const container = document.getElementById('failedPagesCardsContainer');
+      const countBadge = document.getElementById('failedSectionCountBadge');
+      const retryCountEl = document.getElementById('retryFailedCount');
+      const srcChipCount = document.getElementById('srcChip_failed_count');
+      const srcChip = document.getElementById('srcChip_failed');
+
+      if (srcChipCount) srcChipCount.innerText = currentFailedPages.length;
+      if (srcChip) {
+        if (currentFailedPages.length > 0) {
+          srcChip.classList.remove('hidden');
+        } else {
+          srcChip.classList.add('hidden');
+        }
+      }
+
+      if (!section || !container) return;
+
+      if (currentFailedPages.length === 0) {
+        section.classList.add('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+        container.innerHTML = '';
+        return;
+      }
+
+      section.classList.remove('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
+      if (countBadge) countBadge.innerText = `${currentFailedPages.length} Unreachable`;
+      if (retryCountEl) retryCountEl.innerText = currentFailedPages.length;
+
+      container.innerHTML = currentFailedPages.map((item) => {
+        const isTimeout = item.status === 'timeout';
+        const isRateLimit = item.status === 'rate_limited';
+        const isForbidden = item.status === 'forbidden';
+        
+        let statusBadge = '';
+        if (isTimeout) {
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"><span>⏱️</span><span>Timed Out (>10s)</span></span>';
+        } else if (isRateLimit) {
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30 flex items-center gap-1"><span>🚫</span><span>HTTP 429 Throttled</span></span>';
+        } else if (isForbidden) {
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-purple-500/15 text-purple-300 border border-purple-500/30 flex items-center gap-1"><span>🔒</span><span>Cloudflare Block</span></span>';
+        } else {
+          statusBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30 flex items-center gap-1"><span>✗</span><span>${escapeHTML(item.error_type || 'Error')}</span></span>`;
+        }
+
+        const sourceBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-theme-bg text-theme-subtle border border-theme-border">${escapeHTML(item.source || 'Direct Web')}</span>`;
+
+        return `
+          <div class="glass-card-subtle rounded-xl p-3.5 border border-rose-500/20 hover:border-rose-500/40 bg-[#111828]/80 space-y-2.5 transition group shadow-sm flex flex-col justify-between">
+            <div class="space-y-1.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="font-heading font-bold text-sm text-white group-hover:text-rose-200 transition">${escapeHTML(item.company || 'Unknown Studio')}</h4>
+                  <div class="flex flex-wrap items-center gap-1.5 mt-1">
+                    ${statusBadge}
+                    ${sourceBadge}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="text-[11px] text-theme-subtle font-mono truncate" title="${escapeQuotes(item.url || '')}">
+                ${escapeHTML(item.url || 'No URL')}
+              </div>
+
+              ${item.detail ? `
+                <p class="text-[11px] text-theme-subtle line-clamp-2 bg-theme-bg/60 p-1.5 rounded-lg border border-theme-border/40 font-mono">
+                  ${escapeHTML(item.detail)}
+                </p>
+              ` : ''}
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-theme-border/30">
+              <a href="${escapeHTML(item.url || '#')}" target="_blank" rel="noopener noreferrer" 
+                class="chip-btn px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                <span>Open Page</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+              <button type="button" onclick="quickAvoidCompany('${escapeQuotes(item.company || '')}')" 
+                class="px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-rose-500/20 border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading transition" title="Add this studio to your Avoid list">
+                + Avoid
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function retryFailedSitesOnly() {
+      if (!currentFailedPages || currentFailedPages.length === 0) {
+        showToast('No failed sites to retry', 'info');
+        return;
+      }
+      const btn = document.getElementById('btnRetryFailed');
+      const spinner = document.getElementById('retrySpinner');
+      const text = document.getElementById('retryFailedBtnText');
+
+      if (btn) btn.disabled = true;
+      if (spinner) spinner.classList.add('animate-spin');
+      if (text) text.innerText = 'Retrying...';
+
+      showToast(`Retrying ${currentFailedPages.length} failed studio sites...`, 'info');
+
+      try {
+        const res = await fetch('/api/retry-failed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentConfig)
+        });
+        const data = await res.json();
+        if (data.success) {
+          renderFailedSitesSection(data.failed_pages || []);
+          updateFailedPagesBadge(data.failed_pages || []);
+          if (data.recovered_jobs && data.recovered_jobs.length > 0) {
+            allSearchResults = [...allSearchResults, ...data.recovered_jobs];
+            filterResultsTable();
+            showToast(`Recovered ${data.recovered_jobs.length} jobs from rechecked sites!`, 'success');
+          } else {
+            showToast(`Retry finished: ${data.recovered_count || 0} succeeded, ${data.total_failed || 0} still unreachable`, data.total_failed === 0 ? 'success' : 'warning');
+          }
+        } else {
+          showToast('Retry failed: ' + (data.message || 'Unknown error'), 'error');
+        }
+      } catch (err) {
+        showToast('Retry error: ' + err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+        if (spinner) spinner.classList.remove('animate-spin');
+        if (text) text.innerText = 'Retry Failed Only';
       }
     }
 
@@ -2106,8 +2541,9 @@
     fetch('/api/failed-pages')
       .then(res => res.json())
       .then(data => {
-        if (data && data.failures && data.failures.length > 0) {
+        if (data && data.failures) {
           updateFailedPagesBadge(data.failures);
+          renderFailedSitesSection(data.failures);
         }
       })
       .catch(() => {});

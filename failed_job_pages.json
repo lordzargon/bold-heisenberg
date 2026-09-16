@@ -1,24 +1,330 @@
 {
-  "generated_at": "2026-09-15T11:13:22.046464",
-  "total_failed": 2,
+  "generated_at": "2026-09-16T09:29:24.343686",
+  "total_failed": 36,
   "failures": [
     {
-      "company": "Frontier Developments",
-      "url": "https://apply.workable.com/frontier/",
-      "source": "Workable",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "timed out",
-      "timestamp": "2026-09-15T11:00:00"
+      "company": "Ascend Games",
+      "url": "https://brandsly.com/business-names/work-careers",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:28:51.688858"
     },
     {
-      "company": "Team 17 Digital",
-      "url": "https://apply.workable.com/team-17-digital/?lng=en",
-      "source": "Workable",
-      "status": "rate_limited",
-      "error_type": "HTTP 429 (Rate Limited / Throttled)",
-      "detail": "HTTP Error 429: Too Many Requests",
-      "timestamp": "2026-09-15T11:00:01"
+      "company": "Axial Studio",
+      "url": "https://www.axialstudio.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-16T09:28:55.106560"
+    },
+    {
+      "company": "Axs Studio",
+      "url": "https://www.axsstudio.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-16T09:28:55.119501"
+    },
+    {
+      "company": "Aardvark Swift",
+      "url": "Recruiter Board",
+      "source": "Aardvark Swift",
+      "status": "error",
+      "error_type": "Aardvark Swift Fetch Error",
+      "detail": "name 'full_url' is not defined",
+      "timestamp": "2026-09-16T09:28:55.295330"
+    },
+    {
+      "company": "Candidum Games",
+      "url": "https://www.candidumgames.com/vacancies",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:28:56.023704"
+    },
+    {
+      "company": "Cyberdreams",
+      "url": "https://www.cyberdreams.com/work-with-us",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-16T09:28:56.885772"
+    },
+    {
+      "company": "Disruptive Games",
+      "url": "https://www.disruptivegames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:28:57.112429"
+    },
+    {
+      "company": "Dreadlocks",
+      "url": "https://efty.com/career/jobs/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:28:57.134006"
+    },
+    {
+      "company": "Curve Games",
+      "url": "https://curvegames.com/join-us/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:28:57.256260"
+    },
+    {
+      "company": "Exient",
+      "url": "https://exient.com/#work-with-us",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:28:57.508400"
+    },
+    {
+      "company": "Failbetter Games",
+      "url": "https://www.failbettergames.com/vacancies",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:28:58.420987"
+    },
+    {
+      "company": "Funsolve",
+      "url": "https://www.funsolve.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-16T09:28:58.964884"
+    },
+    {
+      "company": "Game Pilot",
+      "url": "https://jobs.poki.com",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 308 (Permanent Redirect)",
+      "detail": "HTTP Error 308: Permanent Redirect",
+      "timestamp": "2026-09-16T09:28:59.501923"
+    },
+    {
+      "company": "Global Empire Soft",
+      "url": "https://globalempiresoft.com/jobs",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:29:00.559495"
+    },
+    {
+      "company": "Green Man Gaming",
+      "url": "https://www.greenmangaming.com/careers",
+      "source": "Direct Studio Web",
+      "status": "server_error",
+      "error_type": "HTTP 500 (Server Error)",
+      "detail": "HTTP Error 500: Internal Server Error",
+      "timestamp": "2026-09-16T09:29:00.563015"
+    },
+    {
+      "company": "Humain",
+      "url": "https://www.humain.com/careers",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:00.666436"
+    },
+    {
+      "company": "Circle 1 Games",
+      "url": "https://www.circle1games.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-16T09:29:01.689746"
+    },
+    {
+      "company": "Kwalee",
+      "url": "https://www.kwalee.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-16T09:29:01.760342"
+    },
+    {
+      "company": "Archtor",
+      "url": "https://archtor.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error _ssl.c:980: The handshake operation timed out>",
+      "timestamp": "2026-09-16T09:29:02.012404"
+    },
+    {
+      "company": "Lo-Fi Games",
+      "url": "https://lofigames.com/jobs/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:02.450996"
+    },
+    {
+      "company": "Mania Games",
+      "url": "https://www.maniagames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:29:03.117869"
+    },
+    {
+      "company": "Maverick Media",
+      "url": "https://maverickmedia.co.uk/careers/",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:29:03.172798"
+    },
+    {
+      "company": "Lockwood Publishing",
+      "url": "https://www.lockwoodpublishing.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-16T09:29:03.500424"
+    },
+    {
+      "company": "Media Molecule",
+      "url": "https://www.mediamolecule.com/careers",
+      "source": "Direct Studio Web",
+      "status": "error",
+      "error_type": "Error: Remote end closed connection without response",
+      "detail": "Remote end closed connection without response",
+      "timestamp": "2026-09-16T09:29:03.530525"
+    },
+    {
+      "company": "Muterra",
+      "url": "https://muterra.com/join",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:03.561196"
+    },
+    {
+      "company": "Nice Games",
+      "url": "https://www.nicegames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-16T09:29:07.584928"
+    },
+    {
+      "company": "Playwing",
+      "url": "https://www.playwing.com/careers/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:08.498464"
+    },
+    {
+      "company": "Scenegraph Studios",
+      "url": "https://scenegraphstudios.com/careers",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:09.872871"
+    },
+    {
+      "company": "Spectrum48",
+      "url": "https://www.spectrum48.com/jobs-2/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:10.019620"
+    },
+    {
+      "company": "Spiral House",
+      "url": "https://spiralhouse.co.uk/jobs/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:10.070346"
+    },
+    {
+      "company": "Sponge Hammer",
+      "url": "https://www.spongehammer.com/join-us/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:10.073265"
+    },
+    {
+      "company": "Tai Chi Elements",
+      "url": "https://www.taichielements.com/careers",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:29:10.789097"
+    },
+    {
+      "company": "Tag Games",
+      "url": "https://www.taggames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "server_error",
+      "error_type": "HTTP 502 (Server Error)",
+      "detail": "HTTP Error 502: Bad Gateway",
+      "timestamp": "2026-09-16T09:29:12.000100"
+    },
+    {
+      "company": "Withqwerty",
+      "url": "https://www.withqwerty.com/careers",
+      "source": "Direct Studio Web",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-16T09:29:12.810611"
+    },
+    {
+      "company": "Payload Studios",
+      "url": "https://payloadstudios.com/careers/",
+      "source": "Direct Studio Web",
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-16T09:29:12.921852"
+    },
+    {
+      "company": "Orchid Entertainment",
+      "url": "https://orchidentertainment.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error _ssl.c:980: The handshake operation timed out>",
+      "timestamp": "2026-09-16T09:29:19.300616"
     }
   ]
 }

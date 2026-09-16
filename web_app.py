@@ -816,6 +816,9 @@ def run_live_search(config, progress_callback=None):
             "log_entry": {"text": f"Starting scan across {total_studios} studio portals and ASGC database...", "type": "info"}
         })
 
+    failed_pages = []
+    failed_lock = threading.Lock()
+
     def _fetch_asgc_task():
         nonlocal asgc_count, raw_jobs_accum, matched_jobs_accum
         if not query_asgc:
@@ -830,6 +833,7 @@ def run_live_search(config, progress_callback=None):
                 "total": total_studios,
                 "raw_jobs_total": raw_jobs_accum,
                 "matched_jobs_total": matched_jobs_accum,
+                "failed_pages_total": len(failed_pages),
                 "log_entry": {"text": "Connecting to Looker Studio / ASGC live API feed...", "type": "asgc"}
             })
         try:
@@ -846,21 +850,31 @@ def run_live_search(config, progress_callback=None):
                     "total": total_studios,
                     "raw_jobs_total": raw_jobs_accum,
                     "matched_jobs_total": matched_jobs_accum,
+                    "failed_pages_total": len(failed_pages),
                     "log_entry": {"text": f"Loaded {asgc_count:,} postings from Looker Studio / ASGC feed", "type": "asgc"}
                 })
             return jobs
         except Exception as e:
             with active_lock:
                 active_studios.discard("Amir Satvat / ASGC Live Database")
+            status, err_type = classify_fetch_error(e)
+            with failed_lock:
+                failed_pages.append({
+                    "company": "Amir Satvat / ASGC Database",
+                    "url": ASGC_API_URL,
+                    "source": "ASGC Feed",
+                    "status": status,
+                    "error_type": err_type,
+                    "detail": str(e),
+                    "timestamp": datetime.datetime.now().isoformat()
+                })
             if progress_callback:
                 progress_callback("progress", {
                     "active": list(active_studios),
+                    "failed_pages_total": len(failed_pages),
                     "log_entry": {"text": f"ASGC fetch error: {e}", "type": "error"}
                 })
             return []
-
-    failed_pages = []
-    failed_lock = threading.Lock()
 
     def _fetch_studios_task():
         nonlocal studios_count, scanned_studios_count, completed_studios, raw_jobs_accum, matched_jobs_accum
@@ -989,9 +1003,20 @@ def run_live_search(config, progress_callback=None):
         def _rec_cb(name, count, err=None):
             nonlocal raw_jobs_accum, matched_jobs_accum
             if err:
+                with failed_lock:
+                    failed_pages.append({
+                        "company": name,
+                        "url": "Recruiter Board",
+                        "source": name,
+                        "status": "error",
+                        "error_type": f"{name} Fetch Error",
+                        "detail": str(err),
+                        "timestamp": datetime.datetime.now().isoformat()
+                    })
                 if progress_callback:
                     progress_callback("progress", {
                         "active": list(active_studios)[:6],
+                        "failed_pages_total": len(failed_pages),
                         "log_entry": {"text": f"{name}: {err}", "type": "error"}
                     })
             else:
@@ -1088,6 +1113,74 @@ def run_live_search(config, progress_callback=None):
         progress_callback("complete", result_payload)
 
     return result_payload
+
+def retry_failed_pages(config=None):
+    """Re-scrapes only the studios currently recorded in failed_pages to test if errors persist."""
+    global BACKGROUND_STATE
+    search_cfg = (config or load_config()).get("search", {})
+    
+    current_fails = list(BACKGROUND_STATE.get("last_failed_pages", []))
+    if not current_fails and os.path.exists(FAILED_PAGES_JSON):
+        try:
+            with open(FAILED_PAGES_JSON, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                current_fails = data.get("failures", [])
+        except Exception:
+            current_fails = []
+            
+    if not current_fails:
+        return {"success": True, "message": "No failed pages to retry", "failed_pages": [], "recovered_jobs": []}
+
+    companies_db = load_companies()
+    new_failed = []
+    recovered_jobs = []
+    failed_lock = threading.Lock()
+
+    for item in current_fails:
+        comp_name = item.get("company", "Unknown")
+        url = item.get("url", "")
+        # Find matching company object or synthesize one
+        comp = companies_db.get(comp_name)
+        if not comp:
+            for c in companies_db.values():
+                if c.get("careers_url") == url or c.get("name") == comp_name:
+                    comp = c
+                    break
+        if not comp:
+            comp = {"name": comp_name, "careers_url": url}
+
+        try:
+            c_jobs = extract_jobs_from_company(comp, failed_pages=new_failed, failed_lock=failed_lock)
+            if c_jobs:
+                for j in c_jobs:
+                    is_m, matched_kws, loc_match = filter_job(j, search_cfg)
+                    if is_m:
+                        jc = dict(j)
+                        jc["matched_keywords"] = matched_kws
+                        jc["location_match"] = loc_match
+                        recovered_jobs.append(jc)
+        except Exception as ex:
+            status, err_type = classify_fetch_error(ex)
+            new_failed.append({
+                "company": comp_name,
+                "url": url,
+                "source": item.get("source", "Direct Studio Web"),
+                "status": status,
+                "error_type": err_type,
+                "detail": str(ex),
+                "timestamp": datetime.datetime.now().isoformat()
+            })
+
+    save_failed_pages_reports(new_failed)
+    BACKGROUND_STATE["last_failed_pages"] = new_failed
+    return {
+        "success": True,
+        "total_retried": len(current_fails),
+        "total_failed": len(new_failed),
+        "recovered_count": len(current_fails) - len(new_failed),
+        "failed_pages": new_failed,
+        "recovered_jobs": recovered_jobs
+    }
 
 # --- Notification Dispatcher ---
 
@@ -3567,6 +3660,12 @@ class WebAppHandler(BaseHTTPRequestHandler):
                 self.send_json_response({"success": True, "message": "Background scrape started"})
             else:
                 self.send_json_response({"success": True, "message": "Scrape already in progress"})
+            return
+
+        if path == "/api/retry-failed":
+            config_to_use = req_json if req_json else load_config()
+            results = retry_failed_pages(config_to_use)
+            self.send_json_response(results)
             return
 
         self.send_response(404)
