@@ -31,6 +31,11 @@ try:
 except ImportError:
     fetch_all_recruiter_jobs = None
 
+try:
+    from gamesjobsindex_monitor import fetch_gamesjobsindex_jobs
+except ImportError:
+    fetch_gamesjobsindex_jobs = None
+
 if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
     try:
         sys.stdout.reconfigure(encoding='utf-8')
@@ -49,6 +54,16 @@ FAILED_PAGES_MD = os.path.join(SCRIPT_DIR, "failed_job_pages.md")
 SSL_CTX = ssl.create_default_context()
 SSL_CTX.check_hostname = False
 SSL_CTX.verify_mode = ssl.CERT_NONE
+
+class SmartRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def http_error_308(self, req, fp, code, msg, headers):
+        return self.http_error_301(req, fp, code, msg, headers)
+
+SMART_OPENER = urllib.request.build_opener(
+    SmartRedirectHandler(),
+    urllib.request.HTTPSHandler(context=SSL_CTX)
+)
+urllib.request.install_opener(SMART_OPENER)
 
 DEFAULT_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -401,17 +416,24 @@ def fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=None)
         return []
 
     # Check if this HTML page delegates to Workable
-    workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
-    if workable_match:
-        slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
-        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            try:
-                w_jobs = fetch_workable_jobs(slug, company_name)
-                if w_jobs:
-                    return w_jobs
-            except Exception as we:
-                if failed_recorder:
-                    failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
+    slug = None
+    wm_apply = re.search(r'apply\.workable\.com/(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)', html)
+    if wm_apply:
+        slug = wm_apply.group(1)
+    else:
+        wm_sub = re.search(r'([a-zA-Z0-9_\-]+)\.workable\.com', html)
+        if wm_sub:
+            slug = wm_sub.group(1)
+
+    workable_reserved = {"jobs", "j", "api", "widget", "www", "embed", "assets", "resources", "help", "support", "static"}
+    if slug and slug.lower() not in workable_reserved:
+        try:
+            w_jobs = fetch_workable_jobs(slug, company_name)
+            if w_jobs:
+                return w_jobs
+        except Exception as we:
+            if failed_recorder:
+                failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
     
     jobs = []
     link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
@@ -540,15 +562,22 @@ def extract_jobs_from_company(comp, failed_pages=None, failed_lock=None):
             return []
 
     # Check Workable
-    workable_match = re.search(r'(?:apply\.workable\.com/|([a-zA-Z0-9_\-]+)\.workable\.com)(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)?', careers_url)
-    if workable_match:
-        slug = workable_match.group(2) or workable_match.group(1)
-        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            try:
-                return fetch_workable_jobs(slug, company_name)
-            except Exception as e:
-                _record_fail("Workable", e, careers_url)
-                return []
+    slug = None
+    wm_apply = re.search(r'apply\.workable\.com/(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)', careers_url)
+    if wm_apply:
+        slug = wm_apply.group(1)
+    else:
+        wm_sub = re.search(r'([a-zA-Z0-9_\-]+)\.workable\.com', careers_url)
+        if wm_sub:
+            slug = wm_sub.group(1)
+
+    workable_reserved = {"jobs", "j", "api", "widget", "www", "embed", "assets", "resources", "help", "support", "static"}
+    if slug and slug.lower() not in workable_reserved:
+        try:
+            return fetch_workable_jobs(slug, company_name)
+        except Exception as e:
+            _record_fail("Workable", e, careers_url)
+            return []
 
     # Fallback to HTML parser
     try:
@@ -699,8 +728,8 @@ def scan_all_career_pages(max_workers=8, init_mode=False, dry_run=False):
     with open(COMPANIES_DB_FILE, "r", encoding="utf-8") as f:
         companies_db = json.load(f)
         
-    studios_with_careers = [c for c in companies_db.values() if c.get("careers_url")]
-    print(f"[*] Scanning {len(studios_with_careers)} game studio career pages for open positions (Workers: {max_workers})...")
+    studios_with_careers = [c for c in companies_db.values() if c.get("careers_url") and c.get("status") != "defunct"]
+    print(f"[*] Scanning {len(studios_with_careers)} active game studio career pages for open positions (Workers: {max_workers})...")
     
     config = load_config()
     seen_ids = load_seen_jobs()
@@ -749,7 +778,19 @@ def scan_all_career_pages(max_workers=8, init_mode=False, dry_run=False):
                 if is_matching_job(j, config.get("search", {})):
                     all_matched_jobs.append(j)
 
-    print(f"\n[✓] Completed scan: extracted {total_jobs_found} total jobs across career pages & recruiter boards.")
+    # Scan Games Jobs Index if enabled
+    if fetch_gamesjobsindex_jobs is not None and sources_cfg.get("query_gamesjobsindex", True):
+        print("[*] Scanning Games Jobs Index (15,000+ live game dev roles)...")
+        gji_jobs = fetch_gamesjobsindex_jobs(sources_cfg)
+        total_jobs_found += len(gji_jobs)
+        gji_matches = 0
+        for j in gji_jobs:
+            if is_matching_job(j, config.get("search", {})):
+                all_matched_jobs.append(j)
+                gji_matches += 1
+        print(f"  [✓] Games Jobs Index: {len(gji_jobs):,} roles checked, {gji_matches} matched filters.")
+
+    print(f"\n[✓] Completed scan: extracted {total_jobs_found:,} total jobs across career pages, recruiter boards & Games Jobs Index.")
     print(f"[✓] Filter matched: {len(all_matched_jobs)} Technical Artist / related roles.")
     
     # Generate structured Tech Artist report
@@ -770,6 +811,15 @@ def scan_all_career_pages(max_workers=8, init_mode=False, dry_run=False):
         for p in failed_pages:
             print(f"  🏢 {p['company']} ({p['source']}): {p['error_type']}")
             print(f"     🔗 {p['url']}")
+        print("="*70)
+
+        # Trigger automated URL Healer
+        try:
+            from url_healer import heal_failed_pages
+            print("\n[*] Running automated URL Healer (path probing, redirect checks, domain for sale detection)...")
+            heal_failed_pages(failed_pages)
+        except Exception as he:
+            print(f"[!] Warning running URL Healer: {he}")
         print("="*70 + "\n")
     else:
         print("[✓] All studio career pages responded with 0 timeouts or network errors.")

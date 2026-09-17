@@ -156,6 +156,35 @@ def run_tests():
     assert fb_hybrid.get("mode") == "hybrid"
     assert "Hybrid" in fb_hybrid.get("display_badge")
 
+    print("\n=== 8. Games Jobs Index Harvester & Schema Test ===")
+    import gamesjobsindex_monitor
+    gji_jobs = gamesjobsindex_monitor.fetch_gamesjobsindex_jobs()
+    print(f"Fetched {len(gji_jobs):,} jobs from Games Jobs Index")
+    assert len(gji_jobs) > 1000
+    sample = gji_jobs[0]
+    assert sample.get("source") == "Games Jobs Index"
+    assert sample.get("id").startswith("gji_")
+    assert sample.get("url")
+    assert sample.get("title")
+    assert sample.get("company")
+    
+    # Filter test with sample matching role
+    mock_gji_job = {
+        "id": "gji_test_123",
+        "title": "Principal Technical Artist",
+        "company": "Supercell",
+        "location": "London, United Kingdom, GB",
+        "country": "GB",
+        "hybrid": True,
+        "remote": False,
+        "url": "https://supercell.com/careers/123",
+        "source": "Games Jobs Index"
+    }
+    match_gji, kws, loc_info = web_app.filter_job(mock_gji_job, config)
+    print("Mock GJI Match:", match_gji, "Keywords:", kws, "Loc:", loc_info)
+    assert match_gji == True
+    assert "technical artist" in kws
+
     print("\n[ALL TESTS PASSED SUCCESSFULLY!]")
 
 if __name__ == "__main__":

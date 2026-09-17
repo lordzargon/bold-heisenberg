@@ -345,11 +345,22 @@
               <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
               Data Sources
             </h3>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">7 Feeds</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">8 Feeds</span>
           </div>
 
           <!-- Source Toggles compact list (Expands vertically to show all feeds) -->
           <div class="flex-1 min-h-[220px] overflow-y-auto space-y-1.5 pr-1">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                  <span>Games Jobs Index</span>
+                  <a href="https://gamesjobsindex.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                </div>
+                <div class="text-[10px] text-theme-subtle">15,000+ live roles across 1,200+ studios</div>
+              </div>
+              <input type="checkbox" id="srcGamesJobsIndex" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
             <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
               <div class="pr-2 space-y-0.5">
                 <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
@@ -675,6 +686,7 @@
         <div id="sourceFilterChips" class="flex flex-wrap items-center gap-1.5 pt-1">
           <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle mr-1">Filter Source:</span>
           <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition">All Sources</button>
+          <button type="button" onclick="setSourceFilter('Games Jobs Index')" id="srcChip_gji" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Games Jobs Index</button>
           <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">ASGC Feed</button>
           <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Direct Studios</button>
           <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Aardvark Swift</button>
@@ -1342,6 +1354,8 @@
 
       // 6. Switches & Sources
       const sources = currentConfig.search.sources || { query_asgc: true, query_studios: true };
+      const gjiEl = document.getElementById('srcGamesJobsIndex');
+      if (gjiEl) gjiEl.checked = sources.query_gamesjobsindex !== false;
       document.getElementById('srcAsgc').checked = sources.query_asgc !== false;
       document.getElementById('srcStudios').checked = sources.query_studios !== false;
       document.getElementById('srcAardvark').checked = sources.query_aardvark !== false;
@@ -1363,7 +1377,9 @@
 
     function syncUItoConfig() {
       currentConfig.search.remote_only = document.getElementById('remoteOnly').checked;
+      const gjiEl = document.getElementById('srcGamesJobsIndex');
       currentConfig.search.sources = {
+        query_gamesjobsindex: gjiEl ? gjiEl.checked : true,
         query_asgc: document.getElementById('srcAsgc').checked,
         query_studios: document.getElementById('srcStudios').checked,
         query_aardvark: document.getElementById('srcAardvark').checked,
@@ -1869,6 +1885,7 @@
       currentSourceFilter = src;
       const chips = [
         { id: 'srcChip_all', key: 'all' },
+        { id: 'srcChip_gji', key: 'Games Jobs Index' },
         { id: 'srcChip_asgc', key: 'Looker Studio / ASGC' },
         { id: 'srcChip_studio', key: 'Direct Studio' },
         { id: 'srcChip_aswift', key: 'Aardvark Swift' },
@@ -2537,6 +2554,36 @@
       });
     }
 
+    async function triggerAutoHeal() {
+      const btn = document.getElementById('btnAutoHeal');
+      const btnText = document.getElementById('btnAutoHealText');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = 'Healing URLs...';
+      showToast('Running automated URL healing & cleanup...', 'info');
+
+      try {
+        const res = await fetch('/api/heal-failed', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Healing complete! Report saved to healed_pages_report.md', 'success');
+          const fRes = await fetch('/api/failed-pages');
+          const fData = await fRes.json();
+          if (fData && fData.failures) {
+            updateFailedPagesBadge(fData.failures);
+            renderFailedSitesSection(fData.failures);
+            openFailedPagesModal();
+          }
+        } else {
+          showToast('Healing failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+      } catch (e) {
+        showToast('Error triggering auto-healer: ' + e.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.innerText = 'Auto-Heal & Clean';
+      }
+    }
+
     // Check failed pages on initial load
     fetch('/api/failed-pages')
       .then(res => res.json())
@@ -2574,6 +2621,10 @@
       <div class="flex items-center justify-between px-5 py-2.5 bg-theme-bg/60 border-b border-theme-border/40 text-xs">
         <span class="text-theme-subtle font-mono text-[11px]">Saved to <code class="text-indigo-300 bg-theme-surface px-1.5 py-0.5 rounded border border-theme-border">failed_job_pages.md</code></span>
         <div class="flex items-center gap-2">
+          <button type="button" id="btnAutoHeal" onclick="triggerAutoHeal()" class="chip-btn px-3 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 text-xs font-heading font-medium flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span id="btnAutoHealText">Auto-Heal & Clean</span>
+          </button>
           <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
             <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
             <span>Copy All URLs</span>

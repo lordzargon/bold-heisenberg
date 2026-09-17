@@ -2402,7 +2402,10 @@
     "website_status": 200,
     "careers_url": "https://brandsly.com/business-names/work-careers",
     "careers_type": "custom_html",
-    "last_checked": "2026-08-28T15:33:25Z"
+    "last_checked": "2026-08-28T15:33:25Z",
+    "status": "defunct",
+    "defunct_reason": "Redirected to domain sales broker: brandsly.com",
+    "defunct_detected_at": "2026-09-17T10:17:28.401293"
   },
   "ce43d7e8-7369-4044-a032-5128f20756e6": {
     "id": "ce43d7e8-7369-4044-a032-5128f20756e6",
@@ -3104,7 +3107,8 @@
     "website_status": 200,
     "careers_url": "https://www.axsstudio.com/careers",
     "careers_type": "direct_path",
-    "last_checked": "2026-09-13T10:57:47Z"
+    "last_checked": "2026-09-13T10:57:47Z",
+    "last_verified_ok": "2026-09-17T10:17:28.645221"
   },
   "b10d1c9a-e7e3-4708-bd07-c4ca2f28217a": {
     "id": "b10d1c9a-e7e3-4708-bd07-c4ca2f28217a",
@@ -9981,7 +9985,10 @@
     "website_status": 200,
     "careers_url": "https://efty.com/career/jobs/",
     "careers_type": "custom_html",
-    "last_checked": "2026-08-28T15:39:47Z"
+    "last_checked": "2026-08-28T15:39:47Z",
+    "status": "defunct",
+    "defunct_reason": "Redirected to domain sales broker: efty.com",
+    "defunct_detected_at": "2026-09-17T10:17:28.426117"
   },
   "d92b9543-7d83-4f6f-9b1d-127f15cae962": {
     "id": "d92b9543-7d83-4f6f-9b1d-127f15cae962",
@@ -11721,9 +11728,10 @@
     "ukie_member": false,
     "website_url": "https://www.failbettergames.com",
     "website_status": 200,
-    "careers_url": "https://www.failbettergames.com/vacancies",
+    "careers_url": "https://www.failbettergames.com/jobs",
     "careers_type": "custom_html",
-    "last_checked": "2026-09-13T10:57:20Z"
+    "last_checked": "2026-09-13T10:57:20Z",
+    "healed_at": "2026-09-17T10:17:30.190163"
   },
   "7cd5c841-601a-46d6-b813-0a6a812eaabf": {
     "id": "7cd5c841-601a-46d6-b813-0a6a812eaabf",
@@ -12581,7 +12589,9 @@
     "website_status": 200,
     "careers_url": "https://www.firsttouchgames.com/careers",
     "careers_type": "custom_html",
-    "last_checked": "2026-09-13T11:00:03Z"
+    "last_checked": "2026-09-13T11:00:03Z",
+    "vacancies_status": "none_active",
+    "last_verified_empty": "2026-09-17T10:17:28.540718"
   },
   "02494f16-415a-481c-ac5b-f64073d47266": {
     "id": "02494f16-415a-481c-ac5b-f64073d47266",
@@ -14984,9 +14994,10 @@
     "ukie_member": false,
     "website_url": "https://globalempiresoft.com/",
     "website_status": 200,
-    "careers_url": "https://globalempiresoft.com/jobs",
+    "careers_url": "https://globalempiresoft.com/category/jobs",
     "careers_type": "custom_html",
-    "last_checked": "2026-08-28T15:44:48Z"
+    "last_checked": "2026-08-28T15:44:48Z",
+    "healed_at": "2026-09-17T10:17:41.153214"
   },
   "c2dc058d-d9c4-4a3b-ba41-c10c6960ef60": {
     "id": "c2dc058d-d9c4-4a3b-ba41-c10c6960ef60",
@@ -15608,9 +15619,10 @@
     "ukie_member": false,
     "website_url": "https://www.greenmangaming.com",
     "website_status": 200,
-    "careers_url": "https://www.greenmangaming.com/careers",
-    "careers_type": "direct_path",
-    "last_checked": "2026-08-28T15:45:17Z"
+    "careers_url": "https://www.greenmangaming.com/company/",
+    "careers_type": "custom_html",
+    "last_checked": "2026-08-28T15:45:17Z",
+    "healed_at": "2026-09-17T10:17:30.649619"
   },
   "50152b59-715d-49d4-978a-1bb098110fc9": {
     "id": "50152b59-715d-49d4-978a-1bb098110fc9",
@@ -21042,9 +21054,10 @@
     "ukie_member": false,
     "website_url": "https://www.lockwoodpublishing.com",
     "website_status": 200,
-    "careers_url": "https://www.lockwoodpublishing.com/careers",
-    "careers_type": "custom_html",
-    "last_checked": "2026-08-28T15:49:23Z"
+    "careers_url": "https://apply.workable.com/oops",
+    "careers_type": "workable",
+    "last_checked": "2026-08-28T15:49:23Z",
+    "healed_at": "2026-09-17T10:17:31.113863"
   },
   "d6e3e2ee-b7f9-4d3f-9829-6cf01547e721": {
     "id": "d6e3e2ee-b7f9-4d3f-9829-6cf01547e721",
@@ -25438,7 +25451,8 @@
     "website_status": 200,
     "careers_url": "https://www.nomadinteractive.com/careers",
     "careers_type": "direct_path",
-    "last_checked": "2026-09-13T11:02:47Z"
+    "last_checked": "2026-09-13T11:02:47Z",
+    "last_verified_ok": "2026-09-17T10:17:31.953993"
   },
   "e33256c0-dff0-4cc2-9547-978974a314a6": {
     "id": "e33256c0-dff0-4cc2-9547-978974a314a6",
@@ -27009,9 +27023,10 @@
     "ukie_member": false,
     "website_url": "https://parade.games",
     "website_status": 200,
-    "careers_url": "https://parade.games/careers",
-    "careers_type": "direct_path",
-    "last_checked": "2026-08-28T15:54:33Z"
+    "careers_url": "https://parade.games/join",
+    "careers_type": "custom_html",
+    "last_checked": "2026-08-28T15:54:33Z",
+    "healed_at": "2026-09-17T10:17:52.072682"
   },
   "e5ce0de2-6450-4ed2-b0ac-5f21d5200af0": {
     "id": "e5ce0de2-6450-4ed2-b0ac-5f21d5200af0",
@@ -36187,9 +36202,10 @@
     "ukie_member": false,
     "website_url": "https://www.taichielements.com",
     "website_status": 200,
-    "careers_url": "https://www.taichielements.com/careers",
-    "careers_type": "direct_path",
-    "last_checked": "2026-08-28T16:01:29Z"
+    "careers_url": "https://taichielements.com/join-our-mailing-list/",
+    "careers_type": "custom_html",
+    "last_checked": "2026-08-28T16:01:29Z",
+    "healed_at": "2026-09-17T10:17:33.375790"
   },
   "e5c665f2-848e-420f-a31c-ee099d12e0e6": {
     "id": "e5c665f2-848e-420f-a31c-ee099d12e0e6",
@@ -38971,7 +38987,8 @@
     "website_status": 200,
     "careers_url": "https://www.underthestairs.com/careers",
     "careers_type": "direct_path",
-    "last_checked": "2026-08-28T16:03:39Z"
+    "last_checked": "2026-08-28T16:03:39Z",
+    "last_verified_ok": "2026-09-17T10:17:32.244394"
   },
   "8d4191fd-974f-435c-ad5e-728efebd24a6": {
     "id": "8d4191fd-974f-435c-ad5e-728efebd24a6",
@@ -40141,7 +40158,8 @@
     "website_status": 200,
     "careers_url": "https://www.viralreach.com/careers",
     "careers_type": "direct_path",
-    "last_checked": "2026-08-28T16:04:31Z"
+    "last_checked": "2026-08-28T16:04:31Z",
+    "last_verified_ok": "2026-09-17T10:17:34.151491"
   },
   "52c5da1b-31ea-4782-a964-51d2b5dbc7e9": {
     "id": "52c5da1b-31ea-4782-a964-51d2b5dbc7e9",

@@ -37,6 +37,11 @@ try:
 except ImportError:
     fetch_all_recruiter_jobs = None
 
+try:
+    from gamesjobsindex_monitor import fetch_gamesjobsindex_jobs
+except ImportError:
+    fetch_gamesjobsindex_jobs = None
+
 if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
     try:
         sys.stdout.reconfigure(encoding='utf-8')
@@ -57,6 +62,16 @@ FAILED_PAGES_MD = os.path.join(SCRIPT_DIR, "failed_job_pages.md")
 SSL_CTX = ssl.create_default_context()
 SSL_CTX.check_hostname = False
 SSL_CTX.verify_mode = ssl.CERT_NONE
+
+class SmartRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def http_error_308(self, req, fp, code, msg, headers):
+        return self.http_error_301(req, fp, code, msg, headers)
+
+SMART_OPENER = urllib.request.build_opener(
+    SmartRedirectHandler(),
+    urllib.request.HTTPSHandler(context=SSL_CTX)
+)
+urllib.request.install_opener(SMART_OPENER)
 
 DEFAULT_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -135,6 +150,7 @@ def get_default_config():
             "remote_only": False,
             "sources": {
                 "query_asgc": True,
+                "query_gamesjobsindex": True,
                 "query_studios": True,
                 "query_aardvark": True,
                 "query_ingame": True,
@@ -528,17 +544,24 @@ def fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=None)
         return []
 
     # Check if this HTML page delegates to Workable
-    workable_match = re.search(r'(?:apply\.workable\.com/(?:api/v\d+/widget/accounts/)?|([a-zA-Z0-9_\-]+)\.workable\.com)', html)
-    if workable_match:
-        slug = workable_match.group(1) or re.search(r'apply\.workable\.com/([a-zA-Z0-9_\-]+)', html).group(1)
-        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            try:
-                w_jobs = fetch_workable_jobs(slug, company_name)
-                if w_jobs:
-                    return w_jobs
-            except Exception as we:
-                if failed_recorder:
-                    failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
+    slug = None
+    wm_apply = re.search(r'apply\.workable\.com/(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)', html)
+    if wm_apply:
+        slug = wm_apply.group(1)
+    else:
+        wm_sub = re.search(r'([a-zA-Z0-9_\-]+)\.workable\.com', html)
+        if wm_sub:
+            slug = wm_sub.group(1)
+
+    workable_reserved = {"jobs", "j", "api", "widget", "www", "embed", "assets", "resources", "help", "support", "static"}
+    if slug and slug.lower() not in workable_reserved:
+        try:
+            w_jobs = fetch_workable_jobs(slug, company_name)
+            if w_jobs:
+                return w_jobs
+        except Exception as we:
+            if failed_recorder:
+                failed_recorder("Workable Widget", we, f"https://apply.workable.com/{slug}/")
 
     jobs = []
     link_pattern = r'<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>'
@@ -657,15 +680,23 @@ def extract_jobs_from_company(comp, failed_pages=None, failed_lock=None):
             _record_fail("Ashby", e, careers_url)
             return []
 
-    workable_match = re.search(r'(?:apply\.workable\.com/|([a-zA-Z0-9_\-]+)\.workable\.com)(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)?', careers_url)
-    if workable_match:
-        slug = workable_match.group(2) or workable_match.group(1)
-        if slug and slug.lower() not in ["jobs", "j", "api", "widget"]:
-            try:
-                return fetch_workable_jobs(slug, company_name)
-            except Exception as e:
-                _record_fail("Workable", e, careers_url)
-                return []
+    # Check Workable
+    slug = None
+    wm_apply = re.search(r'apply\.workable\.com/(?:api/v\d+/widget/accounts/)?([a-zA-Z0-9_\-]+)', careers_url)
+    if wm_apply:
+        slug = wm_apply.group(1)
+    else:
+        wm_sub = re.search(r'([a-zA-Z0-9_\-]+)\.workable\.com', careers_url)
+        if wm_sub:
+            slug = wm_sub.group(1)
+
+    workable_reserved = {"jobs", "j", "api", "widget", "www", "embed", "assets", "resources", "help", "support", "static"}
+    if slug and slug.lower() not in workable_reserved:
+        try:
+            return fetch_workable_jobs(slug, company_name)
+        except Exception as e:
+            _record_fail("Workable", e, careers_url)
+            return []
 
     try:
         return fetch_html_career_page_jobs(careers_url, company_name, failed_recorder=_record_fail)
@@ -795,7 +826,7 @@ def run_live_search(config, progress_callback=None):
     t0 = time.time()
 
     companies_db = load_companies()
-    active_comps = [c for c in companies_db.values() if c.get("careers_url")] if query_studios else []
+    active_comps = [c for c in companies_db.values() if c.get("careers_url") and c.get("status") != "defunct"] if query_studios else []
     total_studios = len(active_comps)
 
     active_studios = set()
@@ -1042,15 +1073,82 @@ def run_live_search(config, progress_callback=None):
                 active_studios.discard("Games Recruiters & Job Boards")
             return []
 
-    # Run ASGC, Studio harvesting, and Recruiter harvesting concurrently
-    with ThreadPoolExecutor(max_workers=3) as main_exec:
+    gji_count = 0
+
+    def _fetch_gamesjobsindex_task():
+        nonlocal gji_count, raw_jobs_accum, matched_jobs_accum
+        if fetch_gamesjobsindex_jobs is None:
+            return []
+        if not sources_cfg.get("query_gamesjobsindex", True):
+            return []
+
+        with active_lock:
+            active_studios.add("Games Jobs Index (1,200+ Studios)")
+
+        if progress_callback:
+            progress_callback("progress", {
+                "active": list(active_studios)[:6],
+                "message": "Querying Games Jobs Index (15,000+ studio postings)...",
+                "completed": completed_studios,
+                "total": total_studios,
+                "raw_jobs_total": raw_jobs_accum,
+                "matched_jobs_total": matched_jobs_accum,
+                "log_entry": {"text": "Downloading & parsing Games Jobs Index live feed...", "type": "info"}
+            })
+
+        def _gji_cb(name, count, err=None):
+            nonlocal raw_jobs_accum, matched_jobs_accum
+            if err:
+                with failed_lock:
+                    failed_pages.append({
+                        "company": "Games Jobs Index",
+                        "url": "https://gamesjobsindex.com/",
+                        "source": "Games Jobs Index",
+                        "status": "error",
+                        "error_type": "Games Jobs Index Fetch Error",
+                        "detail": str(err),
+                        "timestamp": datetime.datetime.now().isoformat()
+                    })
+                if progress_callback:
+                    progress_callback("progress", {
+                        "active": list(active_studios)[:6],
+                        "failed_pages_total": len(failed_pages),
+                        "log_entry": {"text": f"Games Jobs Index: {err}", "type": "error"}
+                    })
+            else:
+                with active_lock:
+                    raw_jobs_accum += count
+                if progress_callback:
+                    progress_callback("progress", {
+                        "active": list(active_studios)[:6],
+                        "raw_jobs_total": raw_jobs_accum,
+                        "matched_jobs_total": matched_jobs_accum,
+                        "message": f"Loaded {count:,} jobs from Games Jobs Index",
+                        "log_entry": {"text": f"Loaded {count:,} postings from Games Jobs Index across 1,200+ studios", "type": "studio"}
+                    })
+
+        try:
+            jobs = fetch_gamesjobsindex_jobs(sources_cfg, progress_callback=_gji_cb)
+            gji_count = len(jobs)
+            with active_lock:
+                active_studios.discard("Games Jobs Index (1,200+ Studios)")
+            return jobs
+        except Exception as e:
+            with active_lock:
+                active_studios.discard("Games Jobs Index (1,200+ Studios)")
+            return []
+
+    # Run ASGC, Studio harvesting, Recruiter harvesting, and Games Jobs Index concurrently
+    with ThreadPoolExecutor(max_workers=4) as main_exec:
         f_asgc = main_exec.submit(_fetch_asgc_task)
         f_studios = main_exec.submit(_fetch_studios_task)
         f_rec = main_exec.submit(_fetch_recruiters_task)
+        f_gji = main_exec.submit(_fetch_gamesjobsindex_task)
         
         all_raw_jobs.extend(f_asgc.result())
         all_raw_jobs.extend(f_studios.result())
         all_raw_jobs.extend(f_rec.result())
+        all_raw_jobs.extend(f_gji.result())
 
     if progress_callback:
         progress_callback("progress", {
@@ -1103,6 +1201,7 @@ def run_live_search(config, progress_callback=None):
             "asgc_raw_count": asgc_count,
             "studios_raw_count": studios_count,
             "recruiters_raw_count": recruiters_count,
+            "gji_raw_count": gji_count,
             "scanned_studios": scanned_studios_count,
             "failed_pages_count": len(failed_pages),
             "duration_seconds": duration
@@ -1643,11 +1742,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
               Data Sources
             </h3>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">7 Feeds</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">8 Feeds</span>
           </div>
 
           <!-- Source Toggles compact list (Expands vertically to show all feeds) -->
           <div class="flex-1 min-h-[220px] overflow-y-auto space-y-1.5 pr-1">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+              <div class="pr-2 space-y-0.5">
+                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                  <span>Games Jobs Index</span>
+                  <a href="https://gamesjobsindex.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                </div>
+                <div class="text-[10px] text-theme-subtle">15,000+ live roles across 1,200+ studios</div>
+              </div>
+              <input type="checkbox" id="srcGamesJobsIndex" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+            </label>
+
             <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
               <div class="pr-2 space-y-0.5">
                 <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
@@ -1868,6 +1978,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div id="sourceFilterChips" class="flex flex-wrap items-center gap-1.5 pt-1">
         <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle mr-1">Filter Source:</span>
         <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition">All Sources</button>
+        <button type="button" onclick="setSourceFilter('Games Jobs Index')" id="srcChip_gji" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Games Jobs Index</button>
         <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">ASGC Feed</button>
         <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Direct Studios</button>
         <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Aardvark Swift</button>
@@ -2452,6 +2563,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       // 6. Switches & Sources
       const sources = currentConfig.search.sources || { query_asgc: true, query_studios: true };
+      const gjiEl = document.getElementById('srcGamesJobsIndex');
+      if (gjiEl) gjiEl.checked = sources.query_gamesjobsindex !== false;
       document.getElementById('srcAsgc').checked = sources.query_asgc !== false;
       document.getElementById('srcStudios').checked = sources.query_studios !== false;
       document.getElementById('srcAardvark').checked = sources.query_aardvark !== false;
@@ -2473,7 +2586,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     function syncUItoConfig() {
       currentConfig.search.remote_only = document.getElementById('remoteOnly').checked;
+      const gjiEl = document.getElementById('srcGamesJobsIndex');
       currentConfig.search.sources = {
+        query_gamesjobsindex: gjiEl ? gjiEl.checked : true,
         query_asgc: document.getElementById('srcAsgc').checked,
         query_studios: document.getElementById('srcStudios').checked,
         query_aardvark: document.getElementById('srcAardvark').checked,
@@ -2973,6 +3088,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       currentSourceFilter = src;
       const chips = [
         { id: 'srcChip_all', key: 'all' },
+        { id: 'srcChip_gji', key: 'Games Jobs Index' },
         { id: 'srcChip_asgc', key: 'Looker Studio / ASGC' },
         { id: 'srcChip_studio', key: 'Direct Studio' },
         { id: 'srcChip_aswift', key: 'Aardvark Swift' },
@@ -3400,6 +3516,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       });
     }
 
+    async function triggerAutoHeal() {
+      const btn = document.getElementById('btnAutoHeal');
+      const btnText = document.getElementById('btnAutoHealText');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = 'Healing URLs...';
+      showToast('Running automated URL healing & cleanup...', 'info');
+
+      try {
+        const res = await fetch('/api/heal-failed', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Healing complete! Report saved to healed_pages_report.md', 'success');
+          const fRes = await fetch('/api/failed-pages');
+          const fData = await fRes.json();
+          if (fData && fData.failures) {
+            updateFailedPagesBadge(fData.failures);
+            openFailedPagesModal();
+          }
+        } else {
+          showToast('Healing failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+      } catch (e) {
+        showToast('Error triggering auto-healer: ' + e.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.innerText = 'Auto-Heal & Clean';
+      }
+    }
+
     // Check failed pages on initial load
     fetch('/api/failed-pages')
       .then(res => res.json())
@@ -3436,6 +3581,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="flex items-center justify-between px-5 py-2.5 bg-theme-bg/60 border-b border-theme-border/40 text-xs">
         <span class="text-theme-subtle font-mono text-[11px]">Saved to <code class="text-indigo-300 bg-theme-surface px-1.5 py-0.5 rounded border border-theme-border">failed_job_pages.md</code></span>
         <div class="flex items-center gap-2">
+          <button type="button" id="btnAutoHeal" onclick="triggerAutoHeal()" class="chip-btn px-3 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 text-xs font-heading font-medium flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span id="btnAutoHealText">Auto-Heal & Clean</span>
+          </button>
           <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
             <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
             <span>Copy All URLs</span>
@@ -3666,6 +3815,15 @@ class WebAppHandler(BaseHTTPRequestHandler):
             config_to_use = req_json if req_json else load_config()
             results = retry_failed_pages(config_to_use)
             self.send_json_response(results)
+            return
+
+        if path == "/api/heal-failed":
+            try:
+                from url_healer import heal_failed_pages
+                results = heal_failed_pages()
+                self.send_json_response({"success": True, "results": results})
+            except Exception as he:
+                self.send_json_response({"success": False, "error": str(he)})
             return
 
         self.send_response(404)

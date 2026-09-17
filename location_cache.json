@@ -36127,11 +36127,718 @@
     "country": "France",
     "country_code": "FR"
   },
+  "tx": {
+    "name": "TX, New Brunswick;Nouveau-Brunswick",
+    "lat": 45.9671874,
+    "lon": -66.7995141,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "ca": {
+    "name": "Canada",
+    "lat": 61.0666922,
+    "lon": -107.991707,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "halon - tools and technology": {
+    "name": "Bishops Frome Technology Park, England",
+    "lat": 52.1342385,
+    "lon": -2.491046,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "bothell - ; irvine - ; mountain view-; vancouver-": null,
+  "united states of america": {
+    "name": "United States of America (Minor Outlying Islands), Navassa Island (Disputed area USA-HAITI)",
+    "lat": 18.408351,
+    "lon": -75.0144368,
+    "country": "Ayiti",
+    "country_code": "HT"
+  },
+  "vancouver - great northern way": {
+    "name": "Great Northern Way, British Columbia",
+    "lat": 49.2667994,
+    "lon": -123.0933946,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "greater london": {
+    "name": "Greater London, England",
+    "lat": 51.4893335,
+    "lon": -0.1440551,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "idf": {
+    "name": "IDF, Occitanie",
+    "lat": 43.241209,
+    "lon": 2.1240467,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "vic": {
+    "name": "Vic, Catalunya",
+    "lat": 41.9302021,
+    "lon": 2.2545943,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "dnk-copenhagen": {
+    "name": "Flying Tiger Copenhagen, Alba / Scotland",
+    "lat": 56.4598835,
+    "lon": -2.973062,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "大阪市中央区内平野町三丁目1番3号": null,
+  "rh12 1jw": {
+    "name": "RH12 1JW, England",
+    "lat": 51.06206485,
+    "lon": -0.3262189,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "leeds - red kite games": {
+    "name": "Red Kite Row, England",
+    "lat": 53.8192625,
+    "lon": -1.4434716,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "i̇stanbul": {
+    "name": "İstanbul",
+    "lat": 41.006381,
+    "lon": 28.9758715,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "malmö": {
+    "name": "Malmö, Skåne län",
+    "lat": 55.6052931,
+    "lon": 13.0001566,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "skåne county": {
+    "name": "Skåne län",
+    "lat": 55.8472301,
+    "lon": 13.6339292,
+    "country": "Sverige",
+    "country_code": "SE"
+  },
+  "bucurești": {
+    "name": "București",
+    "lat": 44.4361414,
+    "lon": 26.102684,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "kiev": {
+    "name": "Kieve, Mecklenburg-Vorpommern",
+    "lat": 53.2747285,
+    "lon": 12.5951417,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "global": {
+    "name": "Global Energy Stadium, Alba / Scotland",
+    "lat": 57.5957581,
+    "lon": -4.419075,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "landstuhl": {
+    "name": "Landstuhl, Rheinland-Pfalz",
+    "lat": 49.4143311,
+    "lon": 7.5722301,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "düsseldorf (mit der möglichkeit": {
+    "name": "Düsseldorf (mit der Möglichkeit, Guanacaste",
+    "lat": 10.3827489,
+    "lon": -84.8112055,
+    "country": "Costa Rica",
+    "country_code": "CR"
+  },
+  "bis zu zweimal pro woche im homeoffice zu arbeiten)": null,
+  "es - barcelona": {
+    "name": "Barcelona, Catalunya",
+    "lat": 41.3825802,
+    "lon": 2.177073,
+    "country": "España",
+    "country_code": "ES"
+  },
+  "in auckland": {
+    "name": "Consulate-General of The People's Republic of China in Auckland",
+    "lat": -36.8960841,
+    "lon": 174.8017408,
+    "country": "New Zealand / Aotearoa",
+    "country_code": "NZ"
+  },
+  "минск": {
+    "name": "Минск, Красноярский край",
+    "lat": 57.099061,
+    "lon": 93.3343983,
+    "country": "Россия",
+    "country_code": "RU"
+  },
+  "санкт-петербург": {
+    "name": "Санкт-Петербург",
+    "lat": 59.9606739,
+    "lon": 30.1586551,
+    "country": "Россия",
+    "country_code": "RU"
+  },
+  "e15 2gw": {
+    "name": "E15 2GW (Hackney)",
+    "lat": 51.546985,
+    "lon": -0.023555,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "qatar": {
+    "name": "قطر",
+    "lat": 25.3336984,
+    "lon": 51.2295295,
+    "country": "قطر",
+    "country_code": "QA"
+  },
+  "bangkok thailand": {
+    "name": "กรุงเทพมหานคร",
+    "lat": 13.7524938,
+    "lon": 100.4935089,
+    "country": "ประเทศไทย",
+    "country_code": "TH"
+  },
+  "europe": {
+    "name": "Europe",
+    "lat": 51.0,
+    "lon": 10.0,
+    "country": "",
+    "country_code": ""
+  },
+  "kraków": {
+    "name": "Kraków, województwo małopolskie",
+    "lat": 50.0469432,
+    "lon": 19.9971534,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "warszawa": {
+    "name": "Warszawa, województwo mazowieckie",
+    "lat": 52.2319581,
+    "lon": 21.0067249,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "4 locations": {
+    "name": "Saint Flo 4x4 Locations, Corse",
+    "lat": 42.6729585,
+    "lon": 9.2978786,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "berlin (hq) ()": {
+    "name": "Setting HQ",
+    "lat": 52.5314266,
+    "lon": 13.4058973,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "québec": {
+    "name": "Québec",
+    "lat": 52.4760892,
+    "lon": -71.8258668,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "china - shanghai": {
+    "name": "上海市",
+    "lat": 31.2312707,
+    "lon": 121.4700152,
+    "country": "中国",
+    "country_code": "CN"
+  },
+  "渋谷本社": {
+    "name": "ヤマト運輸 渋谷本町２丁目センター",
+    "lat": 35.6824205,
+    "lon": 139.6829977,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "latin america & europe": {
+    "name": "Memorial da América Latina, São Paulo",
+    "lat": -23.5275414,
+    "lon": -46.6654403,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "del mar": {
+    "name": "Del Mar, California",
+    "lat": 32.9594891,
+    "lon": -117.2653146,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "mosta": {
+    "name": "Mostar, Federacija Bosne i Hercegovine",
+    "lat": 43.3435855,
+    "lon": 17.8076584,
+    "country": "Bosna i Hercegovina / Босна и Херцеговина",
+    "country_code": "BA"
+  },
+  "jal.": {
+    "name": "Saint-Jal, Nouvelle-Aquitaine",
+    "lat": 45.3972455,
+    "lon": 1.6442382,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "taipei – taiwan": {
+    "name": "臺北市",
+    "lat": 25.0375198,
+    "lon": 121.5636796,
+    "country": "臺灣",
+    "country_code": "TW"
+  },
+  "milano": {
+    "name": "Milano, Lombardia",
+    "lat": 45.4641943,
+    "lon": 9.1896346,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "italia": {
+    "name": "Italia",
+    "lat": 42.6384261,
+    "lon": 12.674297,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "163 w hastings st. suite 310": null,
+  "canada v6b 1h5": {
+    "name": "V6B 1H5, British Columbia",
+    "lat": 49.2825587,
+    "lon": -123.1091794,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "163 w hastings st. suite 310 canada v6b 1h5": {
+    "name": "163 W Hastings St. Suite 310, Canada V6B 1H5, BC",
+    "lat": 49.2825588,
+    "lon": -123.1091794,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "tn": {
+    "name": "TNT, GA",
+    "lat": 33.7841142,
+    "lon": -84.3923365,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "worldwide": {
+    "name": "Worldwide, England",
+    "lat": 53.8284471,
+    "lon": -1.5378305,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "rennes (fr)": {
+    "name": "Rennes, Bretagne",
+    "lat": 48.1113387,
+    "lon": -1.6800198,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "ankara office": {
+    "name": "TEKCE Real Estate | Ankara Office",
+    "lat": 39.9090636,
+    "lon": 32.8125174,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "warwickshire": {
+    "name": "Warwickshire, England",
+    "lat": 52.3213064,
+    "lon": -1.5536906,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "frankfurt": {
+    "name": "Frankfurt am Main, Hessen",
+    "lat": 50.1106444,
+    "lon": 8.6820917,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "bc": {
+    "name": "BCU International College, England",
+    "lat": 52.4822706,
+    "lon": -1.8888148,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "5 locations": {
+    "name": "Locations, Québec",
+    "lat": 45.4193308,
+    "lon": -72.7242903,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "københavn": {
+    "name": "København, Region Hovedstaden",
+    "lat": 55.6867243,
+    "lon": 12.5700724,
+    "country": "Danmark",
+    "country_code": "DK"
+  },
+  "capital region of denmark": {
+    "name": "Region Hovedstaden",
+    "lat": 55.8616018,
+    "lon": 12.3137969,
+    "country": "Danmark",
+    "country_code": "DK"
+  },
+  "czechia": {
+    "name": "Česko",
+    "lat": 49.7439047,
+    "lon": 15.3381061,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "masovian voivodeship": {
+    "name": "województwo mazowieckie",
+    "lat": 52.5461934,
+    "lon": 21.2073404,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "pfnorstraße 14": {
+    "name": "Pfnorstraße 14, Hessen",
+    "lat": 49.8853013,
+    "lon": 8.6307735,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "las vegas - las vegas": {
+    "name": "Las Vegas, Nevada",
+    "lat": 36.1674263,
+    "lon": -115.1484131,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "nv 89119": {
+    "name": "89119, Nevada",
+    "lat": 36.086949067269984,
+    "lon": -115.14525487888386,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "1010062 東京都千代田区神田駿河台4-2-5トライエッジ御茶ノ水 12階 5316108 大阪府大阪市北区大淀中梅田スカイビルタワーウエスト ８階 8140001 福岡県福岡市早良区百道浜1-3-70 ザ・レジデンシャルスイート・福岡 5号棟 5807号室 （雇入れ直後） 応募時に希望勤務地を選択いただきます。 選考を通じて勤務地を決定いたします。 （変更の範囲） 本社及び全ての支店、在宅勤務における情報誓約書に届け出た住所。": null,
+  "1010062 東京都千代田区神田駿河台4-2-5トライエッジ御茶ノ水 12階 5316108 大阪府大阪市北区大淀中梅田スカイビルタワーウエスト ８階 （雇入れ直後） 応募時に希望勤務地を選択いただきます。 選考を通じて勤務地を決定いたします。 （変更の範囲） 本社及び全ての支店、在宅勤務における情報誓約書に届け出た住所。": null,
+  "advent business center": {
+    "name": "Adventures in New Orleans Visitor’s Center, Louisiana",
+    "lat": 29.9511188,
+    "lon": -90.0665427,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "cebu": {
+    "name": "Cebu",
+    "lat": 10.47,
+    "lon": 123.83,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "türkiye": {
+    "name": "Türkiye",
+    "lat": 39.294076,
+    "lon": 35.2316631,
+    "country": "Türkiye",
+    "country_code": "TR"
+  },
+  "saint-mandé": {
+    "name": "Saint-Mandé, Île-de-France",
+    "lat": 48.8432434,
+    "lon": 2.4159739,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "東京都港区港南1-2-70 品川シーズンテラス": {
+    "name": "品川シーズンテラス, 東京都",
+    "lat": 35.6326009,
+    "lon": 139.7431978,
+    "country": "日本",
+    "country_code": "JP"
+  },
+  "western": {
+    "name": "Western",
+    "lat": -7.8166667,
+    "lon": 156.683988,
+    "country": "Solomon Islands",
+    "country_code": "SB"
+  },
+  "nc": {
+    "name": "NCC, Ontario",
+    "lat": 45.4085899,
+    "lon": -75.7269456,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "my": {
+    "name": "My, Liège",
+    "lat": 50.4057851,
+    "lon": 5.5736354,
+    "country": "België / Belgique / Belgien",
+    "country_code": "BE"
+  },
+  "cn": {
+    "name": "CNRS, Île-de-France",
+    "lat": 48.8475401,
+    "lon": 2.2640299,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "rs": {
+    "name": "RS Kasih Ibu, Aceh",
+    "lat": 5.1822648,
+    "lon": 97.1378213,
+    "country": "Indonesia",
+    "country_code": "ID"
+  },
+  "cz": {
+    "name": "Częstochowa, województwo śląskie",
+    "lat": 50.8120466,
+    "lon": 19.113213,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "fr": {
+    "name": "France",
+    "lat": 46.603354,
+    "lon": 1.8883335,
+    "country": "France",
+    "country_code": "FR"
+  },
+  "au": {
+    "name": "Australia",
+    "lat": -24.7761086,
+    "lon": 134.755,
+    "country": "Australia",
+    "country_code": "AU"
+  },
+  "dk": {
+    "name": "DKMS Donor Center gGmbH, Baden-Württemberg",
+    "lat": 48.480928,
+    "lon": 9.0553468,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "jp": {
+    "name": "JP Morgan, England",
+    "lat": 51.502849,
+    "lon": -0.0208622,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "大阪市中央区内平野町三丁目1番3号 jp": null,
+  "se": {
+    "name": "Seattle, Washington",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "ua": {
+    "name": "Ua, Nusa Tenggara Timur",
+    "lat": -8.8613303,
+    "lon": 121.2037997,
+    "country": "Indonesia",
+    "country_code": "ID"
+  },
+  "es": {
+    "name": "Essex, England",
+    "lat": 51.7704679,
+    "lon": 0.4646698,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "il": {
+    "name": "Illinois",
+    "lat": 40.0796606,
+    "lon": -89.4337288,
+    "country": "United States",
+    "country_code": "US"
+  },
+  "nz": {
+    "name": "Nzwani أنجوان",
+    "lat": -12.2265681,
+    "lon": 44.4107049,
+    "country": "Comores Komori جزر القمر",
+    "country_code": "KM"
+  },
+  "ru": {
+    "name": "Rutland, England",
+    "lat": 52.6423036,
+    "lon": -0.6632643,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "qa": {
+    "name": "قطر",
+    "lat": 25.3336984,
+    "lon": 51.2295295,
+    "country": "قطر",
+    "country_code": "QA"
+  },
+  "th": {
+    "name": "Thüringen",
+    "lat": 50.9036654,
+    "lon": 11.026404,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "in": {
+    "name": "Internet Archive (UK), England",
+    "lat": 52.5019896,
+    "lon": -2.0209184,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "ro": {
+    "name": "România",
+    "lat": 45.9852129,
+    "lon": 24.6859225,
+    "country": "România",
+    "country_code": "RO"
+  },
+  "pl": {
+    "name": "Plymouth, England",
+    "lat": 50.3714122,
+    "lon": -4.1424451,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "fi": {
+    "name": "Firenze, Toscana",
+    "lat": 43.7697955,
+    "lon": 11.2556404,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "vn": {
+    "name": "Vnorovy, Jihomoravský kraj",
+    "lat": 48.9309642,
+    "lon": 17.3505008,
+    "country": "Česko",
+    "country_code": "CZ"
+  },
+  "ar": {
+    "name": "Argentina",
+    "lat": -34.9964963,
+    "lon": -64.9672817,
+    "country": "Argentina",
+    "country_code": "AR"
+  },
+  "tw": {
+    "name": "Twickenham, England",
+    "lat": 51.4467444,
+    "lon": -0.3281887,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "it": {
+    "name": "Italia",
+    "lat": 42.6384261,
+    "lon": 12.674297,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "163 w hastings st. suite 310 ca": {
+    "name": "163 W Hastings St. Suite 310, CA, Ontario",
+    "lat": 44.504482910609426,
+    "lon": -77.4789359373876,
+    "country": "Canada",
+    "country_code": "CA"
+  },
+  "tr": {
+    "name": "Trentino-Alto Adige/Südtirol",
+    "lat": 46.441472,
+    "lon": 11.282121,
+    "country": "Italia",
+    "country_code": "IT"
+  },
+  "hk": {
+    "name": "HK Team OHG, Hessen",
+    "lat": 50.1248417,
+    "lon": 8.8327194,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "mx": {
+    "name": "MX, Αποκεντρωμένη Διοίκηση Αττικής",
+    "lat": 37.9616542,
+    "lon": 23.7943195,
+    "country": "Ελλάς",
+    "country_code": "GR"
+  },
+  "br": {
+    "name": "Brasil",
+    "lat": -10.3333333,
+    "lon": -53.2,
+    "country": "Brasil",
+    "country_code": "BR"
+  },
+  "kr": {
+    "name": "Kraków, województwo małopolskie",
+    "lat": 50.0619474,
+    "lon": 19.9368564,
+    "country": "Polska",
+    "country_code": "PL"
+  },
+  "gr": {
+    "name": "Great Britain",
+    "lat": 54.3151594,
+    "lon": -1.9181532,
+    "country": "United Kingdom",
+    "country_code": "GB"
+  },
+  "nl": {
+    "name": "NLWKN-Betriebshof Arensch, Niedersachsen",
+    "lat": 53.8424892,
+    "lon": 8.5811771,
+    "country": "Deutschland",
+    "country_code": "DE"
+  },
+  "ph": {
+    "name": "Philippines",
+    "lat": 12.7503486,
+    "lon": 122.7312101,
+    "country": "Philippines",
+    "country_code": "PH"
+  },
+  "id": {
+    "name": "Idaho",
+    "lat": 43.6447642,
+    "lon": -114.015407,
+    "country": "United States",
+    "country_code": "US"
+  },
   "uk": {
     "name": "Україна",
     "lat": 49.4871968,
     "lon": 31.2718321,
     "country": "Україна",
     "country_code": "UA"
+  },
+  "gb": {
+    "name": "Gbelce, Nitriansky kraj",
+    "lat": 47.8503723,
+    "lon": 18.5101905,
+    "country": "Slovensko",
+    "country_code": "SK"
   }
 }

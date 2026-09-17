@@ -143,6 +143,7 @@ def fetch_aardvark_swift_jobs(max_pages=5):
             full_text = f"{title} {loc_clean}".lower()
             is_hybrid = "hybrid" in full_text
             is_remote = "remote" in full_text
+            full_url = urllib.parse.urljoin("https://www.aswift.com", link)
 
             all_jobs.append({
                 "id": job_id,

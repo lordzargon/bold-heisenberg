@@ -13,9 +13,11 @@ It continuously monitors direct game studio career portals (Greenhouse, Lever, A
   - **Live Search**: Scans live studio career portals and the Amir Satvat / ASGC Looker Studio database on demand, displaying matches in sortable cards and table views.
   - **Export & Filter**: Instant filtering, direct application links, and CSV/JSON exports.
   - **Studio Enrichment**: Verify and discover new studio career portals directly from the interface.
-- **Dual-Engine Job Discovery**:
+- **Multi-Engine Job Discovery**:
+  - 🌐 **Games Jobs Index**: Live structured feed of 15,000+ game industry roles across 1,200+ global studios ([gamesjobsindex.com](https://gamesjobsindex.com/)).
   - 🌐 **Amir Satvat / ASGC Games Board**: Live feed of 41,000+ game industry roles from the community [Looker Studio Dashboard](https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB).
   - 🏢 **Direct Studio Harvester**: Crawls 360+ verified game studio career sites and ATS portals (*Greenhouse, Lever, Ashby, Workable, etc.*).
+  - 💼 **Specialized Recruiter Harvester**: Aggregates vacancies from Aardvark Swift, InGame Job, GamesIndustry.biz, Work With Indies, and Datascope.
 - **Zero External Dependencies**: Pure Python 3.8+ standard library (`urllib`, `json`, `re`, `ssl`, `concurrent.futures`, `tkinter`, `http.server`). No `pip install` required!
 - **Intelligent Keyword & Exclusion Filtering**: Pre-configured for Technical Art, Rendering/Shaders, Pipeline/Tools Engineering, and Tech Anim/Rigging, with noise filtering (e.g. subsea/civil exclusions).
 - **Multiple Notification Channels**:
@@ -202,6 +204,7 @@ You can run this monitor 100% in the cloud for free using GitHub Actions:
 | `python career_monitor.py --init` | Marks all existing jobs as "seen" (prevents an initial alert flood) |
 | `python career_monitor.py --test-notify` | Sends a mock test alert across all enabled notification channels |
 | `python job_monitor.py` | Runs the ASGC global job aggregator check |
+| `python gamesjobsindex_monitor.py` | Fetches live postings from Games Jobs Index |
 | `python gamesmap_scraper.py --status` | Shows status & counts of scraped UK studio websites and career portals |
 | `python gamesmap_scraper.py --enrich` | Re-checks and updates studio ATS career links |
 
