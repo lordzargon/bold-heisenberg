@@ -6,7 +6,7 @@
   <title>Game Dev Job Monitor • Industry Career Radar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -15,58 +15,61 @@
           fontFamily: {
             sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
             heading: ['"Plus Jakarta Sans"', '"Inter"', 'sans-serif'],
-            editorial: ['"Fraunces"', 'Georgia', 'serif'],
             mono: ['"JetBrains Mono"', 'ui-monospace', 'Menlo', 'monospace'],
           },
           colors: {
             theme: {
-              bg: '#080c14',
-              surface: '#0e1422',
-              card: '#141c2e',
-              cardHover: '#1a243a',
-              cardSecondary: '#111828',
-              border: '#232d44',
-              borderLight: '#323f5c',
-              borderAccent: 'rgba(99, 102, 241, 0.3)',
-              text: '#f8fafc',
-              textSecondary: '#cbd5e1',
-              muted: '#818cf8',
+              bg: '#f8f9fa',
+              surface: '#ffffff',
+              card: '#ffffff',
+              cardHover: '#ffffff',
+              cardSecondary: '#f8fafc',
+              border: '#e2e8f0',
+              borderLight: '#cbd5e1',
+              borderAccent: 'rgba(74, 21, 75, 0.18)',
+              text: '#1d1c1d',
+              textSecondary: '#475569',
+              muted: '#64748b',
               subtle: '#64748b',
-              accent: '#6366f1',
-              accentHover: '#4f46e5',
-              accentLight: '#818cf8',
-              gold: '#f59e0b',
-              emerald: '#10b981',
-              rose: '#f43f5e',
-              cyan: '#06b6d4',
+              accent: '#4a154b',
+              accentHover: '#381139',
+              accentLight: '#611f69',
+              aubergine: '#4a154b',
+              aubergineHover: '#381139',
+              slackBlue: '#1264a3',
+              slackBlueHover: '#0b4c80',
+              slackGreen: '#007a5a',
+              slackGreenHover: '#006349',
+              gold: '#d97706',
+              emerald: '#007a5a',
+              rose: '#e01e5a',
+              cyan: '#0284c7',
             }
           },
           boxShadow: {
-            'glow-sm': '0 0 15px -3px rgba(99, 102, 241, 0.25)',
-            'glow-md': '0 0 25px -5px rgba(99, 102, 241, 0.35)',
-            'glow-emerald': '0 0 20px -5px rgba(16, 185, 129, 0.3)',
-            'card': '0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
-            'card-hover': '0 12px 30px -4px rgba(0, 0, 0, 0.7), 0 0 2px 1px rgba(99, 102, 241, 0.3)',
+            'glow-sm': '0 0 0 3px rgba(18, 100, 163, 0.15)',
+            'glow-md': '0 0 0 4px rgba(74, 21, 75, 0.12)',
+            'glow-emerald': '0 0 0 3px rgba(0, 122, 90, 0.15)',
+            'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
+            'card-hover': '0 10px 20px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03)',
           }
         }
       }
     }
   </script>
   <style>
-    /* Custom refined scrollbar */
+    /* Custom refined light scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #080c14; }
-    ::-webkit-scrollbar-thumb { background: #232d44; border-radius: 9999px; border: 2px solid #080c14; }
-    ::-webkit-scrollbar-thumb:hover { background: #3b4866; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; border: 2px solid #f1f5f9; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
     body {
-      background-color: #080c14;
-      color: #f8fafc;
+      background-color: #f8f9fa;
+      color: #1d1c1d;
       font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.06) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+      background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
       background-attachment: fixed;
     }
 
@@ -80,89 +83,63 @@
       transform: translateY(0);
     }
 
-    /* Glassmorphism card effects */
+    /* Crisp Slack-style card effects */
     .glass-card {
-      background: linear-gradient(135deg, rgba(20, 28, 46, 0.75) 0%, rgba(14, 20, 34, 0.85) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
     }
     
     .glass-card-subtle {
-      background: rgba(14, 20, 34, 0.6);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
     }
 
     .glass-nav {
-      background: rgba(8, 12, 20, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
     }
 
-    /* Elegant gradient text */
+    /* Refined high-contrast text */
     .gradient-text {
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #1d1c1d;
     }
 
     .gradient-text-accent {
-      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #4a154b;
     }
 
     .gradient-text-gold {
-      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #d97706;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-600 selection:text-white font-sans text-theme-textSecondary">
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#4a154b] selection:text-white font-sans text-slate-700">
 
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm w-full"></div>
 
-  <!-- Top Navigation Bar (WordPress Sticky Header Style) -->
-  <header class="glass-nav border-b border-theme-border/70 px-4 sm:px-6 lg:px-10 py-3.5 sticky top-0 z-40 transition-all">
+  <!-- Top Navigation Bar (Slack Sticky Header Style) -->
+  <header class="glass-nav px-4 sm:px-6 lg:px-10 py-3.5 sticky top-0 z-40 transition-all shadow-sm">
     <div class="max-w-7xl 2xl:max-w-[1600px] mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand & Title with Logo Icon -->
-      <div class="flex items-center gap-3.5">
-        <a href="#" class="flex items-center gap-3 group">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 p-[1px] shadow-glow-sm group-hover:shadow-glow-md transition duration-300">
-            <div class="w-full h-full rounded-xl bg-theme-bg flex items-center justify-center text-indigo-400 font-heading font-extrabold text-sm tracking-wider">
-              <svg class="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="font-heading font-bold text-sm tracking-tight text-white group-hover:text-indigo-300 transition">GameDev Radar</span>
-
-            </div>
-
-          </div>
-        </a>
-      </div>
+     
 
 
       <!-- Action Buttons Cluster -->
       <div class="flex items-center gap-2.5">
-        <button id="btnToggleConfig" onclick="toggleConfigRow()" class="px-3 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-subtle hover:text-white text-xs font-heading font-medium border border-theme-border transition shadow-sm flex items-center gap-1.5" title="Toggle Search Options Panel">
-          <svg id="btnToggleConfigIcon" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        <button id="btnToggleConfig" onclick="toggleConfigRow()" class="px-3 py-2 rounded-lg bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 text-xs font-heading font-medium border border-slate-300 transition shadow-sm flex items-center gap-1.5 active:scale-[0.98]" title="Toggle Search Options Panel">
+          <svg id="btnToggleConfigIcon" class="w-3.5 h-3.5 transition-transform duration-200 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           <span id="btnToggleConfigText">Options</span>
         </button>
 
-        <button id="btnSaveConfig" onclick="saveConfiguration()" class="px-3.5 py-2 rounded-lg bg-theme-surface hover:bg-theme-card text-theme-text text-xs font-heading font-semibold border border-theme-border hover:border-theme-borderLight transition shadow-sm active:scale-[0.98]">
+        <button id="btnSaveConfig" onclick="saveConfiguration()" class="px-3.5 py-2 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-xs font-heading font-semibold border border-slate-300 hover:border-slate-400 transition shadow-sm active:scale-[0.98]">
           Save Settings
         </button>
 
-        <button id="btnSearchNow" onclick="executeLiveSearch()" class="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-heading font-semibold flex items-center gap-2 transition shadow-glow-sm hover:shadow-glow-md active:scale-[0.98]">
+        <button id="btnSearchNow" onclick="executeLiveSearch()" class="px-4 py-2 rounded-lg bg-[#4a154b] hover:bg-[#381139] text-white text-xs font-heading font-semibold flex items-center gap-2 transition shadow-sm hover:shadow-md active:scale-[0.98]">
           <svg id="searchIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           <span id="searchText">Run Live Scan</span>
         </button>
@@ -181,41 +158,41 @@
       <div id="keywords-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
         <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
           <!-- Header with Clear & Reset -->
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 shrink-0">
             <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-              <h2 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Roles & Filters</h2>
+              <span class="w-2 h-2 rounded-full bg-[#4a154b]"></span>
+              <h2 class="font-heading font-bold text-xs text-slate-900 uppercase tracking-wider">Roles & Filters</h2>
             </div>
             <div class="flex items-center gap-1.5 text-[10px]">
-              <button onclick="clearKeywords()" class="text-theme-subtle hover:text-white px-1.5 py-0.5 rounded hover:bg-white/5 transition font-heading">Clear</button>
-              <button onclick="resetKeywords()" class="text-indigo-300 hover:text-white px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 font-heading font-semibold transition">Reset</button>
+              <button onclick="clearKeywords()" class="text-slate-500 hover:text-slate-800 px-1.5 py-0.5 rounded hover:bg-slate-100 transition font-heading">Clear</button>
+              <button onclick="resetKeywords()" class="text-[#4a154b] hover:text-[#381139] px-2 py-0.5 rounded bg-[#f4ecf4] hover:bg-[#eddced] border border-[#e4d3e4] font-heading font-semibold transition">Reset</button>
             </div>
           </div>
 
           <!-- Filter Sub-Tabs -->
-          <div class="flex items-center p-1 rounded-lg bg-theme-bg/80 border border-theme-border text-[11px] font-heading font-medium shrink-0">
-            <button type="button" id="tabBtnTarget" onclick="switchFilterTab('target')" class="flex-1 py-1 rounded-md text-white bg-indigo-600 shadow-sm font-semibold text-center transition">Roles</button>
-            <button type="button" id="tabBtnAvoid" onclick="switchFilterTab('avoid')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Avoid<span id="tabAvoidBadge" class="text-[9px] font-mono ml-0.5"></span></button>
-            <button type="button" id="tabBtnStudios" onclick="switchFilterTab('studios')" class="flex-1 py-1 rounded-md text-theme-subtle hover:text-white text-center transition">Studios<span id="tabStudioBadge" class="text-[9px] font-mono ml-0.5"></span></button>
+          <div class="flex items-center p-1 rounded-lg bg-slate-100 border border-slate-200 text-[11px] font-heading font-medium shrink-0">
+            <button type="button" id="tabBtnTarget" onclick="switchFilterTab('target')" class="flex-1 py-1 rounded-md text-slate-900 bg-white shadow-sm font-semibold text-center transition">Roles</button>
+            <button type="button" id="tabBtnAvoid" onclick="switchFilterTab('avoid')" class="flex-1 py-1 rounded-md text-slate-600 hover:text-slate-900 text-center transition">Avoid<span id="tabAvoidBadge" class="text-[9px] font-mono ml-0.5"></span></button>
+            <button type="button" id="tabBtnStudios" onclick="switchFilterTab('studios')" class="flex-1 py-1 rounded-md text-slate-600 hover:text-slate-900 text-center transition">Studios<span id="tabStudioBadge" class="text-[9px] font-mono ml-0.5"></span></button>
           </div>
 
           <!-- TAB 1: Target Roles & Keywords -->
           <div id="filterTabTarget" class="flex-1 flex flex-col min-h-0 space-y-2">
             <div class="space-y-1 shrink-0">
-              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Discipline Presets:</span>
+              <span class="text-slate-500 text-[10px] font-heading font-semibold uppercase tracking-wider block">Discipline Presets:</span>
               <div class="flex flex-wrap gap-1 text-[10px]">
-                <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 font-medium">✦ Tech Art</button>
-                <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Prog</button>
-                <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ Design</button>
-                <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ 3D/Anim</button>
-                <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-textSecondary font-medium">+ QA/Prod</button>
+                <button onclick="addKeywordPreset(['technical artist', 'tech artist', 'technical art', 'shader artist', 'tools programmer', 'pipeline td', 'vfx technical artist'])" class="chip-btn px-2 py-0.5 rounded bg-[#f4ecf4] hover:bg-[#eddced] border border-[#e4d3e4] text-[#4a154b] font-semibold">✦ Tech Art</button>
+                <button onclick="addKeywordPreset(['gameplay programmer', 'gameplay engineer', 'engine programmer', 'graphics programmer', 'c++ programmer', 'generalist programmer'])" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">+ Prog</button>
+                <button onclick="addKeywordPreset(['game designer', 'level designer', 'systems designer', 'combat designer', 'narrative designer'])" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">+ Design</button>
+                <button onclick="addKeywordPreset(['3d artist', 'environment artist', 'character artist', 'concept artist', 'animator', 'technical animator'])" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">+ 3D/Anim</button>
+                <button onclick="addKeywordPreset(['producer', 'associate producer', 'project manager', 'qa tester', 'qa engineer'])" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">+ QA/Prod</button>
               </div>
             </div>
 
-            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-indigo-500/80 focus-within:ring-1 focus-within:ring-indigo-500/20 transition shadow-inner">
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-slate-50 border border-slate-200 overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-[#1264a3] focus-within:ring-2 focus-within:ring-[#1264a3]/20 transition shadow-inner">
               <div id="keywordsList" class="flex flex-wrap gap-1"></div>
               <input id="keywordInput" type="text" placeholder="+ Add keyword & Enter..." 
-                class="flex-1 min-w-[130px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                class="flex-1 min-w-[130px] bg-transparent text-xs text-slate-900 focus:outline-none placeholder-slate-400 px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'keywordInput', addKeyword)">
             </div>
           </div>
@@ -223,17 +200,17 @@
           <!-- TAB 2: Avoid Keywords -->
           <div id="filterTabAvoid" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
             <div class="space-y-1 shrink-0">
-              <span class="text-rose-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
+              <span class="text-rose-600 text-[10px] font-heading font-semibold uppercase tracking-wider block">Quick Presets:</span>
               <div class="flex flex-wrap gap-1 text-[10px]">
-                <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Unpaid/Crypto</button>
-                <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-rose-300 font-medium">+ Non-games</button>
+                <button onclick="addExcludePreset(['unpaid', 'volunteer', 'internship', 'crypto', 'nft', 'web3', 'gambling', 'casino'])" class="chip-btn px-2 py-0.5 rounded bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-medium">+ Unpaid/Crypto</button>
+                <button onclick="addExcludePreset(['subsea', 'civil engineer', 'oil and gas', 'drilling'])" class="chip-btn px-2 py-0.5 rounded bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-medium">+ Non-games</button>
               </div>
             </div>
 
-            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-rose-500/70 focus-within:ring-1 focus-within:ring-rose-500/20 transition shadow-inner">
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-slate-50 border border-slate-200 overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-rose-400 focus-within:ring-2 focus-within:ring-rose-200 transition shadow-inner">
               <div id="excludeKeywordsList" class="flex flex-wrap gap-1"></div>
               <input id="excludeKeywordInput" type="text" placeholder="Add word to avoid..." 
-                class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                class="flex-1 min-w-[120px] bg-transparent text-xs text-slate-900 focus:outline-none placeholder-slate-400 px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeKeywordInput', addExcludeKeyword)">
             </div>
           </div>
@@ -241,42 +218,42 @@
           <!-- TAB 3: Excluded Studios -->
           <div id="filterTabStudios" class="hidden flex-1 flex flex-col min-h-0 space-y-2">
             <div class="flex items-center justify-between shrink-0">
-              <span class="text-amber-400/90 text-[10px] font-heading font-semibold uppercase tracking-wider block">Blocked Studios:</span>
-              <span id="excludeCompanyCount" class="font-mono text-[10px] text-amber-300 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">0 excluded</span>
+              <span class="text-amber-700 text-[10px] font-heading font-semibold uppercase tracking-wider block">Blocked Studios:</span>
+              <span id="excludeCompanyCount" class="font-mono text-[10px] text-amber-800 px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200">0 excluded</span>
             </div>
 
-            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-theme-bg/80 border border-theme-border overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-amber-500/70 focus-within:ring-1 focus-within:ring-amber-500/20 transition shadow-inner">
+            <div class="flex-1 min-h-[120px] p-2 rounded-xl bg-slate-50 border border-slate-200 overflow-y-auto flex flex-wrap content-start gap-1.5 items-start focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-200 transition shadow-inner">
               <div id="excludeCompaniesList" class="flex flex-wrap gap-1"></div>
               <input id="excludeCompanyInput" type="text" placeholder="Type studio & Enter..." 
-                class="flex-1 min-w-[120px] bg-transparent text-xs text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                class="flex-1 min-w-[120px] bg-transparent text-xs text-slate-900 focus:outline-none placeholder-slate-400 px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'excludeCompanyInput', addExcludeCompany)">
             </div>
-            <p class="text-[10px] text-theme-subtle italic shrink-0">Click "Exclude studio" on any card to add it here.</p>
+            <p class="text-[10px] text-slate-500 italic shrink-0">Click "Exclude studio" on any card to add it here.</p>
           </div>
         </div>
 
-        <p class="text-[10px] text-theme-subtle truncate pt-1 border-t border-theme-border/40 shrink-0">Matched on title, discipline & summary</p>
+        <p class="text-[10px] text-slate-400 truncate pt-1 border-t border-slate-200 shrink-0">Matched on title, discipline & summary</p>
       </div>
 
       <!-- 2. Location & Workplace Rules -->
       <div id="location-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
         <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 shrink-0">
             <div class="flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-              <h4 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Location Rules</h4>
+              <svg class="w-4 h-4 text-[#1264a3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              <h4 class="font-heading font-bold text-xs text-slate-900 uppercase tracking-wider">Location Rules</h4>
             </div>
-            <span id="locationRuleCount" class="font-mono text-[10px] text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">0 rules</span>
+            <span id="locationRuleCount" class="font-mono text-[10px] text-[#1264a3] px-2 py-0.5 rounded-full bg-sky-50 border border-sky-200">0 rules</span>
           </div>
 
           <!-- Quick Presets -->
           <div class="space-y-1 shrink-0">
-            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle block">Presets:</span>
+            <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-slate-500 block">Presets:</span>
             <div class="flex flex-wrap gap-1 text-[10px]">
-              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 hover:text-white font-medium">🏠 Remote EU</button>
-              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-indigo-300 hover:text-white font-medium">🔄 London 30mi</button>
-              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-purple-300 hover:text-white font-medium">🏢 Cambridge</button>
-              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white font-medium">🌐 Global</button>
+              <button type="button" onclick="addLocationPreset('remote_eu')" class="chip-btn px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#007a5a] font-semibold">🏠 Remote EU</button>
+              <button type="button" onclick="addLocationPreset('hybrid_london_30')" class="chip-btn px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 border border-blue-200 text-[#1264a3] font-semibold">🔄 London 30mi</button>
+              <button type="button" onclick="addLocationPreset('onsite_cambridge_20')" class="chip-btn px-2 py-0.5 rounded bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-medium">🏢 Cambridge</button>
+              <button type="button" onclick="addLocationPreset('remote_global')" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">🌐 Global</button>
             </div>
           </div>
 
@@ -284,10 +261,10 @@
           <div id="locationRulesContainer" class="flex-1 min-h-[90px] overflow-y-auto space-y-1.5 pr-1"></div>
 
           <!-- Add Rule Form -->
-          <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner shrink-0">
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-inner shrink-0">
             <div class="grid grid-cols-12 gap-1.5">
               <div class="col-span-5">
-                <select id="newRuleMode" class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-heading">
+                <select id="newRuleMode" class="w-full px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-900 focus:outline-none focus:border-[#1264a3] focus:ring-1 focus:ring-[#1264a3]/20 font-heading">
                   <option value="remote">Remote</option>
                   <option value="hybrid" selected>Hybrid</option>
                   <option value="on_site">On-site</option>
@@ -296,13 +273,13 @@
               </div>
               <div class="col-span-7">
                 <input id="newRuleTarget" type="text" placeholder="City / Region" 
-                  class="w-full px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 font-sans"
+                  class="w-full px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1264a3] focus:ring-1 focus:ring-[#1264a3]/20 font-sans"
                   onkeydown="if(event.key==='Enter'){event.preventDefault();addNewLocationRule();}">
               </div>
             </div>
 
             <div class="flex items-center gap-1.5">
-              <select id="newRuleDist" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-sans">
+              <select id="newRuleDist" class="flex-1 px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-900 focus:outline-none focus:border-[#1264a3] font-sans">
                 <option value="10">≤ 10 miles</option>
                 <option value="20">≤ 20 miles</option>
                 <option value="30" selected>≤ 30 miles</option>
@@ -311,26 +288,26 @@
                 <option value="100">≤ 100 miles</option>
                 <option value="">No limit</option>
               </select>
-              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] text-theme-subtle hover:text-white font-heading font-medium transition">📍 Test</button>
-              <button type="button" onclick="addNewLocationRule()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
+              <button type="button" onclick="testGeocodeInput()" title="Test Geocoding" class="px-2 py-1 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-[11px] text-slate-700 font-heading font-medium transition">📍 Test</button>
+              <button type="button" onclick="addNewLocationRule()" class="px-2.5 py-1 rounded-lg bg-[#1264a3] hover:bg-[#0b4c80] text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
             </div>
             
-            <div id="geocodeTestResult" class="hidden text-[10px] font-mono p-1.5 rounded bg-theme-surface border border-theme-border"></div>
+            <div id="geocodeTestResult" class="hidden text-[10px] font-mono p-1.5 rounded bg-white border border-slate-200"></div>
           </div>
         </div>
 
         <!-- Legacy fallback toggle -->
-        <details class="text-[10px] text-theme-subtle pt-1 border-t border-theme-border/40 shrink-0">
-          <summary class="cursor-pointer hover:text-white font-medium select-none">Legacy text filter / remote-only ▾</summary>
-          <div class="mt-1.5 pt-1.5 border-t border-theme-border/60 space-y-1.5">
+        <details class="text-[10px] text-slate-500 pt-1 border-t border-slate-200 shrink-0">
+          <summary class="cursor-pointer hover:text-slate-800 font-medium select-none">Legacy text filter / remote-only ▾</summary>
+          <div class="mt-1.5 pt-1.5 border-t border-slate-200 space-y-1.5">
             <div class="flex items-center justify-between">
               <span>Remote roles only</span>
-              <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-surface border-theme-border cursor-pointer">
+              <input type="checkbox" id="remoteOnly" class="w-3.5 h-3.5 rounded text-[#1264a3] focus:ring-[#1264a3] bg-white border-slate-300 cursor-pointer">
             </div>
-            <div class="p-1 rounded bg-theme-bg/80 border border-theme-border flex flex-wrap gap-1 items-center">
+            <div class="p-1 rounded bg-slate-50 border border-slate-200 flex flex-wrap gap-1 items-center">
               <div id="locationList" class="flex flex-wrap gap-1"></div>
               <input id="locationInput" type="text" placeholder="Add text..." 
-                class="flex-1 min-w-[60px] bg-transparent text-[11px] text-white focus:outline-none placeholder-theme-subtle px-1 py-0.5 font-sans"
+                class="flex-1 min-w-[60px] bg-transparent text-[11px] text-slate-900 focus:outline-none placeholder-slate-400 px-1 py-0.5 font-sans"
                 onkeydown="handleTagKey(event, 'locationInput', addLocation)">
             </div>
           </div>
@@ -340,176 +317,176 @@
       <!-- 3. Live Data Sources -->
       <div class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col justify-between space-y-3 min-h-[460px]">
         <div class="flex-1 flex flex-col min-h-0 space-y-2.5">
-          <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
-            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 shrink-0">
+            <h3 class="font-heading font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#4a154b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
               Data Sources
             </h3>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">8 Feeds</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#f4ecf4] text-[#4a154b] border border-[#e4d3e4] font-semibold">8 Feeds</span>
           </div>
 
           <!-- Source Toggles compact list (Expands vertically to show all feeds) -->
           <div class="flex-1 min-h-[220px] overflow-y-auto space-y-1.5 pr-1">
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                <div class="text-[11px] font-heading font-semibold text-slate-900 flex items-center gap-1">
                   <span>Games Jobs Index</span>
-                  <a href="https://gamesjobsindex.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                  <a href="https://gamesjobsindex.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-[#1264a3] hover:text-[#0b4c80] text-[10px]">↗</a>
                 </div>
-                <div class="text-[10px] text-theme-subtle">15,000+ live roles across 1,200+ studios</div>
+                <div class="text-[10px] text-slate-500">15,000+ live roles across 1,200+ studios</div>
               </div>
-              <input type="checkbox" id="srcGamesJobsIndex" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcGamesJobsIndex" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white flex items-center gap-1">
+                <div class="text-[11px] font-heading font-semibold text-slate-900 flex items-center gap-1">
                   <span>ASGC Games Board</span>
-                  <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-indigo-400 hover:text-indigo-300 text-[10px]">↗</a>
+                  <a href="https://lookerstudio.google.com/reporting/2f39b56e-7393-4aa2-9fd5-bf8bf615c95f/page/5koHB" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-[#1264a3] hover:text-[#0b4c80] text-[10px]">↗</a>
                 </div>
-                <div class="text-[10px] text-theme-subtle">41,000+ synchronized postings</div>
+                <div class="text-[10px] text-slate-500">41,000+ synchronized postings</div>
               </div>
-              <input type="checkbox" id="srcAsgc" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcAsgc" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">Direct Studio Portals</div>
-                <div class="text-[10px] text-theme-subtle">360+ tracked game studios</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">Direct Studio Portals</div>
+                <div class="text-[10px] text-slate-500">360+ tracked game studios</div>
               </div>
-              <input type="checkbox" id="srcStudios" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcStudios" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">Aardvark Swift</div>
-                <div class="text-[10px] text-theme-subtle">UK & global recruiter (aswift.com)</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">Aardvark Swift</div>
+                <div class="text-[10px] text-slate-500">UK & global recruiter (aswift.com)</div>
               </div>
-              <input type="checkbox" id="srcAardvark" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcAardvark" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">InGame Job Board</div>
-                <div class="text-[10px] text-theme-subtle">Curated vacancies (ingamejob.com)</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">InGame Job Board</div>
+                <div class="text-[10px] text-slate-500">Curated vacancies (ingamejob.com)</div>
               </div>
-              <input type="checkbox" id="srcInGame" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcInGame" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">GamesIndustry.biz</div>
-                <div class="text-[10px] text-theme-subtle">European & global games trade</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">GamesIndustry.biz</div>
+                <div class="text-[10px] text-slate-500">European & global games trade</div>
               </div>
-              <input type="checkbox" id="srcGibiz" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcGibiz" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">Work With Indies</div>
-                <div class="text-[10px] text-theme-subtle">Remote & indie studio jobs</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">Work With Indies</div>
+                <div class="text-[10px] text-slate-500">Remote & indie studio jobs</div>
               </div>
-              <input type="checkbox" id="srcWorkWithIndies" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcWorkWithIndies" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
 
-            <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border hover:border-indigo-500/40 cursor-pointer transition">
+            <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 cursor-pointer transition shadow-xs">
               <div class="pr-2 space-y-0.5">
-                <div class="text-[11px] font-heading font-semibold text-white">Datascope</div>
-                <div class="text-[10px] text-theme-subtle">Games consultancy (datascope.co.uk)</div>
+                <div class="text-[11px] font-heading font-semibold text-slate-900">Datascope</div>
+                <div class="text-[10px] text-slate-500">Games consultancy (datascope.co.uk)</div>
               </div>
-              <input type="checkbox" id="srcDatascope" class="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 bg-theme-bg border-theme-border" checked>
+              <input type="checkbox" id="srcDatascope" class="w-3.5 h-3.5 rounded text-[#4a154b] focus:ring-[#4a154b] bg-white border-slate-300" checked>
             </label>
           </div>
         </div>
 
         <!-- Studio Portal Re-scrape tool -->
-        <div class="pt-2 border-t border-theme-border/60 shrink-0">
-          <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-theme-text flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
-            <svg id="refreshSpinner" class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <div class="pt-2 border-t border-slate-200 shrink-0">
+          <button onclick="triggerGamesMapRefresh()" id="btnScrapeRefresh" class="w-full py-1.5 px-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-heading font-semibold text-slate-800 flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
+            <svg id="refreshSpinner" class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
             <span>Refresh 360+ Studios</span>
           </button>
-          <div id="refreshStatus" class="mt-1 text-[10px] text-theme-subtle text-center font-mono truncate"></div>
+          <div id="refreshStatus" class="mt-1 text-[10px] text-slate-500 text-center font-mono truncate"></div>
         </div>
       </div>
 
       <!-- 4. Background Scheduler & Alerts -->
       <div id="scheduler-section" class="glass-card rounded-2xl p-4 shadow-card hover:shadow-card-hover transition duration-300 flex flex-col space-y-3 min-h-[460px]">
-        <div class="flex items-center justify-between border-b border-theme-border/60 pb-2.5 shrink-0">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 shrink-0">
           <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider">Scheduler & Alerts</h3>
+            <svg class="w-4 h-4 text-[#007a5a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h3 class="font-heading font-bold text-xs text-slate-900 uppercase tracking-wider">Scheduler & Alerts</h3>
           </div>
-          <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Active</span>
+          <span id="scheduleActiveBadge" class="px-2 py-0.5 rounded-full bg-emerald-50 text-[#007a5a] border border-emerald-200 text-[10px] font-mono font-semibold">Active</span>
         </div>
 
         <!-- Scrollable Scheduler Body with dedicated scrollbar so alert channels are easily edited -->
         <div class="flex-1 min-h-0 overflow-y-auto pr-1 space-y-3">
           <!-- Master enable toggle -->
-          <label class="flex items-center justify-between p-2 rounded-xl bg-theme-surface/70 border border-theme-border cursor-pointer hover:border-theme-borderLight transition">
+          <label class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 cursor-pointer hover:border-slate-300 transition shadow-xs">
             <div class="space-y-0.5">
-              <span class="text-xs font-heading font-semibold text-white">Background Checks</span>
-              <div class="text-[10px] text-theme-subtle">Silent Windows Task scheduler</div>
+              <span class="text-xs font-heading font-semibold text-slate-900">Background Checks</span>
+              <div class="text-[10px] text-slate-500">Silent Windows Task scheduler</div>
             </div>
-            <input type="checkbox" id="scheduleEnabled" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer" checked onchange="toggleScheduleMaster()">
+            <input type="checkbox" id="scheduleEnabled" class="w-3.5 h-3.5 rounded text-[#007a5a] bg-white border-slate-300 cursor-pointer" checked onchange="toggleScheduleMaster()">
           </label>
 
           <!-- Quick Presets -->
           <div class="space-y-1">
-            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle">Presets:</div>
+            <div class="text-[10px] font-heading font-semibold uppercase tracking-wider text-slate-500">Presets:</div>
             <div class="flex flex-wrap gap-1 text-[10px]">
-              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-emerald-300 font-medium">⚡ 3x Daily</button>
-              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle font-medium">4x Daily</button>
-              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2 py-0.5 rounded bg-theme-surface hover:bg-theme-card border border-theme-border text-amber-300 font-medium">+ 1 PM</button>
+              <button type="button" onclick="setSchedulePreset('3x')" class="chip-btn px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#007a5a] font-semibold">⚡ 3x Daily</button>
+              <button type="button" onclick="setSchedulePreset('4x')" class="chip-btn px-2 py-0.5 rounded bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium">4x Daily</button>
+              <button type="button" onclick="addScheduleTime('13:00')" class="chip-btn px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-medium">+ 1 PM</button>
             </div>
           </div>
 
           <!-- Active Times & Add Time -->
           <div class="space-y-1.5">
             <div class="flex items-center justify-between text-[10px]">
-              <span class="text-theme-subtle font-heading font-semibold uppercase tracking-wider">Times:</span>
-              <span id="scheduleCountBadge" class="font-mono text-theme-subtle">3 times</span>
+              <span class="text-slate-500 font-heading font-semibold uppercase tracking-wider">Times:</span>
+              <span id="scheduleCountBadge" class="font-mono text-slate-500">3 times</span>
             </div>
-            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1 min-h-[34px] max-h-[56px] overflow-y-auto p-1.5 rounded-xl bg-theme-bg/80 border border-theme-border items-center shadow-inner"></div>
+            <div id="scheduleTimesContainer" class="flex flex-wrap gap-1 min-h-[34px] max-h-[56px] overflow-y-auto p-1.5 rounded-xl bg-slate-50 border border-slate-200 items-center shadow-inner"></div>
             
             <div class="flex items-center gap-1.5">
-              <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-2 py-1 rounded-lg bg-theme-surface border border-theme-border text-[11px] text-white focus:outline-none focus:border-indigo-500 font-mono">
-              <button type="button" onclick="addScheduleFromInput()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
+              <input type="time" id="newScheduleTimeInput" value="13:00" class="flex-1 px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-900 focus:outline-none focus:border-[#4a154b] font-mono">
+              <button type="button" onclick="addScheduleFromInput()" class="px-2.5 py-1 rounded-lg bg-[#4a154b] hover:bg-[#381139] text-white text-[11px] font-heading font-semibold transition shadow-sm">+ Add</button>
             </div>
           </div>
 
           <!-- Windows Task Sync Button & Status Info -->
-          <div class="space-y-1.5 pt-2 border-t border-theme-border/60">
-            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-1.5 px-2.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-[11px] font-heading font-semibold text-white flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
-              <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          <div class="space-y-1.5 pt-2 border-t border-slate-200">
+            <button type="button" id="btnSyncScheduler" onclick="syncSchedulerToWindows()" class="w-full py-1.5 px-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-[11px] font-heading font-semibold text-slate-800 flex items-center justify-center gap-1.5 transition active:scale-[0.98]">
+              <svg class="w-3.5 h-3.5 text-[#1264a3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
               <span>Sync Windows Task</span>
             </button>
-            <div id="schedulerStatusInfo" class="text-[9px] font-mono text-theme-subtle bg-theme-bg/80 p-1.5 rounded-lg border border-theme-border flex items-center justify-between">
+            <div id="schedulerStatusInfo" class="text-[9px] font-mono text-slate-500 bg-slate-50 p-1.5 rounded-lg border border-slate-200 flex items-center justify-between">
               <span class="truncate">Task: JobMonitor</span>
-              <span id="schedulerStatusState" class="text-emerald-400 font-semibold ml-1">Ready</span>
+              <span id="schedulerStatusState" class="text-[#007a5a] font-semibold ml-1">Ready</span>
             </div>
             <div id="schedulerNextRun" class="hidden"></div>
           </div>
 
           <!-- Alert Channels (Directly accessible and scrollable) -->
-          <div class="space-y-2 pt-2 border-t border-theme-border/60">
+          <div class="space-y-2 pt-2 border-t border-slate-200">
             <div class="flex items-center justify-between">
-              <span class="text-theme-subtle text-[10px] font-heading font-semibold uppercase tracking-wider block">Alert Channels:</span>
-              <button type="button" onclick="testNotifications()" class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 font-heading font-semibold transition">Test</button>
+              <span class="text-slate-500 text-[10px] font-heading font-semibold uppercase tracking-wider block">Alert Channels:</span>
+              <button type="button" onclick="testNotifications()" class="text-[10px] px-2 py-0.5 rounded bg-[#f4ecf4] hover:bg-[#eddced] text-[#4a154b] border border-[#e4d3e4] font-heading font-semibold transition">Test</button>
             </div>
-            <div class="p-2.5 rounded-xl bg-theme-bg/80 border border-theme-border space-y-2 shadow-inner">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-inner">
               <div class="flex items-center justify-between">
                 <label class="flex items-center gap-1.5 cursor-pointer">
-                  <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border" checked>
-                  <span class="text-white text-[11px]">Windows Toast</span>
+                  <input type="checkbox" id="notifToast" class="w-3.5 h-3.5 rounded text-[#007a5a] bg-white border-slate-300" checked>
+                  <span class="text-slate-800 text-[11px]">Windows Toast</span>
                 </label>
               </div>
               <div>
-                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Discord Webhook URL</label>
-                <input type="text" id="discordWebhook" placeholder="Discord webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+                <label class="block text-[9px] text-slate-500 font-mono mb-0.5">Discord Webhook URL</label>
+                <input type="text" id="discordWebhook" placeholder="Discord webhook URL..." class="w-full px-2 py-1 rounded bg-white border border-slate-200 text-[10px] text-slate-900 placeholder-slate-400 font-mono focus:outline-none focus:border-[#1264a3]">
               </div>
               <div>
-                <label class="block text-[9px] text-theme-subtle font-mono mb-0.5">Slack Webhook URL</label>
-                <input type="text" id="slackWebhook" placeholder="Slack webhook URL..." class="w-full px-2 py-1 rounded bg-theme-surface border border-theme-border text-[10px] text-white placeholder-theme-subtle font-mono focus:outline-none focus:border-indigo-500">
+                <label class="block text-[9px] text-slate-500 font-mono mb-0.5">Slack Webhook URL</label>
+                <input type="text" id="slackWebhook" placeholder="Slack webhook URL..." class="w-full px-2 py-1 rounded bg-white border border-slate-200 text-[10px] text-slate-900 placeholder-slate-400 font-mono focus:outline-none focus:border-[#1264a3]">
               </div>
             </div>
           </div>
@@ -518,122 +495,121 @@
 
     </div>
 
-    <!-- Live Search Results Section (WordPress Directory Showcase) -->
+    <!-- Live Search Results Section (Slack Directory Showcase) -->
     <div id="resultsSection" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
       
-      <!-- Section Header with Editorial Flair -->
       <!-- Section Header with Editorial Flair & Primary Navigation Tabs -->
-      <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-theme-border/60">
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
         
         <div class="space-y-1">
           <div class="flex items-center gap-3">
-            <h2 class="font-editorial text-2xl font-normal text-white">Live Industry Matches</h2>
-            <span id="resultsCountBadge" class="px-3 py-0.5 rounded-full text-xs font-mono font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm">0 matches</span>
-            <button id="btnViewScanLog" type="button" onclick="toggleScanLogPostSearch()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-theme-surface hover:bg-theme-card text-theme-subtle hover:text-white border border-theme-border transition flex items-center gap-1.5 shadow-sm" title="Inspect activity log from latest scan">
+            <h2 class="font-heading font-bold text-2xl text-slate-900">Live Industry Matches</h2>
+            <span id="resultsCountBadge" class="px-3 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#f4ecf4] text-[#4a154b] border border-[#e4d3e4] shadow-xs">0 matches</span>
+            <button id="btnViewScanLog" type="button" onclick="toggleScanLogPostSearch()" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-300 transition flex items-center gap-1.5 shadow-xs" title="Inspect activity log from latest scan">
               <span id="viewScanLogIcon">📋</span>
               <span id="viewScanLogText">Scan Log</span>
             </button>
           </div>
-          <p id="resultsStatsSubtitle" class="text-xs text-theme-subtle font-mono">Run a scan to query active game dev studio portals & Looker Studio database</p>
+          <p id="resultsStatsSubtitle" class="text-xs text-slate-500 font-mono">Run a scan to query active game dev studio portals & Looker Studio database</p>
         </div>
 
         <!-- Primary Results Tabs Switcher -->
-        <div class="flex items-center p-1 rounded-xl bg-theme-bg/90 border border-theme-border text-xs font-heading font-medium shadow-inner">
-          <button type="button" id="tabBtnMatches" onclick="switchResultsTab('matches')" class="px-4 py-1.5 rounded-lg text-white bg-indigo-600 font-semibold shadow-sm transition flex items-center gap-2">
+        <div class="flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-heading font-medium shadow-inner">
+          <button type="button" id="tabBtnMatches" onclick="switchResultsTab('matches')" class="px-4 py-1.5 rounded-lg text-white bg-[#4a154b] font-semibold shadow-xs transition flex items-center gap-2">
             <span>Matching Roles</span>
             <span id="resultsMatchesTabBadge" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/20 text-white">0</span>
           </button>
           
-          <button type="button" id="tabBtnFailed" onclick="switchResultsTab('failed')" class="px-4 py-1.5 rounded-lg text-theme-subtle hover:text-white transition flex items-center gap-2" title="View studio career pages that timed out or failed">
+          <button type="button" id="tabBtnFailed" onclick="switchResultsTab('failed')" class="px-4 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-2" title="View studio career pages that timed out or failed">
             <span>Failed / Unreachable</span>
-            <span id="resultsFailedTabBadge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse">0</span>
+            <span id="resultsFailedTabBadge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-100 text-rose-700 border border-rose-200 animate-pulse">0</span>
           </button>
         </div>
       </div>
 
-      <!-- Real-Time Live Querying & Progress State (Glowing Live Console) -->
-      <div id="searchLoadingState" class="hidden py-6 px-6 rounded-2xl bg-theme-surface/90 border border-indigo-500/30 shadow-glow-md space-y-4 max-w-3xl mx-auto my-4 transition duration-300">
+      <!-- Real-Time Live Querying & Progress State (Clean Console) -->
+      <div id="searchLoadingState" class="hidden py-6 px-6 rounded-2xl bg-white border border-slate-200 shadow-md space-y-4 max-w-3xl mx-auto my-4 transition duration-300">
         
         <!-- Header with animated spinner and status -->
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-3.5">
             <div class="relative flex items-center justify-center">
-              <div class="w-8 h-8 rounded-xl border-2 border-indigo-500/30 border-t-indigo-500 animate-spin"></div>
-              <span class="absolute w-2.5 h-2.5 rounded-full bg-indigo-400 animate-ping"></span>
+              <div class="w-8 h-8 rounded-xl border-2 border-slate-200 border-t-[#4a154b] animate-spin"></div>
+              <span class="absolute w-2.5 h-2.5 rounded-full bg-[#4a154b] animate-ping"></span>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="font-heading font-bold text-sm text-white" id="liveSearchStatusTitle">Scanning Industry Portals...</span>
-                <span id="liveProgressPercentBadge" class="text-xs font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">0%</span>
+                <span class="font-heading font-bold text-sm text-slate-900" id="liveSearchStatusTitle">Scanning Industry Portals...</span>
+                <span id="liveProgressPercentBadge" class="text-xs font-mono px-2 py-0.5 rounded-full bg-[#f4ecf4] text-[#4a154b] border border-[#e4d3e4] font-semibold">0%</span>
               </div>
-              <p id="liveSearchStatusSub" class="text-xs text-theme-subtle font-mono mt-0.5">Harvesting live ATS job feeds & ASGC database</p>
+              <p id="liveSearchStatusSub" class="text-xs text-slate-500 font-mono mt-0.5">Harvesting live ATS job feeds & ASGC database</p>
             </div>
           </div>
 
           <!-- Live Counters -->
           <div class="flex items-center gap-2 text-xs font-mono">
-            <div class="px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5" title="Studios Scanned">
-              <span class="text-theme-subtle text-[10px]">Studios:</span>
-              <span id="liveStatStudios" class="text-white font-semibold">0 / 0</span>
+            <div class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-1.5" title="Studios Scanned">
+              <span class="text-slate-500 text-[10px]">Studios:</span>
+              <span id="liveStatStudios" class="text-slate-900 font-semibold">0 / 0</span>
             </div>
-            <div class="px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5" title="Postings Harvested">
-              <span class="text-theme-subtle text-[10px]">Harvested:</span>
-              <span id="liveStatRaw" class="text-cyan-400 font-semibold">0</span>
+            <div class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-1.5" title="Postings Harvested">
+              <span class="text-slate-500 text-[10px]">Harvested:</span>
+              <span id="liveStatRaw" class="text-[#1264a3] font-semibold">0</span>
             </div>
-            <div class="px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5" title="Matching Roles Found">
-              <span class="text-theme-subtle text-[10px]">Matches:</span>
-              <span id="liveStatMatches" class="text-emerald-400 font-semibold">0</span>
+            <div class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-1.5" title="Matching Roles Found">
+              <span class="text-slate-500 text-[10px]">Matches:</span>
+              <span id="liveStatMatches" class="text-[#007a5a] font-semibold">0</span>
             </div>
-            <div id="liveStatFailedBox" class="px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition" title="Studio portals that timed out or failed">
-              <span class="text-theme-subtle text-[10px]">Failed:</span>
-              <span id="liveStatFailed" class="text-rose-400 font-semibold">0</span>
+            <div id="liveStatFailedBox" class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-1.5 transition" title="Studio portals that timed out or failed">
+              <span class="text-slate-500 text-[10px]">Failed:</span>
+              <span id="liveStatFailed" class="text-rose-600 font-semibold">0</span>
             </div>
           </div>
         </div>
 
         <!-- Animated Progress Bar with Gradient -->
-        <div class="w-full bg-theme-bg rounded-full h-2.5 overflow-hidden border border-theme-border p-[1px]">
-          <div id="liveProgressBar" class="bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-400 h-full rounded-full transition-all duration-200 ease-out shadow-glow-sm" style="width: 0%"></div>
+        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200 p-[1px]">
+          <div id="liveProgressBar" class="bg-gradient-to-r from-[#4a154b] via-[#1264a3] to-[#007a5a] h-full rounded-full transition-all duration-200 ease-out" style="width: 0%"></div>
         </div>
 
         <!-- Currently Querying Active Pill / Ticker -->
         <div class="flex items-center gap-2.5 text-xs">
-          <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-500/30 font-mono text-[10px] font-semibold flex-shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#f4ecf4] text-[#4a154b] border border-[#e4d3e4] font-mono text-[10px] font-semibold flex-shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#4a154b] animate-pulse"></span>
             ACTIVE HARVEST:
           </span>
-          <div id="liveActiveQueries" class="text-xs text-white font-mono truncate">Connecting to endpoints...</div>
+          <div id="liveActiveQueries" class="text-xs text-slate-800 font-mono truncate">Connecting to endpoints...</div>
         </div>
 
         <!-- Live Activity Log Controls & Filter Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-theme-border/50">
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-200">
           <div class="flex items-center gap-1.5 text-[11px] font-mono">
-            <span class="text-theme-subtle text-[10px] uppercase font-semibold mr-0.5">Log:</span>
-            <button type="button" id="btnLogFilterAll" onclick="setLogFilter('all')" class="px-2 py-0.5 rounded bg-indigo-600 text-white font-semibold text-[10px] transition">
+            <span class="text-slate-500 text-[10px] uppercase font-semibold mr-0.5">Log:</span>
+            <button type="button" id="btnLogFilterAll" onclick="setLogFilter('all')" class="px-2 py-0.5 rounded bg-[#4a154b] text-white font-semibold text-[10px] transition">
               All (<span id="logFilterCountAll">0</span>)
             </button>
-            <button type="button" id="btnLogFilterErrors" onclick="setLogFilter('errors')" class="px-2 py-0.5 rounded bg-theme-bg hover:bg-rose-500/20 text-rose-300 border border-theme-border text-[10px] transition flex items-center gap-1">
+            <button type="button" id="btnLogFilterErrors" onclick="setLogFilter('errors')" class="px-2 py-0.5 rounded bg-slate-50 hover:bg-rose-50 text-rose-700 border border-slate-200 text-[10px] transition flex items-center gap-1">
               <span>⚠️ Failures</span>
               <span id="logFilterCountErrors" class="font-bold">0</span>
             </button>
-            <button type="button" id="btnLogFilterMatches" onclick="setLogFilter('matches')" class="px-2 py-0.5 rounded bg-theme-bg hover:bg-emerald-500/20 text-emerald-300 border border-theme-border text-[10px] transition flex items-center gap-1">
+            <button type="button" id="btnLogFilterMatches" onclick="setLogFilter('matches')" class="px-2 py-0.5 rounded bg-slate-50 hover:bg-emerald-50 text-[#007a5a] border border-slate-200 text-[10px] transition flex items-center gap-1">
               <span>✨ Matches</span>
               <span id="logFilterCountMatches" class="font-bold">0</span>
             </button>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" id="btnToggleAutoScroll" onclick="toggleLogAutoScroll()" class="px-2 py-0.5 rounded bg-theme-bg text-theme-subtle hover:text-white border border-theme-border text-[10px] font-mono transition">
-              Auto-scroll: <span id="autoScrollLabel" class="text-emerald-400 font-semibold">ON</span>
+            <button type="button" id="btnToggleAutoScroll" onclick="toggleLogAutoScroll()" class="px-2 py-0.5 rounded bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200 text-[10px] font-mono transition">
+              Auto-scroll: <span id="autoScrollLabel" class="text-[#007a5a] font-semibold">ON</span>
             </button>
-            <button type="button" onclick="clearLiveLog()" class="px-2 py-0.5 rounded bg-theme-bg text-theme-subtle hover:text-white border border-theme-border text-[10px] font-mono transition">
+            <button type="button" onclick="clearLiveLog()" class="px-2 py-0.5 rounded bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200 text-[10px] font-mono transition">
               Clear
             </button>
           </div>
         </div>
 
-        <!-- Live Activity Log Window (Polished Terminal Look) -->
-        <div class="border border-theme-border rounded-xl bg-theme-bg/90 p-3 font-mono text-[11px] space-y-1.5 max-h-48 overflow-y-auto shadow-inner" id="liveActivityLog">
-          <div class="text-theme-subtle log-entry" data-category="info">[00:00:00] Initializing multi-threaded crawler across studio ATS feeds...</div>
+        <!-- Live Activity Log Window (Polished Dark Slate Terminal Look) -->
+        <div class="border border-slate-800 rounded-xl bg-[#0f172a] p-3 font-mono text-[11px] space-y-1.5 max-h-48 overflow-y-auto shadow-inner text-slate-200" id="liveActivityLog">
+          <div class="text-slate-400 log-entry" data-category="info">[00:00:00] Initializing multi-threaded crawler across studio ATS feeds...</div>
         </div>
 
       </div>
@@ -647,36 +623,36 @@
           <div class="flex flex-wrap items-center gap-2.5">
             <div class="relative">
               <input type="text" id="filterResultsInput" oninput="filterResultsTable()" placeholder="Filter within matches..." 
-                class="w-48 sm:w-60 px-3 py-1.5 pl-8 rounded-xl bg-theme-bg/90 border border-theme-border text-xs text-white placeholder-theme-subtle focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition font-sans shadow-inner">
-              <svg class="w-3.5 h-3.5 text-theme-subtle absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                class="w-48 sm:w-60 px-3 py-1.5 pl-8 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1264a3] focus:ring-2 focus:ring-[#1264a3]/20 transition font-sans shadow-xs">
+              <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
             <!-- Sort Dropdown -->
-            <div class="flex items-center gap-1.5 bg-theme-bg/90 border border-theme-border rounded-xl px-2.5 py-1 shadow-inner">
-              <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-              <span class="text-[11px] text-theme-subtle font-heading font-medium">Sort:</span>
-              <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-white font-heading font-medium focus:outline-none cursor-pointer">
-                <option value="date_desc" class="bg-[#0e1422] text-white">Date (Newest first)</option>
-                <option value="date_asc" class="bg-[#0e1422] text-white">Date (Oldest first)</option>
-                <option value="company_asc" class="bg-[#0e1422] text-white">Company (A → Z)</option>
-                <option value="company_desc" class="bg-[#0e1422] text-white">Company (Z → A)</option>
-                <option value="title_asc" class="bg-[#0e1422] text-white">Role Title (A → Z)</option>
-                <option value="source_asc" class="bg-[#0e1422] text-white">Source</option>
+            <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl px-2.5 py-1 shadow-xs">
+              <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+              <span class="text-[11px] text-slate-500 font-heading font-medium">Sort:</span>
+              <select id="sortResultsSelect" onchange="applySortAndFilter()" class="bg-transparent text-xs text-slate-800 font-heading font-medium focus:outline-none cursor-pointer">
+                <option value="date_desc">Date (Newest first)</option>
+                <option value="date_asc">Date (Oldest first)</option>
+                <option value="company_asc">Company (A → Z)</option>
+                <option value="company_desc">Company (Z → A)</option>
+                <option value="title_asc">Role Title (A → Z)</option>
+                <option value="source_asc">Source</option>
               </select>
             </div>
           </div>
 
           <!-- View Mode Toggle & Exports -->
           <div class="flex items-center gap-2.5">
-            <div class="flex items-center rounded-xl bg-theme-bg/90 border border-theme-border p-1 shadow-inner">
-              <button id="btnViewCards" onclick="setViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition">Cards</button>
-              <button id="btnViewTable" onclick="setViewMode('table')" class="px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition">Table</button>
+            <div class="flex items-center rounded-xl bg-slate-100 border border-slate-200 p-1 shadow-inner">
+              <button id="btnViewCards" onclick="setViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-heading font-semibold text-slate-900 bg-white shadow-xs border border-slate-200 transition">Cards</button>
+              <button id="btnViewTable" onclick="setViewMode('table')" class="px-3 py-1 rounded-lg text-xs font-heading font-medium text-slate-600 hover:text-slate-900 transition">Table</button>
             </div>
-            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white flex items-center gap-1.5 transition shadow-sm">
-              <svg class="w-3 h-3 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-heading font-semibold text-slate-700 flex items-center gap-1.5 transition shadow-xs">
+              <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               CSV
             </button>
-            <button onclick="exportJSON()" class="px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition shadow-sm">
+            <button onclick="exportJSON()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-heading font-semibold text-slate-700 transition shadow-xs">
               JSON
             </button>
           </div>
@@ -684,53 +660,53 @@
 
         <!-- Source Quick Filter Bar -->
         <div id="sourceFilterChips" class="flex flex-wrap items-center gap-1.5 pt-1">
-          <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-theme-subtle mr-1">Filter Source:</span>
-          <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition">All Sources</button>
-          <button type="button" onclick="setSourceFilter('Games Jobs Index')" id="srcChip_gji" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Games Jobs Index</button>
-          <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">ASGC Feed</button>
-          <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Direct Studios</button>
-          <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Aardvark Swift</button>
-          <button type="button" onclick="setSourceFilter('InGame Job')" id="srcChip_ingame" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">InGame Job</button>
-          <button type="button" onclick="setSourceFilter('GamesIndustry.biz')" id="srcChip_gibiz" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">GamesIndustry.biz</button>
-          <button type="button" onclick="setSourceFilter('Work With Indies')" id="srcChip_wwi" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition">Work With Indies</button>
+          <span class="text-[10px] font-heading font-semibold uppercase tracking-wider text-slate-500 mr-1">Filter Source:</span>
+          <button type="button" onclick="setSourceFilter('all')" id="srcChip_all" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-[#4a154b] text-white shadow-xs transition">All Sources</button>
+          <button type="button" onclick="setSourceFilter('Games Jobs Index')" id="srcChip_gji" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">Games Jobs Index</button>
+          <button type="button" onclick="setSourceFilter('Looker Studio / ASGC')" id="srcChip_asgc" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">ASGC Feed</button>
+          <button type="button" onclick="setSourceFilter('Direct Studio')" id="srcChip_studio" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">Direct Studios</button>
+          <button type="button" onclick="setSourceFilter('Aardvark Swift')" id="srcChip_aswift" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">Aardvark Swift</button>
+          <button type="button" onclick="setSourceFilter('InGame Job')" id="srcChip_ingame" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">InGame Job</button>
+          <button type="button" onclick="setSourceFilter('GamesIndustry.biz')" id="srcChip_gibiz" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">GamesIndustry.biz</button>
+          <button type="button" onclick="setSourceFilter('Work With Indies')" id="srcChip_wwi" class="chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition">Work With Indies</button>
         </div>
 
         <!-- Empty State / Initial Prompt -->
         <div id="emptyState" class="py-16 text-center space-y-4 max-w-md mx-auto">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto shadow-glow-sm">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <div class="w-14 h-14 rounded-2xl bg-[#f4ecf4] border border-[#e4d3e4] text-[#4a154b] flex items-center justify-center mx-auto shadow-xs">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
           <div class="space-y-1">
-            <h3 class="font-heading font-bold text-base text-white">No Jobs Currently Displayed</h3>
-            <p class="text-xs text-theme-subtle leading-relaxed">
-              Customize your target keywords and location radius above, then click <span class="text-indigo-400 font-semibold font-heading">Run Live Scan</span> to search all 360+ studio career portals.
+            <h3 class="font-heading font-bold text-base text-slate-900">No Jobs Currently Displayed</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Customize your target keywords and location radius above, then click <span class="text-[#4a154b] font-semibold font-heading">Run Live Scan</span> to search all 360+ studio career portals.
             </p>
           </div>
-          <button onclick="executeLiveSearch()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition shadow-glow-sm active:scale-[0.98]">
+          <button onclick="executeLiveSearch()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#4a154b] hover:bg-[#381139] text-white text-xs font-heading font-semibold transition shadow-sm active:scale-[0.98]">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <span>Start Live Job Scan</span>
           </button>
         </div>
 
-        <!-- Cards Grid (WordPress Portfolio & Directory style) -->
+        <!-- Cards Grid (Clean Directory style) -->
         <div id="resultsCardsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
         <!-- Table View -->
-        <div id="resultsTableContainer" class="hidden overflow-x-auto rounded-2xl border border-theme-border shadow-card">
-          <table class="w-full text-left text-xs text-white">
-            <thead class="bg-theme-surface text-theme-subtle font-heading text-[11px] uppercase tracking-wider border-b border-theme-border">
+        <div id="resultsTableContainer" class="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-card">
+          <table class="w-full text-left text-xs text-slate-800">
+            <thead class="bg-slate-50 text-slate-600 font-heading text-[11px] uppercase tracking-wider border-b border-slate-200">
               <tr>
-                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
-                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
-                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-slate-900 select-none" onclick="setSortByColumn('title')">Role <span id="thSort_title">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-slate-900 select-none" onclick="setSortByColumn('company')">Studio <span id="thSort_company">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-slate-900 select-none" onclick="setSortByColumn('date')">Date Posted <span id="thSort_date">↕</span></th>
                 <th class="py-3 px-4 font-semibold">Discipline</th>
                 <th class="py-3 px-4 font-semibold">Location</th>
-                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-white select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
+                <th class="py-3 px-4 font-semibold cursor-pointer hover:text-slate-900 select-none" onclick="setSortByColumn('source')">Source <span id="thSort_source">↕</span></th>
                 <th class="py-3 px-4 font-semibold">Keywords</th>
                 <th class="py-3 px-4 text-right font-semibold">Action</th>
               </tr>
             </thead>
-            <tbody id="resultsTableBody" class="divide-y divide-theme-border bg-theme-bg/60 font-sans"></tbody>
+            <tbody id="resultsTableBody" class="divide-y divide-slate-100 bg-white font-sans"></tbody>
           </table>
         </div>
 
@@ -740,35 +716,35 @@
       <div id="resultsTabFailedView" class="hidden space-y-4">
         
         <!-- Cards Container Panel when failures exist -->
-        <div id="failedPagesResultsSection" class="rounded-2xl border border-rose-500/30 bg-gradient-to-b from-rose-950/20 via-theme-card to-theme-surface p-5 space-y-4 shadow-card transition-all duration-300">
+        <div id="failedPagesResultsSection" class="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 space-y-4 shadow-sm transition-all duration-300">
           <!-- Header -->
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-theme-border/60 pb-3">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200/80 pb-3">
             <div class="space-y-0.5">
               <div class="flex items-center gap-2.5">
-                <span class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center">
+                <span class="p-1.5 rounded-lg bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                 </span>
-                <h3 class="font-heading font-bold text-sm text-white flex items-center gap-2">
+                <h3 class="font-heading font-bold text-sm text-slate-900 flex items-center gap-2">
                   <span>Studio Career Portals Requiring Attention</span>
-                  <span id="failedSectionCountBadge" class="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">0 Unreachable</span>
+                  <span id="failedSectionCountBadge" class="px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-amber-100 text-amber-800 border border-amber-200">0 Unreachable</span>
                 </h3>
               </div>
-              <p class="text-xs text-theme-subtle">
+              <p class="text-xs text-slate-600">
                 These studios timed out (>10s), returned 429 rate limits, or were blocked by Cloudflare during the scan. Open their direct portals below to verify listings manually.
               </p>
             </div>
 
             <!-- Actions -->
             <div class="flex flex-wrap items-center gap-2">
-              <button id="btnRetryFailed" type="button" onclick="retryFailedSitesOnly()" class="chip-btn px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+              <button id="btnRetryFailed" type="button" onclick="retryFailedSitesOnly()" class="chip-btn px-3 py-1.5 rounded-xl bg-[#4a154b] hover:bg-[#381139] text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
                 <svg id="retrySpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 <span id="retryFailedBtnText">Retry Failed Only</span>
               </button>
-              <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
-                <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+              <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-heading font-medium flex items-center gap-1.5 transition shadow-xs">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                 <span>Copy All Links</span>
               </button>
-              <button type="button" onclick="switchResultsTab('matches')" class="chip-btn px-3 py-1.5 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition">
+              <button type="button" onclick="switchResultsTab('matches')" class="chip-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-heading font-semibold text-slate-700 transition shadow-xs">
                 Back to Matches →
               </button>
             </div>
@@ -781,11 +757,11 @@
         </div>
 
         <!-- Clean Empty State when 0 failures -->
-        <div id="failedPagesEmptyState" class="hidden text-center py-12 space-y-3 bg-theme-bg/40 rounded-2xl border border-theme-border/40 p-6">
-          <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto text-xl">✓</div>
-          <h4 class="font-heading font-bold text-base text-white">All Studio Portals Reachable</h4>
-          <p class="text-xs text-theme-subtle max-w-md mx-auto">Every studio career portal responded successfully during the live scan. No timeouts, rate limits, or network errors were recorded.</p>
-          <button type="button" onclick="switchResultsTab('matches')" class="mt-2 chip-btn px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-heading font-semibold transition">
+        <div id="failedPagesEmptyState" class="hidden text-center py-12 space-y-3 bg-slate-50 rounded-2xl border border-slate-200 p-6">
+          <div class="w-12 h-12 rounded-full bg-emerald-100 text-[#007a5a] border border-emerald-200 flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+          <h4 class="font-heading font-bold text-base text-slate-900">All Studio Portals Reachable</h4>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">Every studio career portal responded successfully during the live scan. No timeouts, rate limits, or network errors were recorded.</p>
+          <button type="button" onclick="switchResultsTab('matches')" class="mt-2 chip-btn px-4 py-1.5 rounded-xl bg-[#4a154b] hover:bg-[#381139] text-white text-xs font-heading font-semibold transition shadow-xs">
             View Matching Roles →
           </button>
         </div>
@@ -796,21 +772,11 @@
 
   </main>
 
-  <!-- Website Footer (WordPress Theme Style) -->
-  <footer class="border-t border-theme-border/60 py-8 px-4 sm:px-6 lg:px-10 mt-auto bg-theme-surface/60 text-xs text-theme-subtle">
+  <!-- Website Footer (Clean Slack Style) -->
+  <footer class="border-t border-slate-200 py-8 px-4 sm:px-6 lg:px-10 mt-auto bg-white text-xs text-slate-500">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       
-      <div class="flex items-center gap-3">
-
-      </div>
-
-      <div class="flex flex-wrap items-center gap-6 font-heading text-xs">
-       
-      </div>
-
-      <div class="font-mono text-[11px] text-theme-subtle">
-        Local GUI: <span class="text-indigo-300">http://127.0.0.1:8765</span>
-      </div>
+      
 
     </div>
   </footer>
@@ -893,14 +859,14 @@
       const toast = document.createElement('div');
       
       const config = {
-        success: { border: 'border-emerald-500/40', bg: 'bg-theme-surface', text: 'text-emerald-300', icon: '✓' },
-        error: { border: 'border-rose-500/40', bg: 'bg-theme-surface', text: 'text-rose-300', icon: '✗' },
-        info: { border: 'border-indigo-500/40', bg: 'bg-theme-surface', text: 'text-indigo-300', icon: 'ℹ' },
-        warning: { border: 'border-amber-500/40', bg: 'bg-theme-surface', text: 'text-amber-300', icon: '⚠' }
-      }[type] || { border: 'border-theme-border', bg: 'bg-theme-surface', text: 'text-white', icon: '•' };
+        success: { border: 'border-emerald-200', bg: 'bg-white', text: 'text-[#007a5a]', icon: '✓', iconBg: 'bg-emerald-50 text-[#007a5a]' },
+        error: { border: 'border-rose-200', bg: 'bg-white', text: 'text-rose-700', icon: '✗', iconBg: 'bg-rose-50 text-rose-700' },
+        info: { border: 'border-[#e4d3e4]', bg: 'bg-white', text: 'text-[#4a154b]', icon: 'ℹ', iconBg: 'bg-[#f4ecf4] text-[#4a154b]' },
+        warning: { border: 'border-amber-200', bg: 'bg-white', text: 'text-amber-800', icon: '⚠', iconBg: 'bg-amber-50 text-amber-800' }
+      }[type] || { border: 'border-slate-200', bg: 'bg-white', text: 'text-slate-800', icon: '•', iconBg: 'bg-slate-100 text-slate-700' };
       
-      toast.className = `p-3 rounded-xl border ${config.border} ${config.bg} shadow-card-hover flex items-center gap-2.5 pointer-events-auto text-xs font-heading font-medium transform transition-all duration-200 translate-y-[-8px] opacity-0 ${config.text}`;
-      toast.innerHTML = `<span class="w-5 h-5 rounded-lg bg-white/5 flex items-center justify-center font-bold text-xs">${config.icon}</span><span class="truncate">${escapeHTML(message)}</span>`;
+      toast.className = `p-3 rounded-xl border ${config.border} ${config.bg} shadow-lg flex items-center gap-2.5 pointer-events-auto text-xs font-heading font-medium transform transition-all duration-200 translate-y-[-8px] opacity-0 ${config.text}`;
+      toast.innerHTML = `<span class="w-5 h-5 rounded-lg ${config.iconBg} flex items-center justify-center font-bold text-xs shrink-0">${config.icon}</span><span class="truncate">${escapeHTML(message)}</span>`;
       container.appendChild(toast);
       
       requestAnimationFrame(() => {
@@ -999,40 +965,40 @@
       const liveFailedEl = document.getElementById('liveStatFailed');
       if (liveFailedEl) liveFailedEl.innerText = '0';
       const liveFailedBox = document.getElementById('liveStatFailedBox');
-      if (liveFailedBox) liveFailedBox.className = 'px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition';
+      if (liveFailedBox) liveFailedBox.className = 'px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-1.5 transition';
       
       activeQueries.innerText = 'Initializing feeds...';
       logStats = { all: 0, errors: 0, matches: 0 };
       updateLogFilterBadges();
       
       const startTimeStr = new Date().toLocaleTimeString();
-      logContainer.innerHTML = `<div class="text-theme-subtle flex items-center gap-2 log-entry" data-category="info"><span class="text-[10px] font-mono text-indigo-400">[${startTimeStr}]</span> <span>🚀</span> <span>Starting live industry job scan...</span></div>`;
+      logContainer.innerHTML = `<div class="text-slate-400 flex items-center gap-2 log-entry" data-category="info"><span class="text-[10px] font-mono text-[#1264a3]">[${startTimeStr}]</span> <span>🚀</span> <span>Starting live industry job scan...</span></div>`;
 
       function appendLog(text, type = 'info') {
         const timeStr = new Date().toLocaleTimeString();
         const div = document.createElement('div');
-        let colorClass = 'text-theme-subtle';
+        let colorClass = 'text-slate-300';
         let icon = '•';
         let category = 'info';
 
         if (type === 'match') {
-          colorClass = 'text-emerald-300 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20';
+          colorClass = 'text-emerald-400 font-semibold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/30';
           icon = '✨';
           category = 'match';
           logStats.matches++;
         } else if (type === 'asgc') {
-          colorClass = 'text-indigo-300';
+          colorClass = 'text-sky-300';
           icon = '🌐';
         } else if (type === 'studio') {
-          colorClass = 'text-white';
+          colorClass = 'text-slate-100';
           icon = '🏢';
         } else if (type === 'warning') {
-          colorClass = 'text-amber-300 font-medium bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20';
+          colorClass = 'text-amber-300 font-medium bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30';
           icon = '⚠️';
           category = 'error';
           logStats.errors++;
         } else if (type === 'error') {
-          colorClass = 'text-rose-400 font-semibold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20';
+          colorClass = 'text-rose-400 font-semibold bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/30';
           icon = '✗';
           category = 'error';
           logStats.errors++;
@@ -1042,7 +1008,7 @@
 
         div.className = `flex items-center gap-2 log-entry ${colorClass}`;
         div.dataset.category = category;
-        div.innerHTML = `<span class="text-[10px] font-mono text-theme-subtle shrink-0">[${timeStr}]</span> <span class="shrink-0">${icon}</span> <span class="break-all">${escapeHTML(text)}</span>`;
+        div.innerHTML = `<span class="text-[10px] font-mono text-slate-500 shrink-0">[${timeStr}]</span> <span class="shrink-0">${icon}</span> <span class="break-all">${escapeHTML(text)}</span>`;
 
         if (currentLogFilter === 'errors' && category !== 'error') {
           div.classList.add('hidden');
@@ -1121,9 +1087,9 @@
                 if (lf) lf.innerText = eventData.failed_pages_total;
                 if (lb) {
                   if (eventData.failed_pages_total > 0) {
-                    lb.className = 'px-2.5 py-1 rounded-lg bg-rose-500/20 border border-rose-500/50 flex items-center gap-1.5 transition shadow-sm';
+                    lb.className = 'px-2.5 py-1 rounded-lg bg-rose-950/60 border border-rose-800/80 text-rose-300 flex items-center gap-1.5 transition shadow-xs';
                   } else {
-                    lb.className = 'px-2.5 py-1 rounded-lg bg-theme-bg border border-theme-border flex items-center gap-1.5 transition';
+                    lb.className = 'px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 flex items-center gap-1.5 transition';
                   }
                 }
               }
@@ -1247,8 +1213,8 @@
 
       if (!tabBtnTarget || !filterTabTarget) return;
 
-      const activeClasses = ['text-white', 'bg-indigo-600', 'font-semibold', 'shadow-sm'];
-      const inactiveClasses = ['text-theme-subtle', 'hover:text-white'];
+      const activeClasses = ['text-slate-900', 'bg-white', 'font-semibold', 'shadow-xs'];
+      const inactiveClasses = ['text-slate-600', 'hover:text-slate-900'];
 
       [tabBtnTarget, tabBtnAvoid, tabBtnStudios].forEach(btn => {
         if (btn) {
@@ -1288,9 +1254,9 @@
 
       if (!tabBtnMatches || !tabBtnFailed || !matchesView || !failedView) return;
 
-      const activeMatchesClasses = ['text-white', 'bg-indigo-600', 'font-semibold', 'shadow-sm'];
-      const activeFailedClasses = ['text-white', 'bg-rose-600', 'font-semibold', 'shadow-sm'];
-      const inactiveClasses = ['text-theme-subtle', 'hover:text-white'];
+      const activeMatchesClasses = ['text-white', 'bg-[#4a154b]', 'font-semibold', 'shadow-xs'];
+      const activeFailedClasses = ['text-white', 'bg-rose-600', 'font-semibold', 'shadow-xs'];
+      const inactiveClasses = ['text-slate-600', 'hover:text-slate-900'];
 
       if (tab === 'matches') {
         tabBtnMatches.classList.remove(...inactiveClasses);
@@ -1326,10 +1292,10 @@
     // --- UI Sync & Tag Rendering ---
     function renderConfigUI() {
       // 1. Keywords
-      renderTagList('keywordsList', currentConfig.search.keywords, removeKeyword, 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20');
+      renderTagList('keywordsList', currentConfig.search.keywords, removeKeyword, 'bg-[#f4ecf4] text-[#4a154b] border-[#e4d3e4]');
       
       // 2. Exclude Keywords
-      renderTagList('excludeKeywordsList', currentConfig.search.exclude_keywords, removeExcludeKeyword, 'bg-rose-500/10 text-rose-300 border-rose-500/20');
+      renderTagList('excludeKeywordsList', currentConfig.search.exclude_keywords, removeExcludeKeyword, 'bg-rose-50 text-rose-700 border-rose-200');
       const tabAvoidBadge = document.getElementById('tabAvoidBadge');
       if (tabAvoidBadge) {
         const count = currentConfig.search.exclude_keywords?.length || 0;
@@ -1337,7 +1303,7 @@
       }
       
       // 3. Exclude Companies
-      renderTagList('excludeCompaniesList', currentConfig.search.exclude_companies, removeExcludeCompany, 'bg-amber-500/10 text-amber-300 border-amber-500/20');
+      renderTagList('excludeCompaniesList', currentConfig.search.exclude_companies, removeExcludeCompany, 'bg-amber-50 text-amber-800 border-amber-200');
       const countEl = document.getElementById('excludeCompanyCount');
       if (countEl) countEl.innerText = `${currentConfig.search.exclude_companies.length} excluded`;
       const tabStudioBadge = document.getElementById('tabStudioBadge');
@@ -1350,7 +1316,7 @@
       renderLocationRules();
 
       // 5. Legacy Locations Tag List
-      renderTagList('locationList', currentConfig.search.location_filter || [], removeLocation, 'bg-theme-surface text-white border-theme-border');
+      renderTagList('locationList', currentConfig.search.location_filter || [], removeLocation, 'bg-white text-slate-800 border-slate-200');
 
       // 6. Switches & Sources
       const sources = currentConfig.search.sources || { query_asgc: true, query_studios: true };
@@ -1433,10 +1399,10 @@
 
       if (activeBadge) {
         if (isEnabled) {
-          activeBadge.className = "px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono";
+          activeBadge.className = "px-2 py-0.5 rounded-full bg-emerald-50 text-[#007a5a] border border-emerald-200 text-[10px] font-mono font-semibold";
           activeBadge.innerText = "Active";
         } else {
-          activeBadge.className = "px-2 py-0.5 rounded-full bg-theme-surface text-theme-subtle border border-theme-border text-[10px] font-mono";
+          activeBadge.className = "px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 text-[10px] font-mono";
           activeBadge.innerText = "Disabled";
         }
       }
@@ -1445,16 +1411,16 @@
       if (countBadge) countBadge.innerText = `${times.length} time${times.length === 1 ? '' : 's'}`;
 
       if (times.length === 0) {
-        container.innerHTML = `<span class="text-theme-subtle text-[11px] italic">No times scheduled. Add one below or click a preset.</span>`;
+        container.innerHTML = `<span class="text-slate-400 text-[11px] italic">No times scheduled. Add one below or click a preset.</span>`;
         return;
       }
 
       times.forEach((t, idx) => {
         const chip = document.createElement('span');
-        chip.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border bg-theme-surface text-indigo-300 border-theme-border transition shadow-sm font-mono`;
+        chip.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border bg-white text-slate-800 border-slate-200 transition shadow-xs font-mono`;
         chip.innerHTML = `
           <span>${escapeHTML(formatTimeDisplay(t))}</span>
-          <button type="button" onclick="removeScheduleTime(${idx})" class="hover:text-rose-400 text-xs font-bold leading-none p-0.5" title="Remove time">&times;</button>
+          <button type="button" onclick="removeScheduleTime(${idx})" class="text-slate-400 hover:text-rose-600 text-xs font-bold leading-none p-0.5" title="Remove time">&times;</button>
         `;
         container.appendChild(chip);
       });
@@ -1517,7 +1483,7 @@
           const nextEl = document.getElementById('schedulerNextRun');
           if (info.registered) {
             if (stateEl) {
-              stateEl.className = "text-emerald-400 font-semibold";
+              stateEl.className = "text-[#007a5a] font-semibold";
               stateEl.innerText = info.status || "Ready";
             }
             if (nextEl) {
@@ -1525,7 +1491,7 @@
             }
           } else {
             if (stateEl) {
-              stateEl.className = "text-amber-400 font-semibold";
+              stateEl.className = "text-amber-800 font-semibold";
               stateEl.innerText = "Not Registered";
             }
             if (nextEl) {
@@ -1574,7 +1540,7 @@
         tag.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs border font-sans font-medium transition ${styleClasses}`;
         tag.innerHTML = `
           <span>${escapeHTML(item)}</span>
-          <button type="button" onclick="${removeFn.name}(${idx})" class="hover:text-white opacity-60 hover:opacity-100 text-xs font-bold leading-none p-0.5">&times;</button>
+          <button type="button" onclick="${removeFn.name}(${idx})" class="text-slate-400 hover:text-slate-700 text-xs font-bold leading-none p-0.5">&times;</button>
         `;
         container.appendChild(tag);
       });
@@ -1605,7 +1571,7 @@
 
       if (rules.length === 0) {
         container.innerHTML = `
-          <div class="p-3 rounded-xl bg-theme-bg/80 border border-dashed border-theme-border text-center text-theme-subtle text-[11px]">
+          <div class="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-300 text-center text-slate-500 text-[11px]">
             No location rules configured. All locations will pass. Add a rule or preset below.
           </div>
         `;
@@ -1616,39 +1582,39 @@
         const card = document.createElement('div');
         const isEnabled = rule.enabled !== false;
         
-        let modeBadgeClass = 'bg-theme-surface text-theme-subtle border-theme-border';
+        let modeBadgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
         let modeLabel = 'Any';
         const m = (rule.mode || 'any').toLowerCase().replace('-', '_');
         
         if (m === 'remote') {
-          modeBadgeClass = 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20';
+          modeBadgeClass = 'bg-emerald-50 text-[#007a5a] border-emerald-200';
           modeLabel = '🏠 Remote';
         } else if (m === 'hybrid') {
-          modeBadgeClass = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20';
+          modeBadgeClass = 'bg-blue-50 text-[#1264a3] border-blue-200';
           modeLabel = '🔄 Hybrid';
         } else if (m === 'on_site' || m === 'onsite') {
-          modeBadgeClass = 'bg-purple-500/10 text-purple-300 border-purple-500/20';
+          modeBadgeClass = 'bg-purple-50 text-purple-700 border-purple-200';
           modeLabel = '🏢 On-site';
         }
 
         const distText = rule.max_distance_miles ? 
-          `<span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px] font-mono">≤ ${rule.max_distance_miles} mi</span>` : 
+          `<span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-mono">≤ ${rule.max_distance_miles} mi</span>` : 
           '';
 
-        const targetText = rule.target ? escapeHTML(rule.target) : '<span class="text-theme-subtle italic">Anywhere</span>';
+        const targetText = rule.target ? escapeHTML(rule.target) : '<span class="text-slate-400 italic">Anywhere</span>';
 
-        card.className = `flex items-center justify-between p-2.5 rounded-xl bg-theme-surface/70 border ${isEnabled ? 'border-theme-border hover:border-theme-borderLight' : 'border-theme-border/40 opacity-50'} text-xs transition`;
+        card.className = `flex items-center justify-between p-2.5 rounded-xl bg-white border ${isEnabled ? 'border-slate-200 hover:border-slate-300 shadow-xs' : 'border-slate-200/60 opacity-50'} text-xs transition`;
         card.innerHTML = `
           <div class="flex items-center gap-2.5 overflow-hidden">
             <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleLocationRule(${idx})" 
-              class="w-3.5 h-3.5 rounded text-indigo-600 bg-theme-bg border-theme-border cursor-pointer flex-shrink-0" title="Toggle rule active">
+              class="w-3.5 h-3.5 rounded text-[#1264a3] bg-white border-slate-300 cursor-pointer flex-shrink-0" title="Toggle rule active">
             <span class="px-2 py-0.5 rounded-md text-[10px] font-heading font-semibold border ${modeBadgeClass} flex-shrink-0">${modeLabel}</span>
-            <div class="truncate text-[11px] text-white font-medium flex items-center gap-1.5">
+            <div class="truncate text-[11px] text-slate-900 font-medium flex items-center gap-1.5">
               <span>${targetText}</span>
               ${distText}
             </div>
           </div>
-          <button type="button" onclick="removeLocationRule(${idx})" class="text-theme-subtle hover:text-rose-400 p-1 text-xs font-bold leading-none transition" title="Delete rule">&times;</button>
+          <button type="button" onclick="removeLocationRule(${idx})" class="text-slate-400 hover:text-rose-600 p-1 text-xs font-bold leading-none transition" title="Delete rule">&times;</button>
         `;
         container.appendChild(card);
       });
@@ -1757,19 +1723,19 @@
         return;
       }
       resContainer.classList.remove('hidden');
-      resContainer.innerHTML = '<span class="text-theme-subtle">Resolving coordinates...</span>';
+      resContainer.innerHTML = '<span class="text-slate-500">Resolving coordinates...</span>';
       
       try {
         const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`);
         if (res.ok) {
           const data = await res.json();
           const r = data.result;
-          resContainer.innerHTML = `<span class="text-emerald-400">✓ Resolved: ${escapeHTML(r.name)}, ${escapeHTML(r.country || '')} [${r.lat.toFixed(2)}, ${r.lon.toFixed(2)}]</span>`;
+          resContainer.innerHTML = `<span class="text-emerald-700 font-semibold">✓ Resolved: ${escapeHTML(r.name)}, ${escapeHTML(r.country || '')} [${r.lat.toFixed(2)}, ${r.lon.toFixed(2)}]</span>`;
         } else {
-          resContainer.innerHTML = `<span class="text-rose-400">✗ Could not resolve coordinates for "${escapeHTML(q)}". Text-match will be used.</span>`;
+          resContainer.innerHTML = `<span class="text-rose-600">✗ Could not resolve coordinates for "${escapeHTML(q)}". Text-match will be used.</span>`;
         }
       } catch (err) {
-        resContainer.innerHTML = `<span class="text-amber-400">Resolution error: ${escapeHTML(err.message)}</span>`;
+        resContainer.innerHTML = `<span class="text-amber-700">Resolution error: ${escapeHTML(err.message)}</span>`;
       }
     }
 
@@ -1897,9 +1863,9 @@
         const el = document.getElementById(c.id);
         if (!el) return;
         if (c.key === src) {
-          el.className = 'chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-indigo-600 text-white shadow-sm transition';
+          el.className = 'chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-semibold bg-[#4a154b] text-white shadow-xs transition';
         } else {
-          el.className = 'chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-theme-surface hover:bg-theme-card border border-theme-border text-theme-subtle hover:text-white transition';
+          el.className = 'chip-btn px-2.5 py-1 rounded-lg text-xs font-heading font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition';
         }
       });
       filterResultsTable();
@@ -1937,10 +1903,10 @@
         if (!el) return;
         if (currentSortMode.startsWith(c)) {
           el.innerText = currentSortMode.endsWith('asc') ? ' ▲' : ' ▼';
-          el.className = 'text-indigo-400 font-bold';
+          el.className = 'text-[#1264a3] font-bold';
         } else {
           el.innerText = ' ↕';
-          el.className = 'text-theme-subtle';
+          el.className = 'text-slate-400';
         }
       });
     }
@@ -2025,38 +1991,38 @@
 
       jobs.forEach(job => {
         const card = document.createElement('div');
-        card.className = "glass-card rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-indigo-500/40 hover:shadow-card-hover transition-all duration-200";
+        card.className = "bg-white rounded-xl p-5 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-slate-300 hover:shadow-card-hover transition-all duration-200 shadow-xs";
 
         // Location & Distance Badge formatting
         let locBadge = '';
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
-          let color = 'text-theme-subtle bg-theme-surface border-theme-border';
+          let color = 'text-slate-600 bg-slate-100 border-slate-200';
           if (m === 'hybrid' || job.hybrid) {
-            color = 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
+            color = 'text-[#1264a3] bg-sky-50 border-sky-200';
           } else if (m === 'remote' || job.remote) {
-            color = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+            color = 'text-[#007a5a] bg-emerald-50 border-emerald-200';
           } else if (m === 'on_site') {
-            color = 'text-purple-400 bg-purple-500/10 border-purple-500/20';
+            color = 'text-purple-700 bg-purple-50 border-purple-200';
           }
-          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono border ${color}">${escapeHTML(job.location_match.display_badge)}</span>`;
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-medium border ${color}">${escapeHTML(job.location_match.display_badge)}</span>`;
         } else if (job.hybrid) {
           const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
-          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20">${escapeHTML(badgeTxt)}</span>`;
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-medium text-[#1264a3] bg-sky-50 border border-sky-200">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
-          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">Remote</span>`;
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-medium text-[#007a5a] bg-emerald-50 border border-emerald-200">Remote</span>`;
         } else {
-          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.location || 'On-site')}</span>`;
+          locBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-medium text-slate-700 bg-slate-100 border border-slate-200">${escapeHTML(job.location || 'On-site')}</span>`;
         }
 
         // Date Posted / Discovered Badge
         const dateDisp = job.date_posted || job.date_added || '';
-        const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-theme-subtle px-2 py-0.5 rounded-full bg-theme-surface border border-theme-border flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
+        const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded-full bg-slate-50 border border-slate-200 flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
 
-        const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading font-medium border border-indigo-500/20">${escapeHTML(k)}</span>`).join('');
+        const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-[#f4ecf4] text-[#4a154b] text-[10px] font-heading font-medium border border-[#e4d3e4]">${escapeHTML(k)}</span>`).join('');
         
-        const deptBadge = job.department ? `<span class="text-[11px] text-theme-subtle">• ${escapeHTML(job.department)}</span>` : '';
-        const expBadge = job.experience ? `<span class="text-[10px] font-mono text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">${escapeHTML(job.experience)}</span>` : '';
+        const deptBadge = job.department ? `<span class="text-[11px] text-slate-500">• ${escapeHTML(job.department)}</span>` : '';
+        const expBadge = job.experience ? `<span class="text-[10px] font-mono text-cyan-800 px-2 py-0.5 rounded-full bg-cyan-50 border border-cyan-200 font-medium">${escapeHTML(job.experience)}</span>` : '';
 
         const studioGrad = getStudioGradient(job.company);
         const studioInitials = getStudioInitials(job.company);
@@ -2067,12 +2033,12 @@
             <!-- Top bar: Studio Monogram + Source + Badges -->
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr ${studioGrad} flex items-center justify-center text-white font-heading font-extrabold text-xs shadow-sm flex-shrink-0">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr ${studioGrad} flex items-center justify-center text-white font-heading font-extrabold text-xs shadow-xs flex-shrink-0">
                   ${studioInitials}
                 </div>
                 <div>
-                  <div class="font-heading font-bold text-xs text-white leading-tight">${escapeHTML(job.company)}</div>
-                  <div class="text-[10px] font-mono text-theme-subtle uppercase tracking-wider mt-0.5">${escapeHTML(job.source)}</div>
+                  <div class="font-heading font-bold text-xs text-slate-900 leading-tight">${escapeHTML(job.company)}</div>
+                  <div class="text-[10px] font-mono text-slate-500 uppercase tracking-wider mt-0.5">${escapeHTML(job.source)}</div>
                 </div>
               </div>
               <div class="flex items-center gap-1.5 flex-wrap justify-end">
@@ -2084,11 +2050,11 @@
 
             <!-- Role Title & Department -->
             <div>
-              <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="font-heading font-bold text-sm text-white hover:text-indigo-300 transition leading-snug line-clamp-2 block">
+              <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="font-heading font-bold text-sm text-slate-900 hover:text-[#1264a3] transition leading-snug line-clamp-2 block">
                 ${escapeHTML(job.title)}
               </a>
-              <div class="text-xs text-theme-subtle mt-1 flex items-center gap-1.5 flex-wrap">
-                <span class="text-[11px] text-theme-textSecondary font-sans">${escapeHTML(job.location || 'See Details')}</span>
+              <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5 flex-wrap">
+                <span class="text-[11px] text-slate-600 font-sans">${escapeHTML(job.location || 'See Details')}</span>
                 ${deptBadge}
               </div>
             </div>
@@ -2096,14 +2062,14 @@
           </div>
 
           <!-- Footer with Matched Tags & Actions -->
-          <div class="space-y-3 pt-3 border-t border-theme-border/60">
+          <div class="space-y-3 pt-3 border-t border-slate-100">
             <div class="flex flex-wrap gap-1">${matchedTags}</div>
             
             <div class="flex items-center justify-between gap-2 pt-1">
-              <button onclick="quickAvoidCompany('${escapeQuotes(job.company)}')" title="Add studio to excluded list" class="text-[11px] px-2.5 py-1.5 rounded-lg bg-theme-surface hover:bg-rose-500/20 text-theme-subtle hover:text-rose-300 border border-theme-border font-heading transition">
+              <button onclick="quickAvoidCompany('${escapeQuotes(job.company)}')" title="Add studio to excluded list" class="text-[11px] px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 font-heading font-medium transition">
                 Exclude studio
               </button>
-              <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-heading font-semibold flex items-center gap-1 transition shadow-sm active:scale-[0.98]">
+              <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-[#007a5a] hover:bg-[#006349] text-white text-xs font-heading font-semibold flex items-center gap-1 transition shadow-xs active:scale-[0.98]">
                 <span>Apply / View</span>
                 <span class="text-xs">↗</span>
               </a>
@@ -2120,42 +2086,42 @@
 
       jobs.forEach(job => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-theme-surface/80 transition border-b border-theme-border/40";
+        tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100 text-slate-800";
 
-        const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading border border-indigo-500/20 mr-1">${escapeHTML(k)}</span>`).join('');
+        const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-[#f4ecf4] text-[#4a154b] text-[10px] font-heading font-medium border border-[#e4d3e4] mr-1">${escapeHTML(k)}</span>`).join('');
 
         let locTableDisplay = escapeHTML(job.location || 'On-site');
         if (job.location_match && job.location_match.display_badge) {
           const m = (job.location_match.mode || '').toLowerCase();
           if (m === 'hybrid' || job.hybrid) {
-            locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
+            locTableDisplay = `<span class="text-[#1264a3] font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else if (m === 'remote' || job.remote) {
-            locTableDisplay = `<span class="text-emerald-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
+            locTableDisplay = `<span class="text-[#007a5a] font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else if (m === 'on_site') {
-            locTableDisplay = `<span class="text-purple-400 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
+            locTableDisplay = `<span class="text-purple-700 font-medium font-mono">${escapeHTML(job.location_match.display_badge)}</span>`;
           } else {
             locTableDisplay = escapeHTML(job.location_match.display_badge);
           }
         } else if (job.hybrid) {
           const badgeTxt = job.location && !job.location.toLowerCase().includes('hybrid') ? `Hybrid • ${job.location}` : (job.location || 'Hybrid');
-          locTableDisplay = `<span class="text-indigo-400 font-medium font-mono">${escapeHTML(badgeTxt)}</span>`;
+          locTableDisplay = `<span class="text-[#1264a3] font-medium font-mono">${escapeHTML(badgeTxt)}</span>`;
         } else if (job.remote) {
-          locTableDisplay = '<span class="text-emerald-400 font-mono">Remote</span>';
+          locTableDisplay = '<span class="text-[#007a5a] font-mono font-medium">Remote</span>';
         }
 
         const dateDisp = job.date_posted || job.date_added || '—';
 
         tr.innerHTML = `
-          <td class="py-3 px-4 font-heading font-semibold text-white">${escapeHTML(job.title)}</td>
-          <td class="py-3 px-4 text-theme-textSecondary">${escapeHTML(job.company)}</td>
-          <td class="py-3 px-4 text-theme-subtle font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
-          <td class="py-3 px-4 text-theme-subtle">${escapeHTML(job.department || '—')}</td>
-          <td class="py-3 px-4 text-theme-subtle">${locTableDisplay}</td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.source)}</span></td>
+          <td class="py-3 px-4 font-heading font-semibold text-slate-900">${escapeHTML(job.title)}</td>
+          <td class="py-3 px-4 text-slate-700 font-medium">${escapeHTML(job.company)}</td>
+          <td class="py-3 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
+          <td class="py-3 px-4 text-slate-500">${escapeHTML(job.department || '—')}</td>
+          <td class="py-3 px-4 text-slate-600">${locTableDisplay}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-slate-600 bg-slate-100 border border-slate-200">${escapeHTML(job.source)}</span></td>
           <td class="py-3 px-4">${matchedTags}</td>
           <td class="py-3 px-4 text-right space-x-2 font-heading">
-            <button onclick="quickAvoidCompany('${escapeQuotes(job.company)}')" class="text-theme-subtle hover:text-rose-300 text-[11px] font-medium transition">Exclude</button>
-            <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="inline-block px-3 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white font-semibold text-[11px] transition shadow-sm">View ↗</a>
+            <button onclick="quickAvoidCompany('${escapeQuotes(job.company)}')" class="text-slate-500 hover:text-rose-600 text-[11px] font-medium transition">Exclude</button>
+            <a href="${escapeHTML(job.url)}" target="_blank" rel="noopener noreferrer" class="inline-block px-3 py-1 rounded-lg bg-[#007a5a]/10 hover:bg-[#007a5a] text-[#007a5a] hover:text-white font-semibold text-[11px] transition shadow-xs">View ↗</a>
           </td>
         `;
         tbody.appendChild(tr);
@@ -2168,11 +2134,11 @@
       const btnTable = document.getElementById('btnViewTable');
 
       if (mode === 'cards') {
-        btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
-        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
+        btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-slate-900 bg-white border border-slate-200 shadow-xs transition";
+        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-slate-500 hover:text-slate-900 transition";
       } else {
-        btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-theme-subtle hover:text-white transition";
-        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-white bg-indigo-600 shadow-sm transition";
+        btnCards.className = "px-3 py-1 rounded-lg text-xs font-heading font-medium text-slate-500 hover:text-slate-900 transition";
+        btnTable.className = "px-3 py-1 rounded-lg text-xs font-heading font-semibold text-slate-900 bg-white border border-slate-200 shadow-xs transition";
       }
       filterResultsTable();
     }
@@ -2234,8 +2200,8 @@
       const btnErrors = document.getElementById('btnLogFilterErrors');
       const btnMatches = document.getElementById('btnLogFilterMatches');
       
-      const activeCls = 'bg-indigo-600 text-white font-semibold shadow-sm';
-      const inactiveCls = 'bg-theme-bg text-theme-subtle hover:text-white border border-theme-border';
+      const activeCls = 'bg-[#4a154b] text-white font-semibold shadow-xs';
+      const inactiveCls = 'bg-slate-900 text-slate-400 hover:text-white border border-slate-700';
       
       [btnAll, btnErrors, btnMatches].forEach(b => {
         if (!b) return;
@@ -2243,8 +2209,8 @@
       });
 
       if (filter === 'all' && btnAll) btnAll.className = `px-2 py-0.5 rounded text-[10px] transition ${activeCls}`;
-      if (filter === 'errors' && btnErrors) btnErrors.className = `px-2 py-0.5 rounded text-[10px] transition bg-rose-600 text-white font-semibold shadow-sm`;
-      if (filter === 'matches' && btnMatches) btnMatches.className = `px-2 py-0.5 rounded text-[10px] transition bg-emerald-600 text-white font-semibold shadow-sm`;
+      if (filter === 'errors' && btnErrors) btnErrors.className = `px-2 py-0.5 rounded text-[10px] transition bg-rose-600 text-white font-semibold shadow-xs`;
+      if (filter === 'matches' && btnMatches) btnMatches.className = `px-2 py-0.5 rounded text-[10px] transition bg-emerald-600 text-white font-semibold shadow-xs`;
 
       const entries = document.querySelectorAll('#liveActivityLog .log-entry');
       entries.forEach(el => {
@@ -2386,23 +2352,23 @@
         
         let statusBadge = '';
         if (isTimeout) {
-          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"><span>⏱️</span><span>Timed Out (>10s)</span></span>';
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1"><span>⏱️</span><span>Timed Out (>10s)</span></span>';
         } else if (isRateLimit) {
-          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30 flex items-center gap-1"><span>🚫</span><span>HTTP 429 Throttled</span></span>';
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1"><span>🚫</span><span>HTTP 429 Throttled</span></span>';
         } else if (isForbidden) {
-          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-purple-500/15 text-purple-300 border border-purple-500/30 flex items-center gap-1"><span>🔒</span><span>Cloudflare Block</span></span>';
+          statusBadge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1"><span>🔒</span><span>Cloudflare Block</span></span>';
         } else {
-          statusBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30 flex items-center gap-1"><span>✗</span><span>${escapeHTML(item.error_type || 'Error')}</span></span>`;
+          statusBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1"><span>✗</span><span>${escapeHTML(item.error_type || 'Error')}</span></span>`;
         }
 
-        const sourceBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-theme-bg text-theme-subtle border border-theme-border">${escapeHTML(item.source || 'Direct Web')}</span>`;
+        const sourceBadge = `<span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-slate-100 text-slate-600 border border-slate-200">${escapeHTML(item.source || 'Direct Web')}</span>`;
 
         return `
-          <div class="glass-card-subtle rounded-xl p-3.5 border border-rose-500/20 hover:border-rose-500/40 bg-[#111828]/80 space-y-2.5 transition group shadow-sm flex flex-col justify-between">
+          <div class="rounded-xl p-3.5 border border-rose-200 hover:border-rose-300 bg-white space-y-2.5 transition group shadow-xs flex flex-col justify-between">
             <div class="space-y-1.5">
               <div class="flex items-start justify-between gap-2">
                 <div>
-                  <h4 class="font-heading font-bold text-sm text-white group-hover:text-rose-200 transition">${escapeHTML(item.company || 'Unknown Studio')}</h4>
+                  <h4 class="font-heading font-bold text-sm text-slate-900 group-hover:text-rose-700 transition">${escapeHTML(item.company || 'Unknown Studio')}</h4>
                   <div class="flex flex-wrap items-center gap-1.5 mt-1">
                     ${statusBadge}
                     ${sourceBadge}
@@ -2410,25 +2376,25 @@
                 </div>
               </div>
               
-              <div class="text-[11px] text-theme-subtle font-mono truncate" title="${escapeQuotes(item.url || '')}">
+              <div class="text-[11px] text-slate-500 font-mono truncate" title="${escapeQuotes(item.url || '')}">
                 ${escapeHTML(item.url || 'No URL')}
               </div>
 
               ${item.detail ? `
-                <p class="text-[11px] text-theme-subtle line-clamp-2 bg-theme-bg/60 p-1.5 rounded-lg border border-theme-border/40 font-mono">
+                <p class="text-[11px] text-slate-600 line-clamp-2 bg-slate-50 p-1.5 rounded-lg border border-slate-200 font-mono">
                   ${escapeHTML(item.detail)}
                 </p>
               ` : ''}
             </div>
 
-            <div class="flex items-center justify-between gap-2 pt-1 border-t border-theme-border/30">
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
               <a href="${escapeHTML(item.url || '#')}" target="_blank" rel="noopener noreferrer" 
-                class="chip-btn px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                class="chip-btn px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-xs transition">
                 <span>Open Page</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
               </a>
               <button type="button" onclick="quickAvoidCompany('${escapeQuotes(item.company || '')}')" 
-                class="px-2.5 py-1 rounded-lg bg-theme-surface hover:bg-rose-500/20 border border-theme-border text-theme-subtle hover:text-rose-300 text-[11px] font-heading transition" title="Add this studio to your Avoid list">
+                class="px-2.5 py-1 rounded-lg bg-white hover:bg-rose-50 border border-slate-200 text-slate-600 hover:text-rose-700 text-[11px] font-heading font-medium transition" title="Add this studio to your Avoid list">
                 + Avoid
               </button>
             </div>
@@ -2492,8 +2458,8 @@
       if (currentFailedPages.length === 0) {
         container.innerHTML = `
           <div class="text-center py-8 space-y-2">
-            <p class="text-sm text-theme-subtle">No failed pages or timeouts recorded.</p>
-            <p class="text-xs text-theme-subtle">All studio career pages responded successfully during the scan.</p>
+            <p class="text-sm text-slate-600 font-medium">No failed pages or timeouts recorded.</p>
+            <p class="text-xs text-slate-400">All studio career pages responded successfully during the scan.</p>
           </div>
         `;
       } else {
@@ -2501,29 +2467,29 @@
           const isTimeout = item.status === 'timeout';
           const isRateLimit = item.status === 'rate_limited';
           const badgeClass = isTimeout 
-            ? 'bg-amber-500/10 text-amber-300 border-amber-500/30' 
+            ? 'bg-amber-50 text-amber-700 border-amber-200' 
             : isRateLimit
-            ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
-            : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+            ? 'bg-rose-50 text-rose-700 border-rose-200'
+            : 'bg-slate-100 text-slate-700 border-slate-200';
 
           return `
-            <div class="pt-2.5 first:pt-0 flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-theme-bg/40 hover:bg-theme-surface/50 border border-theme-border/40 transition">
+            <div class="pt-2.5 first:pt-0 flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200 transition">
               <div class="space-y-1 min-w-[220px]">
                 <div class="flex items-center gap-2">
-                  <span class="font-heading font-semibold text-sm text-white">${escapeHTML(item.company || 'Unknown Studio')}</span>
+                  <span class="font-heading font-semibold text-sm text-slate-900">${escapeHTML(item.company || 'Unknown Studio')}</span>
                   <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${badgeClass}">${escapeHTML(item.source || 'Web')}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs">
-                  <span class="font-mono text-[11px] text-amber-400/90">${escapeHTML(item.error_type || 'Error')}</span>
-                  <span class="text-theme-subtle truncate max-w-sm text-[11px]">${escapeHTML(item.detail || '')}</span>
+                  <span class="font-mono text-[11px] text-amber-700 font-semibold">${escapeHTML(item.error_type || 'Error')}</span>
+                  <span class="text-slate-500 truncate max-w-sm text-[11px]">${escapeHTML(item.detail || '')}</span>
                 </div>
-                <div class="text-[11px] text-theme-subtle font-mono truncate max-w-md">
+                <div class="text-[11px] text-slate-400 font-mono truncate max-w-md">
                   ${escapeHTML(item.url || '')}
                 </div>
               </div>
               <div class="flex items-center gap-2">
                 <a href="${escapeHTML(item.url || '#')}" target="_blank" rel="noopener noreferrer" 
-                  class="chip-btn px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-sm transition">
+                  class="chip-btn px-3 py-1.5 rounded-lg bg-[#007a5a] hover:bg-[#006349] text-white text-xs font-heading font-semibold flex items-center gap-1.5 shadow-xs transition">
                   <span>Open Page</span>
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </a>
@@ -2597,49 +2563,49 @@
   </script>
 
   <!-- Modal: Failed / Timed Out Career Pages -->
-  <div id="failedPagesModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden transition-opacity">
-    <div class="glass-card bg-[#0e1422]/95 border border-theme-border rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+  <div id="failedPagesModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs hidden transition-opacity">
+    <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
       
       <!-- Modal Header -->
-      <div class="flex items-center justify-between p-5 border-b border-theme-border/70">
+      <div class="flex items-center justify-between p-5 border-b border-slate-200">
         <div class="space-y-1">
           <div class="flex items-center gap-2.5">
-            <span class="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <span class="p-1.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             </span>
-            <h3 class="font-heading font-bold text-base text-white">Timed Out & Failed Career Pages</h3>
-            <span id="modalFailedCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">0 sites</span>
+            <h3 class="font-heading font-bold text-base text-slate-900">Timed Out & Failed Career Pages</h3>
+            <span id="modalFailedCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-amber-50 text-amber-800 border border-amber-200">0 sites</span>
           </div>
-          <p class="text-xs text-theme-subtle">These studio pages or ATS widgets (like Workable) timed out or encountered network throttling. Review them manually below.</p>
+          <p class="text-xs text-slate-500">These studio pages or ATS widgets (like Workable) timed out or encountered network throttling. Review them manually below.</p>
         </div>
-        <button type="button" onclick="closeFailedPagesModal()" class="p-2 rounded-xl text-theme-subtle hover:text-white hover:bg-theme-surface transition" title="Close Modal">
+        <button type="button" onclick="closeFailedPagesModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition" title="Close Modal">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
       <!-- Action Bar inside Modal -->
-      <div class="flex items-center justify-between px-5 py-2.5 bg-theme-bg/60 border-b border-theme-border/40 text-xs">
-        <span class="text-theme-subtle font-mono text-[11px]">Saved to <code class="text-indigo-300 bg-theme-surface px-1.5 py-0.5 rounded border border-theme-border">failed_job_pages.md</code></span>
+      <div class="flex items-center justify-between px-5 py-2.5 bg-slate-50 border-b border-slate-200 text-xs">
+        <span class="text-slate-500 font-mono text-[11px]">Saved to <code class="text-[#1264a3] bg-white px-1.5 py-0.5 rounded border border-slate-200">failed_job_pages.md</code></span>
         <div class="flex items-center gap-2">
-          <button type="button" id="btnAutoHeal" onclick="triggerAutoHeal()" class="chip-btn px-3 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 text-xs font-heading font-medium flex items-center gap-1.5 transition">
-            <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <button type="button" id="btnAutoHeal" onclick="triggerAutoHeal()" class="chip-btn px-3 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-heading font-medium flex items-center gap-1.5 transition shadow-xs">
+            <svg class="w-3.5 h-3.5 text-[#1264a3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <span id="btnAutoHealText">Auto-Heal & Clean</span>
           </button>
-          <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-theme-surface hover:bg-theme-card border border-theme-border text-white text-xs font-heading font-medium flex items-center gap-1.5 transition">
-            <svg class="w-3.5 h-3.5 text-theme-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+          <button type="button" onclick="copyFailedUrls()" class="chip-btn px-3 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-heading font-medium flex items-center gap-1.5 transition shadow-xs">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
             <span>Copy All URLs</span>
           </button>
         </div>
       </div>
 
       <!-- Scrollable List of Failures -->
-      <div id="failedPagesListContainer" class="p-5 overflow-y-auto space-y-2.5 divide-y divide-theme-border/30 max-h-[50vh]">
+      <div id="failedPagesListContainer" class="p-5 overflow-y-auto space-y-2.5 divide-y divide-slate-200 max-h-[50vh]">
         <!-- Injected via JS -->
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-4 border-t border-theme-border/70 flex justify-end bg-theme-surface/40">
-        <button type="button" onclick="closeFailedPagesModal()" class="px-4 py-2 rounded-xl bg-theme-surface hover:bg-theme-card border border-theme-border text-xs font-heading font-semibold text-white transition">
+      <div class="p-4 border-t border-slate-200 flex justify-end bg-slate-50">
+        <button type="button" onclick="closeFailedPagesModal()" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-heading font-semibold text-slate-700 transition shadow-xs">
           Done
         </button>
       </div>
