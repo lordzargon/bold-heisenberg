@@ -931,25 +931,27 @@ def run_live_search(config, progress_callback=None):
                     "message": f"Scanning {c_name}..."
                 })
 
-            failed_before = len(failed_pages)
+            comp_failures = []
             try:
-                c_jobs = extract_jobs_from_company(comp, failed_pages=failed_pages, failed_lock=failed_lock)
+                c_jobs = extract_jobs_from_company(comp, failed_pages=comp_failures)
             except Exception as ex:
                 status, err_type = classify_fetch_error(ex)
-                with failed_lock:
-                    failed_pages.append({
-                        "company": c_name,
-                        "url": comp.get("careers_url", ""),
-                        "source": "Direct Studio Web",
-                        "status": status,
-                        "error_type": err_type,
-                        "detail": str(ex),
-                        "timestamp": datetime.datetime.now().isoformat()
-                    })
+                comp_failures.append({
+                    "company": c_name,
+                    "url": comp.get("careers_url", ""),
+                    "source": "Direct Studio Web",
+                    "status": status,
+                    "error_type": err_type,
+                    "detail": str(ex),
+                    "timestamp": datetime.datetime.now().isoformat()
+                })
                 c_jobs = []
 
-            has_new_failure = len(failed_pages) > failed_before
-            latest_fail = failed_pages[-1] if has_new_failure else None
+            if comp_failures:
+                with failed_lock:
+                    failed_pages.extend(comp_failures)
+
+            latest_fail = comp_failures[-1] if comp_failures else None
 
             c_matches = 0
             for j in (c_jobs or []):

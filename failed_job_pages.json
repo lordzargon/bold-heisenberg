@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-17T10:36:26.907215",
+  "generated_at": "2026-09-18T12:35:15.932916",
   "total_failed": 23,
   "failures": [
     {
@@ -9,7 +9,25 @@
       "status": "network_error",
       "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
       "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:03.683951"
+      "timestamp": "2026-09-18T12:34:48.786981"
+    },
+    {
+      "company": "Axial Studio",
+      "url": "https://www.axialstudio.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-18T12:34:48.790502"
+    },
+    {
+      "company": "Axs Studio",
+      "url": "https://www.axsstudio.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
+      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
+      "timestamp": "2026-09-18T12:34:48.792041"
     },
     {
       "company": "Candidum Games",
@@ -18,16 +36,7 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:04.498654"
-    },
-    {
-      "company": "Derail Games",
-      "url": "https://www.derailgames.com/careers",
-      "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:997)",
-      "detail": "<urlopen error [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:05.375068"
+      "timestamp": "2026-09-18T12:34:49.500493"
     },
     {
       "company": "Disruptive Games",
@@ -36,7 +45,7 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:05.383112"
+      "timestamp": "2026-09-18T12:34:50.718510"
     },
     {
       "company": "Game Pilot",
@@ -45,7 +54,7 @@
       "status": "http_error",
       "error_type": "HTTP 308 (Permanent Redirect)",
       "detail": "HTTP Error 308: Permanent Redirect",
-      "timestamp": "2026-09-17T10:36:07.015395"
+      "timestamp": "2026-09-18T12:34:53.917825"
     },
     {
       "company": "Humain",
@@ -54,16 +63,7 @@
       "status": "forbidden",
       "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
       "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-17T10:36:07.353840"
-    },
-    {
-      "company": "Lockwood Publishing",
-      "url": "https://apply.workable.com/oops",
-      "source": "Workable",
-      "status": "not_found",
-      "error_type": "HTTP 404 (Page Not Found)",
-      "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:09.346227"
+      "timestamp": "2026-09-18T12:34:54.081485"
     },
     {
       "company": "Lo-Fi Games",
@@ -72,7 +72,16 @@
       "status": "forbidden",
       "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
       "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-17T10:36:09.347228"
+      "timestamp": "2026-09-18T12:34:55.113406"
+    },
+    {
+      "company": "Lockwood Publishing",
+      "url": "https://apply.workable.com/oops",
+      "source": "Workable",
+      "status": "not_found",
+      "error_type": "HTTP 404 (Page Not Found)",
+      "detail": "HTTP Error 404: Not Found",
+      "timestamp": "2026-09-18T12:34:55.237904"
     },
     {
       "company": "Maverick Media",
@@ -81,106 +90,61 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:09.871194"
+      "timestamp": "2026-09-18T12:34:55.865653"
     },
     {
-      "company": "Maximum Entertainment",
-      "url": "https://maximumentertainment.co/careers",
+      "company": "Aura Games",
+      "url": "https://auragames.co/careers",
       "source": "Direct Studio Web",
-      "status": "http_error",
-      "error_type": "HTTP 520 (<none>)",
-      "detail": "HTTP Error 520: <none>",
-      "timestamp": "2026-09-17T10:36:10.185486"
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:34:55.982178"
     },
     {
-      "company": "Nomad Interactive",
-      "url": "https://www.nomadinteractive.com/careers",
-      "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:13.208554"
-    },
-    {
-      "company": "NOTTINGHAM TRENT UNIVERSITY",
-      "url": "https://www.nottinghamtrentuniversity.co.uk/careers",
+      "company": "Nice Games",
+      "url": "https://www.nicegames.com/careers",
       "source": "Direct Studio Web",
       "status": "network_error",
       "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
       "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:13.209562"
+      "timestamp": "2026-09-18T12:34:59.630521"
+    },
+    {
+      "company": "Big Bite Games",
+      "url": "https://www.bigbitegames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:34:59.720395"
     },
     {
       "company": "Onexp315",
       "url": "https://www.onexp315.com/careers",
       "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
-      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
-      "timestamp": "2026-09-17T10:36:13.482153"
+      "status": "error",
+      "error_type": "Error: Remote end closed connection without response",
+      "detail": "Remote end closed connection without response",
+      "timestamp": "2026-09-18T12:35:00.271493"
     },
     {
-      "company": "Splash Damage",
-      "url": "https://www.splashdamage.com/careers",
+      "company": "Candy Games",
+      "url": "https://www.candygames.com/careers",
       "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
-      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
-      "timestamp": "2026-09-17T10:36:15.530759"
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:35:00.275346"
     },
     {
-      "company": "University of Wolverhampton",
-      "url": "https://www.universityofwolverhampton.co.uk/careers",
+      "company": "Playwing",
+      "url": "https://www.playwing.com/careers/",
       "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:16.581829"
-    },
-    {
-      "company": "UNIVERSITY OF PORTSMOUTH",
-      "url": "https://www.universityofportsmouth.co.uk/careers",
-      "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:16.622400"
-    },
-    {
-      "company": "UNIVERSITY OF YORK",
-      "url": "https://www.universityofyork.co.uk/careers",
-      "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:16.622400"
-    },
-    {
-      "company": "University of Hertfordshire",
-      "url": "https://www.universityofhertfordshire.co.uk/careers",
-      "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-17T10:36:16.630969"
-    },
-    {
-      "company": "Under The Stairs",
-      "url": "https://www.underthestairs.com/careers",
-      "source": "Direct Studio Web",
-      "status": "not_found",
-      "error_type": "HTTP 404 (Page Not Found)",
-      "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:16.695265"
-    },
-    {
-      "company": "Tag Games",
-      "url": "https://www.taggames.com/careers",
-      "source": "Direct Studio Web",
-      "status": "server_error",
-      "error_type": "HTTP 502 (Server Error)",
-      "detail": "HTTP Error 502: Bad Gateway",
-      "timestamp": "2026-09-17T10:36:17.010270"
+      "status": "forbidden",
+      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
+      "detail": "HTTP Error 403: Forbidden",
+      "timestamp": "2026-09-18T12:35:01.712878"
     },
     {
       "company": "Withqwerty",
@@ -189,7 +153,7 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-17T10:36:17.215713"
+      "timestamp": "2026-09-18T12:35:04.112913"
     },
     {
       "company": "Payload Studios",
@@ -198,7 +162,16 @@
       "status": "forbidden",
       "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
       "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-17T10:36:17.272903"
+      "timestamp": "2026-09-18T12:35:04.372336"
+    },
+    {
+      "company": "Katniss",
+      "url": "https://www.katniss.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:35:04.686424"
     },
     {
       "company": "Parade",
@@ -207,7 +180,34 @@
       "status": "timeout",
       "error_type": "Connection Timeout (Request took >10s)",
       "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-17T10:36:23.834240"
+      "timestamp": "2026-09-18T12:35:10.075790"
+    },
+    {
+      "company": "Onebutton Games",
+      "url": "https://www.onebuttongames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:35:10.075790"
+    },
+    {
+      "company": "Tag Games",
+      "url": "https://www.taggames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:35:12.512622"
+    },
+    {
+      "company": "Unlimited Entertainment",
+      "url": "https://unlimitedentertainment.co/careers",
+      "source": "Direct Studio Web",
+      "status": "timeout",
+      "error_type": "Connection Timeout (Request took >10s)",
+      "detail": "<urlopen error timed out>",
+      "timestamp": "2026-09-18T12:35:13.915226"
     }
   ]
 }
