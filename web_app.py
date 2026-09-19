@@ -74,9 +74,17 @@ SMART_OPENER = urllib.request.build_opener(
 urllib.request.install_opener(SMART_OPENER)
 
 DEFAULT_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    'Accept': 'application/json, text/html, */*',
-    'Accept-Language': 'en-US,en;q=0.9',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,application/json,*/*;q=0.8',
+    'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+    'Sec-Ch-Ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+    'Sec-Ch-Ua-Mobile': '?0',
+    'Sec-Ch-Ua-Platform': '"Windows"',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
 }
 
 # --- State Management for Background Jobs ---
@@ -272,63 +280,11 @@ def load_companies():
 
 # --- Date Parsing & Normalization ---
 
-def parse_date_to_timestamp(date_val):
-    """
-    Parses various date formats (ISO 8601 string, epoch ms/sec, '28 Aug 2026', 'Aug 28, 2026', '2026-08-28')
-    into (display_str, epoch_timestamp).
-    """
-    if not date_val:
-        return "", 0.0
-
-    if isinstance(date_val, (int, float)):
-        ts = float(date_val)
-        if ts > 1e11:  # epoch in milliseconds
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            return "", 0.0
-
-    if not isinstance(date_val, str):
-        return "", 0.0
-
-    date_str = date_val.strip()
-    if not date_str:
-        return "", 0.0
-
-    if date_str.isdigit():
-        ts = float(date_str)
-        if ts > 1e11:
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            pass
-
-    iso_clean = re.sub(r'(\.\d+)?(Z|[+-]\d{2}:\d{2})$', '', date_str)
-    formats = [
-        "%Y-%m-%d",
-        "%Y-%m-%dT%H:%M:%S",
-        "%Y-%m-%d %H:%M:%S",
-        "%d %b %Y",
-        "%d %B %Y",
-        "%b %d, %Y",
-        "%B %d, %Y",
-        "%d/%m/%Y",
-        "%m/%d/%Y"
-    ]
-    for fmt in formats:
-        try:
-            target_str = iso_clean[:19] if "T" in fmt else iso_clean[:10] if fmt == "%Y-%m-%d" else date_str
-            dt = datetime.datetime.strptime(target_str, fmt)
-            ts = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            continue
-
-    return date_str, 0.0
+try:
+    from date_utils import parse_date_to_timestamp
+except ImportError:
+    def parse_date_to_timestamp(date_val):
+        return str(date_val)[:10] if date_val else "", 0.0
 
 # --- Crawlers & Fetchers ---
 
@@ -1178,6 +1134,17 @@ def run_live_search(config, progress_callback=None):
         is_match, matched_kws, loc_match_details = filter_job(job, search_cfg)
         if is_match:
             job_copy = dict(job)
+            raw_posted = job_copy.get("date_posted")
+            raw_ts = job_copy.get("date_posted_ts")
+            if raw_posted and (not raw_ts or raw_ts <= 0):
+                disp, ts = parse_date_to_timestamp(raw_posted)
+                if ts > 0:
+                    job_copy["date_posted"] = disp
+                    job_copy["date_posted_ts"] = ts
+            elif raw_posted:
+                disp, _ = parse_date_to_timestamp(raw_posted)
+                if disp:
+                    job_copy["date_posted"] = disp
             job_copy["matched_keywords"] = matched_kws
             job_copy["location_match"] = loc_match_details
             matching_jobs.append(job_copy)
@@ -3150,18 +3117,58 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       });
     }
 
+    function getJobTimestamp(job) {
+      if (typeof job.date_posted_ts === 'number' && job.date_posted_ts > 0) {
+        return job.date_posted_ts;
+      }
+      if (job.date_posted && typeof job.date_posted === 'string' && job.date_posted.trim()) {
+        const parsed = Date.parse(job.date_posted.trim());
+        if (!isNaN(parsed) && parsed > 0) {
+          return parsed / 1000;
+        }
+      }
+      if (typeof job.date_added_ts === 'number' && job.date_added_ts > 0) {
+        return job.date_added_ts;
+      }
+      if (job.date_added && typeof job.date_added === 'string' && job.date_added.trim()) {
+        const parsed = Date.parse(job.date_added.trim());
+        if (!isNaN(parsed) && parsed > 0) {
+          return parsed / 1000;
+        }
+      }
+      return 0;
+    }
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr || dateStr === '—') return '—';
+      const s = String(dateStr).trim();
+      if (/^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}$/.test(s)) {
+        return s;
+      }
+      const parsed = Date.parse(s);
+      if (!isNaN(parsed)) {
+        const d = new Date(parsed);
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const mon = months[d.getUTCMonth()];
+        const yr = d.getUTCFullYear();
+        return `${day} ${mon} ${yr}`;
+      }
+      return s;
+    }
+
     function sortJobsList(jobs) {
       const list = [...jobs];
       list.sort((a, b) => {
         if (currentSortMode === 'date_desc') {
-          const tsA = a.date_posted_ts || a.date_added_ts || 0;
-          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          const tsA = getJobTimestamp(a);
+          const tsB = getJobTimestamp(b);
           if (tsB !== tsA) return tsB - tsA;
           return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
         }
         if (currentSortMode === 'date_asc') {
-          const tsA = a.date_posted_ts || a.date_added_ts || 0;
-          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          const tsA = getJobTimestamp(a);
+          const tsB = getJobTimestamp(b);
           if (tsA !== tsB) return tsA - tsB;
           return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
         }
@@ -3255,7 +3262,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         // Date Posted / Discovered Badge
-        const dateDisp = job.date_posted || job.date_added || '';
+        const rawDate = job.date_posted || job.date_added || '';
+        const dateDisp = formatDisplayDate(rawDate);
         const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-theme-subtle px-2 py-0.5 rounded-full bg-theme-surface border border-theme-border flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[10px] font-heading font-medium border border-indigo-500/20">${escapeHTML(k)}</span>`).join('');
@@ -3348,12 +3356,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           locTableDisplay = '<span class="text-emerald-400 font-mono">Remote</span>';
         }
 
-        const dateDisp = job.date_posted || job.date_added || '—';
+        const rawDate = job.date_posted || job.date_added || '—';
+        const dateDisp = formatDisplayDate(rawDate);
+        const dateTitle = job.date_posted ? 'Date Posted' : (job.date_added ? 'Date Discovered (not specified by studio)' : '');
 
         tr.innerHTML = `
           <td class="py-3 px-4 font-heading font-semibold text-white">${escapeHTML(job.title)}</td>
           <td class="py-3 px-4 text-theme-textSecondary">${escapeHTML(job.company)}</td>
-          <td class="py-3 px-4 text-theme-subtle font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
+          <td class="py-3 px-4 text-theme-subtle font-mono text-[11px] whitespace-nowrap" title="${escapeHTML(dateTitle)}">${escapeHTML(dateDisp)}</td>
           <td class="py-3 px-4 text-theme-subtle">${escapeHTML(job.department || '—')}</td>
           <td class="py-3 px-4 text-theme-subtle">${locTableDisplay}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-theme-subtle bg-theme-surface border border-theme-border">${escapeHTML(job.source)}</span></td>

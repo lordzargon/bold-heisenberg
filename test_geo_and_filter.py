@@ -114,12 +114,42 @@ def run_tests():
     d_iso, ts_iso = web_app.parse_date_to_timestamp("2026-08-28T14:30:00Z")
     d_epoch, ts_epoch = web_app.parse_date_to_timestamp(1788337723000)
     d_str, ts_str = web_app.parse_date_to_timestamp("28 Aug 2026")
+    d_gji_utc, ts_gji_utc = web_app.parse_date_to_timestamp("2026-08-21 11:33:16 UTC")
+    d_gji_old, ts_gji_old = web_app.parse_date_to_timestamp("2025-12-23 13:08:31 UTC")
+    d_nano, ts_nano = web_app.parse_date_to_timestamp("2026-08-21T17:58:14.123456789Z")
+    d_rel, ts_rel = web_app.parse_date_to_timestamp("Posted 2 days ago")
+
     print(f"ISO parse: {d_iso}, ts: {ts_iso}")
     print(f"Epoch ms parse: {d_epoch}, ts: {ts_epoch}")
     print(f"Human date parse: {d_str}, ts: {ts_str}")
+    print(f"GJI SQL UTC parse: {d_gji_utc}, ts: {ts_gji_utc}")
+    print(f"GJI 2025 UTC parse: {d_gji_old}, ts: {ts_gji_old}")
+    print(f"Nanosecond ISO parse: {d_nano}, ts: {ts_nano}")
+    print(f"Relative date parse: {d_rel}, ts: {ts_rel}")
+
     assert ts_iso > 0 and d_iso == "28 Aug 2026"
     assert ts_epoch > 0
     assert ts_str > 0 and d_str == "28 Aug 2026"
+    assert ts_gji_utc > 0 and d_gji_utc == "21 Aug 2026"
+    assert ts_gji_old > 0 and d_gji_old == "23 Dec 2025"
+    assert ts_nano > 0 and d_nano == "21 Aug 2026"
+    assert ts_rel > 0
+
+    # Chronological sort order verification
+    jobs_sample = [
+        {"title": "Job 2025", "company": "Companion Group", "date_posted": "2025-12-23 13:08:31 UTC"},
+        {"title": "Job Aug 2026", "company": "11bitstudios", "date_posted": "2026-08-21 11:33:16 UTC"},
+        {"title": "Job 18 Sep", "company": "ASGC Studio", "date_posted": "18 Sep 2026"},
+        {"title": "Job 11 Sep", "company": "Framestore", "date_posted": "11 Sep 2026"},
+    ]
+    for j in jobs_sample:
+        d, ts = web_app.parse_date_to_timestamp(j["date_posted"])
+        j["date_posted"] = d
+        j["date_posted_ts"] = ts
+    jobs_sample.sort(key=lambda x: -x["date_posted_ts"])
+    ordered_dates = [j["date_posted"] for j in jobs_sample]
+    print(f"Chronologically sorted order: {ordered_dates}")
+    assert ordered_dates == ["18 Sep 2026", "11 Sep 2026", "21 Aug 2026", "23 Dec 2025"]
 
     print("\n=== 7. Hybrid Workplace Recognition & Priority Test ===")
     # Hybrid role in London with hybrid rule should display Hybrid badge and mode

@@ -48,46 +48,11 @@ def clean_html_text(text):
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
-def parse_date_to_timestamp(date_val):
-    if not date_val:
-        return "", 0.0
-    if isinstance(date_val, (int, float)):
-        ts = float(date_val)
-        if ts > 1e11:
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            return "", 0.0
-    if not isinstance(date_val, str):
-        return "", 0.0
-    date_str = date_val.strip()
-    if not date_str:
-        return "", 0.0
-    if date_str.isdigit():
-        ts = float(date_str)
-        if ts > 1e11:
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            pass
-    iso_clean = re.sub(r'(\.\d+)?(Z|[+-]\d{2}:\d{2})$', '', date_str)
-    formats = [
-        "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S",
-        "%d %b %Y", "%d %B %Y", "%b %d, %Y", "%B %d, %Y", "%d/%m/%Y", "%m/%d/%Y"
-    ]
-    for fmt in formats:
-        try:
-            target_str = iso_clean[:19] if "T" in fmt else iso_clean[:10] if fmt == "%Y-%m-%d" else date_str
-            dt = datetime.datetime.strptime(target_str, fmt)
-            ts = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            continue
-    return date_str, 0.0
+try:
+    from date_utils import parse_date_to_timestamp
+except ImportError:
+    def parse_date_to_timestamp(date_val):
+        return str(date_val)[:10] if date_val else "", 0.0
 
 # --- 1. Aardvark Swift ---
 
@@ -136,6 +101,10 @@ def fetch_aardvark_swift_jobs(max_pages=5):
             desc_match = re.search(r"<p class='job-description'>\s*(.*?)\s*</p>", content[m.end():m.end()+800], re.DOTALL)
             desc = clean_html_text(desc_match.group(1)) if desc_match else ""
 
+            # Extract posted date snippet
+            date_match = re.search(r"<li class=['\"]results-posted-at['\"]>\s*(.*?)\s*</li>", content[m.end():m.end()+600], re.DOTALL)
+            disp_date, ts = parse_date_to_timestamp(clean_html_text(date_match.group(1))) if date_match else ("", 0.0)
+
             now_dt = datetime.datetime.now(datetime.timezone.utc)
             now_ts = now_dt.timestamp()
             now_disp = now_dt.strftime("%d %b %Y")
@@ -156,8 +125,8 @@ def fetch_aardvark_swift_jobs(max_pages=5):
                 "department": "Games Recruitment",
                 "description": desc,
                 "source": "Aardvark Swift",
-                "date_posted": "",
-                "date_posted_ts": 0.0,
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
                 "date_added": now_disp,
                 "date_added_ts": now_ts,
             })
@@ -205,6 +174,10 @@ def fetch_ingame_jobs(max_pages=5):
                 continue
             seen_ids.add(job_id)
 
+            # Extract posted date snippet if available (e.g. 'Posted 2 days ago', 'Posted yesterday')
+            date_m = re.search(r'Posted\s+[^<\n]+', b, re.IGNORECASE)
+            disp_date, ts = parse_date_to_timestamp(clean_html_text(date_m.group(0))) if date_m else ("", 0.0)
+
             now_dt = datetime.datetime.now(datetime.timezone.utc)
             now_ts = now_dt.timestamp()
             now_disp = now_dt.strftime("%d %b %Y")
@@ -223,8 +196,8 @@ def fetch_ingame_jobs(max_pages=5):
                 "url": job_url,
                 "department": "InGame Job Board",
                 "source": "InGame Job",
-                "date_posted": "",
-                "date_posted_ts": 0.0,
+                "date_posted": disp_date,
+                "date_posted_ts": ts,
                 "date_added": now_disp,
                 "date_added_ts": now_ts,
             })

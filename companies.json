@@ -1002,7 +1002,7 @@
   },
   "b2895295-fdb0-40b7-82fe-adb0808ba2bd": {
     "id": "b2895295-fdb0-40b7-82fe-adb0808ba2bd",
-    "name": "À La Mode Games",
+    "name": "\u00c3\u20ac La Mode Games",
     "gamesmap_url": "https://app.gamesmap.uk/organisations/b2895295-fdb0-40b7-82fe-adb0808ba2bd/",
     "company_number": "",
     "activities": [],
@@ -26145,7 +26145,7 @@
   },
   "e7f5f2ca-6512-4bf2-b64a-8c753a2fc6f3": {
     "id": "e7f5f2ca-6512-4bf2-b64a-8c753a2fc6f3",
-    "name": "Ó Dorchaidhe Games",
+    "name": "\u00c3\u201c Dorchaidhe Games",
     "gamesmap_url": "https://app.gamesmap.uk/organisations/e7f5f2ca-6512-4bf2-b64a-8c753a2fc6f3/",
     "company_number": "",
     "activities": [],
@@ -26470,7 +26470,7 @@
   },
   "54134384-37d3-4c27-964e-69fc56ca1488": {
     "id": "54134384-37d3-4c27-964e-69fc56ca1488",
-    "name": "Opiñon",
+    "name": "Opi\u00c3\u00b1on",
     "gamesmap_url": "https://app.gamesmap.uk/organisations/54134384-37d3-4c27-964e-69fc56ca1488/",
     "company_number": "",
     "activities": [],
@@ -36187,11 +36187,11 @@
     "company_number": "",
     "activities": [],
     "ukie_member": false,
-    "website_url": "https://www.taggames.com",
+    "website_url": "https://www.tag-games.com",
     "website_status": 200,
-    "careers_url": "https://www.taggames.com/careers",
-    "careers_type": "direct_path",
-    "last_checked": "2026-08-28T16:01:29Z"
+    "careers_url": "https://boards.greenhouse.io/scopely",
+    "careers_type": "greenhouse",
+    "last_checked": "2026-09-18T13:00:00Z"
   },
   "04f21b03-291c-488e-87e8-f526f90643a5": {
     "id": "04f21b03-291c-488e-87e8-f526f90643a5",
@@ -42317,8 +42317,8 @@
     "ukie_member": false,
     "website_url": "https://payloadstudios.com",
     "website_status": 200,
-    "careers_url": "https://payloadstudios.com/careers/",
-    "careers_type": "custom_html",
+    "careers_url": "https://apply.workable.com/payload-studios/",
+    "careers_type": "workable",
     "last_checked": "2026-09-13T10:57:20Z"
   }
 }

@@ -66,9 +66,17 @@ SMART_OPENER = urllib.request.build_opener(
 urllib.request.install_opener(SMART_OPENER)
 
 DEFAULT_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    'Accept': 'application/json, text/html, */*',
-    'Accept-Language': 'en-US,en;q=0.9',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,application/json,*/*;q=0.8',
+    'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+    'Sec-Ch-Ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+    'Sec-Ch-Ua-Mobile': '?0',
+    'Sec-Ch-Ua-Platform': '"Windows"',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
 }
 
 def load_config():
@@ -165,46 +173,11 @@ def save_seen_jobs(seen_ids):
     with open(SEEN_JOBS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-def parse_date_to_timestamp(date_val):
-    if not date_val:
-        return "", 0.0
-    if isinstance(date_val, (int, float)):
-        ts = float(date_val)
-        if ts > 1e11:
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            return "", 0.0
-    if not isinstance(date_val, str):
-        return "", 0.0
-    date_str = date_val.strip()
-    if not date_str:
-        return "", 0.0
-    if date_str.isdigit():
-        ts = float(date_str)
-        if ts > 1e11:
-            ts = ts / 1000.0
-        try:
-            dt = datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            pass
-    iso_clean = re.sub(r'(\.\d+)?(Z|[+-]\d{2}:\d{2})$', '', date_str)
-    formats = [
-        "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S",
-        "%d %b %Y", "%d %B %Y", "%b %d, %Y", "%B %d, %Y", "%d/%m/%Y", "%m/%d/%Y"
-    ]
-    for fmt in formats:
-        try:
-            target_str = iso_clean[:19] if "T" in fmt else iso_clean[:10] if fmt == "%Y-%m-%d" else date_str
-            dt = datetime.datetime.strptime(target_str, fmt)
-            ts = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
-            return dt.strftime("%d %b %Y"), ts
-        except Exception:
-            continue
-    return date_str, 0.0
+try:
+    from date_utils import parse_date_to_timestamp
+except ImportError:
+    def parse_date_to_timestamp(date_val):
+        return str(date_val)[:10] if date_val else "", 0.0
 
 def classify_fetch_error(err):
     """Categorizes exceptions into structured status and readable descriptions."""

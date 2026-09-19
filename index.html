@@ -1911,18 +1911,58 @@
       });
     }
 
+    function getJobTimestamp(job) {
+      if (typeof job.date_posted_ts === 'number' && job.date_posted_ts > 0) {
+        return job.date_posted_ts;
+      }
+      if (job.date_posted && typeof job.date_posted === 'string' && job.date_posted.trim()) {
+        const parsed = Date.parse(job.date_posted.trim());
+        if (!isNaN(parsed) && parsed > 0) {
+          return parsed / 1000;
+        }
+      }
+      if (typeof job.date_added_ts === 'number' && job.date_added_ts > 0) {
+        return job.date_added_ts;
+      }
+      if (job.date_added && typeof job.date_added === 'string' && job.date_added.trim()) {
+        const parsed = Date.parse(job.date_added.trim());
+        if (!isNaN(parsed) && parsed > 0) {
+          return parsed / 1000;
+        }
+      }
+      return 0;
+    }
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr || dateStr === '—') return '—';
+      const s = String(dateStr).trim();
+      if (/^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}$/.test(s)) {
+        return s;
+      }
+      const parsed = Date.parse(s);
+      if (!isNaN(parsed)) {
+        const d = new Date(parsed);
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const mon = months[d.getUTCMonth()];
+        const yr = d.getUTCFullYear();
+        return `${day} ${mon} ${yr}`;
+      }
+      return s;
+    }
+
     function sortJobsList(jobs) {
       const list = [...jobs];
       list.sort((a, b) => {
         if (currentSortMode === 'date_desc') {
-          const tsA = a.date_posted_ts || a.date_added_ts || 0;
-          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          const tsA = getJobTimestamp(a);
+          const tsB = getJobTimestamp(b);
           if (tsB !== tsA) return tsB - tsA;
           return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
         }
         if (currentSortMode === 'date_asc') {
-          const tsA = a.date_posted_ts || a.date_added_ts || 0;
-          const tsB = b.date_posted_ts || b.date_added_ts || 0;
+          const tsA = getJobTimestamp(a);
+          const tsB = getJobTimestamp(b);
           if (tsA !== tsB) return tsA - tsB;
           return (a.company || '').localeCompare(b.company || '') || (a.title || '').localeCompare(b.title || '');
         }
@@ -2016,7 +2056,8 @@
         }
 
         // Date Posted / Discovered Badge
-        const dateDisp = job.date_posted || job.date_added || '';
+        const rawDate = job.date_posted || job.date_added || '';
+        const dateDisp = formatDisplayDate(rawDate);
         const dateBadge = dateDisp ? `<span class="text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded-full bg-slate-50 border border-slate-200 flex items-center gap-1" title="${job.date_posted ? 'Date Posted' : 'Date Discovered'}"><span class="text-[9px]">📅</span><span>${escapeHTML(dateDisp)}</span></span>` : '';
 
         const matchedTags = (job.matched_keywords || []).map(k => `<span class="px-2 py-0.5 rounded-md bg-[#f4ecf4] text-[#4a154b] text-[10px] font-heading font-medium border border-[#e4d3e4]">${escapeHTML(k)}</span>`).join('');
@@ -2109,12 +2150,14 @@
           locTableDisplay = '<span class="text-[#007a5a] font-mono font-medium">Remote</span>';
         }
 
-        const dateDisp = job.date_posted || job.date_added || '—';
+        const rawDate = job.date_posted || job.date_added || '—';
+        const dateDisp = formatDisplayDate(rawDate);
+        const dateTitle = job.date_posted ? 'Date Posted' : (job.date_added ? 'Date Discovered (not specified by studio)' : '');
 
         tr.innerHTML = `
           <td class="py-3 px-4 font-heading font-semibold text-slate-900">${escapeHTML(job.title)}</td>
           <td class="py-3 px-4 text-slate-700 font-medium">${escapeHTML(job.company)}</td>
-          <td class="py-3 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap">${escapeHTML(dateDisp)}</td>
+          <td class="py-3 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap" title="${escapeHTML(dateTitle)}">${escapeHTML(dateDisp)}</td>
           <td class="py-3 px-4 text-slate-500">${escapeHTML(job.department || '—')}</td>
           <td class="py-3 px-4 text-slate-600">${locTableDisplay}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-md text-[10px] font-mono text-slate-600 bg-slate-100 border border-slate-200">${escapeHTML(job.source)}</span></td>

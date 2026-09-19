@@ -41,18 +41,14 @@ DEFAULT_HEADERS = {
     'Referer': 'https://gamesjobsindex.com/',
 }
 
+try:
+    from date_utils import parse_date_to_timestamp
+except ImportError:
+    def parse_date_to_timestamp(d):
+        return str(d)[:10], 0.0
+
 def parse_iso_to_timestamp(date_str):
-    if not date_str:
-        return "", 0.0
-    try:
-        # Normalize ISO formats like 2026-09-16T05:39:46-04:00 or 2026-09-16T10:02:33.683Z
-        clean_str = date_str.replace("Z", "+00:00")
-        dt = datetime.datetime.fromisoformat(clean_str)
-        return dt.strftime("%d %b %Y"), dt.timestamp()
-    except Exception:
-        # Fallback substring
-        clean = date_str[:10]
-        return clean, 0.0
+    return parse_date_to_timestamp(date_str)
 
 def fetch_gamesjobsindex_jobs(sources_config=None, progress_callback=None):
     """

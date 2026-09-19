@@ -1,33 +1,42 @@
 {
-  "generated_at": "2026-09-18T12:35:15.932916",
-  "total_failed": 23,
+  "generated_at": "2026-09-19T09:40:14.423833",
+  "total_failed": 24,
   "failures": [
     {
-      "company": "Aux Entertainment",
-      "url": "https://www.auxentertainment.com/careers",
+      "company": "Arlea Studios",
+      "url": "https://www.arleastudios.com/careers",
       "source": "Direct Studio Web",
       "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-18T12:34:48.786981"
+      "error_type": "Network Error: [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:997)",
+      "detail": "<urlopen error [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:997)>",
+      "timestamp": "2026-09-19T09:39:38.473839"
     },
     {
-      "company": "Axial Studio",
-      "url": "https://www.axialstudio.com/careers",
+      "company": "10:10 Games",
+      "url": "https://www.1010games.com/join-us",
       "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-18T12:34:48.790502"
+      "status": "error",
+      "error_type": "Error: IncompleteRead(14239 bytes read, 162994 more expected)",
+      "detail": "IncompleteRead(14239 bytes read, 162994 more expected)",
+      "timestamp": "2026-09-19T09:39:40.053953"
     },
     {
-      "company": "Axs Studio",
-      "url": "https://www.axsstudio.com/careers",
+      "company": "Brainspark Games",
+      "url": "https://brainsparkgames.com/work-with-us",
       "source": "Direct Studio Web",
-      "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-18T12:34:48.792041"
+      "status": "error",
+      "error_type": "Error: IncompleteRead(67947 bytes read, 319823 more expected)",
+      "detail": "IncompleteRead(67947 bytes read, 319823 more expected)",
+      "timestamp": "2026-09-19T09:39:40.703197"
+    },
+    {
+      "company": "Aura Games",
+      "url": "https://auragames.co/careers",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:40.776990"
     },
     {
       "company": "Candidum Games",
@@ -36,7 +45,16 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-18T12:34:49.500493"
+      "timestamp": "2026-09-19T09:39:40.936209"
+    },
+    {
+      "company": "Cha Cha Cha",
+      "url": "https://www.chachacha.co.uk/careers",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:41.356831"
     },
     {
       "company": "Disruptive Games",
@@ -45,7 +63,25 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-18T12:34:50.718510"
+      "timestamp": "2026-09-19T09:39:41.672037"
+    },
+    {
+      "company": "Esl Faceit Group",
+      "url": "https://eslfaceitgroup.com/career/",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 525 (<none>)",
+      "detail": "HTTP Error 525: <none>",
+      "timestamp": "2026-09-19T09:39:41.748064"
+    },
+    {
+      "company": "Dark Forest",
+      "url": "https://www.darkforest.co.uk/careers",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:41.937094"
     },
     {
       "company": "Game Pilot",
@@ -54,7 +90,7 @@
       "status": "http_error",
       "error_type": "HTTP 308 (Permanent Redirect)",
       "detail": "HTTP Error 308: Permanent Redirect",
-      "timestamp": "2026-09-18T12:34:53.917825"
+      "timestamp": "2026-09-19T09:39:42.644473"
     },
     {
       "company": "Humain",
@@ -63,16 +99,7 @@
       "status": "forbidden",
       "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
       "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-18T12:34:54.081485"
-    },
-    {
-      "company": "Lo-Fi Games",
-      "url": "https://lofigames.com/jobs/",
-      "source": "Direct Studio Web",
-      "status": "forbidden",
-      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
-      "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-18T12:34:55.113406"
+      "timestamp": "2026-09-19T09:39:42.824253"
     },
     {
       "company": "Lockwood Publishing",
@@ -81,7 +108,7 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-18T12:34:55.237904"
+      "timestamp": "2026-09-19T09:39:44.227032"
     },
     {
       "company": "Maverick Media",
@@ -90,61 +117,70 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-18T12:34:55.865653"
+      "timestamp": "2026-09-19T09:39:44.572243"
     },
     {
-      "company": "Aura Games",
-      "url": "https://auragames.co/careers",
-      "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:34:55.982178"
-    },
-    {
-      "company": "Nice Games",
-      "url": "https://www.nicegames.com/careers",
+      "company": "Media Molecule",
+      "url": "https://www.mediamolecule.com/careers",
       "source": "Direct Studio Web",
       "status": "network_error",
-      "error_type": "Network Error: EOF occurred in violation of protocol (_ssl.c:997)",
-      "detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>",
-      "timestamp": "2026-09-18T12:34:59.630521"
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-19T09:39:44.661982"
     },
     {
-      "company": "Big Bite Games",
-      "url": "https://www.bigbitegames.com/careers",
+      "company": "Funsolve",
+      "url": "https://www.funsolve.com/careers",
       "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:34:59.720395"
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-19T09:39:44.952802"
     },
     {
-      "company": "Onexp315",
-      "url": "https://www.onexp315.com/careers",
+      "company": "Mouldy Toof Studios",
+      "url": "https://www.mouldytoofstudios.com/careers",
       "source": "Direct Studio Web",
-      "status": "error",
-      "error_type": "Error: Remote end closed connection without response",
-      "detail": "Remote end closed connection without response",
-      "timestamp": "2026-09-18T12:35:00.271493"
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:45.101497"
     },
     {
-      "company": "Candy Games",
-      "url": "https://www.candygames.com/careers",
+      "company": "Mojo Bones",
+      "url": "https://www.mojobones.co.uk/careers",
       "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:00.275346"
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:45.179476"
     },
     {
-      "company": "Playwing",
-      "url": "https://www.playwing.com/careers/",
+      "company": "Outplay Entertainment",
+      "url": "https://outplay.com/careers",
       "source": "Direct Studio Web",
-      "status": "forbidden",
-      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
-      "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-18T12:35:01.712878"
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-19T09:39:48.047163"
+    },
+    {
+      "company": "Pilchard Games",
+      "url": "https://www.pilchardgames.co.uk/careers",
+      "source": "Direct Studio Web",
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:51.791514"
+    },
+    {
+      "company": "Splash Damage",
+      "url": "https://www.splashdamage.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10054] An existing connection was forcibly closed by the remote host",
+      "detail": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>",
+      "timestamp": "2026-09-19T09:39:52.788269"
     },
     {
       "company": "Withqwerty",
@@ -153,61 +189,34 @@
       "status": "not_found",
       "error_type": "HTTP 404 (Page Not Found)",
       "detail": "HTTP Error 404: Not Found",
-      "timestamp": "2026-09-18T12:35:04.112913"
-    },
-    {
-      "company": "Payload Studios",
-      "url": "https://payloadstudios.com/careers/",
-      "source": "Direct Studio Web",
-      "status": "forbidden",
-      "error_type": "HTTP 403 (Access Forbidden / Cloudflare)",
-      "detail": "HTTP Error 403: Forbidden",
-      "timestamp": "2026-09-18T12:35:04.372336"
-    },
-    {
-      "company": "Katniss",
-      "url": "https://www.katniss.com/careers",
-      "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:04.686424"
-    },
-    {
-      "company": "Parade",
-      "url": "https://parade.games/join",
-      "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:10.075790"
-    },
-    {
-      "company": "Onebutton Games",
-      "url": "https://www.onebuttongames.com/careers",
-      "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:10.075790"
-    },
-    {
-      "company": "Tag Games",
-      "url": "https://www.taggames.com/careers",
-      "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:12.512622"
+      "timestamp": "2026-09-19T09:39:53.807503"
     },
     {
       "company": "Unlimited Entertainment",
       "url": "https://unlimitedentertainment.co/careers",
       "source": "Direct Studio Web",
-      "status": "timeout",
-      "error_type": "Connection Timeout (Request took >10s)",
-      "detail": "<urlopen error timed out>",
-      "timestamp": "2026-09-18T12:35:13.915226"
+      "status": "http_error",
+      "error_type": "HTTP 410 (Gone)",
+      "detail": "HTTP Error 410: Gone",
+      "timestamp": "2026-09-19T09:39:54.272383"
+    },
+    {
+      "company": "Parade",
+      "url": "https://parade.games/join",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:997)",
+      "detail": "<urlopen error [SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:997)>",
+      "timestamp": "2026-09-19T09:39:59.672242"
+    },
+    {
+      "company": "Playground Games",
+      "url": "https://www.playgroundgames.com/careers",
+      "source": "Direct Studio Web",
+      "status": "network_error",
+      "error_type": "Network Error: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "detail": "<urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>",
+      "timestamp": "2026-09-19T09:40:03.166929"
     }
   ]
 }
